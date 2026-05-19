@@ -17,7 +17,7 @@ tags:
 | --- | --- | --- | --- |
 | v.1.0.0 | 2026-05-14 | engineering-agent/tech-lead | Aurora 개념 + 사용 |
 
-**[[database|↑ Database]]** · **[[../cloud-aws|↑↑ AWS]]**
+**[[database|↑ Database]]** · **[[cloud-aws|↑↑ AWS]]**
 
 ---
 
@@ -290,4 +290,4 @@ write 비싸고 데이터 잃을 수 있음 (promotion).
 - [[database]] — DB hub
 - [[rds]] — 일반 RDS
 - [[dynamodb]] — NoSQL
-- [[../../../database/postgresql/postgresql|↗ Postgres 자체]]
+- [[postgresql|↗ Postgres 자체]]

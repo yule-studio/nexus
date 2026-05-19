@@ -18,7 +18,7 @@ tags:
 | --- | --- | --- | --- |
 | v.1.0.0 | 2026-05-14 | engineering-agent/tech-lead | DynamoDB 개념 + 사용 |
 
-**[[database|↑ Database]]** · **[[../cloud-aws|↑↑ AWS]]**
+**[[database|↑ Database]]** · **[[cloud-aws|↑↑ AWS]]**
 
 ---
 
@@ -87,7 +87,7 @@ SK = timestamp
 → 같은 user_id 의 여러 row, SK 로 범위 쿼리.
 ```
 
-→ 데이터 모델링이 핵심. 자세히 → [[../../../database/cassandra/data-modeling]] (비슷한 원리).
+→ 데이터 모델링이 핵심. 자세히 → [[data-modeling]] (비슷한 원리).
 
 ---
 
@@ -351,5 +351,5 @@ pagination 필수.
 
 - [[database]] — DB hub
 - [[rds]] / [[aurora]] — RDB 비교
-- [[../compute/lambda]] — serverless stack
-- [[../../../database/cassandra/cassandra|↗ Cassandra 비교]]
+- [[lambda]] — serverless stack
+- [[cassandra|↗ Cassandra 비교]]

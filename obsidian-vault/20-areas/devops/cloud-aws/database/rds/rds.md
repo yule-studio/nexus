@@ -17,7 +17,7 @@ tags:
 | --- | --- | --- | --- |
 | v.1.0.0 | 2026-05-14 | engineering-agent/tech-lead | RDS 개념 + 사용 |
 
-**[[database|↑ Database]]** · **[[../cloud-aws|↑↑ AWS]]**
+**[[database|↑ Database]]** · **[[cloud-aws|↑↑ AWS]]**
 
 ---
 
@@ -53,7 +53,7 @@ backup / patch / Multi-AZ / read replica 자동.
 | **SQL Server** | 라이선스 |
 | **Db2** | 옛 IBM |
 
-DB 자체의 운영 = [[../../../database/database|↗ 20-areas/database]] 참조.
+DB 자체의 운영 = [[database|↗ 20-areas/database]] 참조.
 여기는 **AWS 측면** (instance / parameter / backup / network / 비용).
 
 ---
@@ -207,7 +207,7 @@ aws rds modify-db-parameter-group \
 
 → 일부는 reboot 필요 (`ApplyMethod=pending-reboot`).
 
-`shared_buffers` / `max_connections` 등 자세히 → [[../../../database/postgresql/configuration]]
+`shared_buffers` / `max_connections` 등 자세히 → [[configuration]]
 
 ---
 
@@ -226,7 +226,7 @@ conn = psycopg2.connect(
 ```
 
 → password 는 **Secrets Manager** 또는 IAM auth.
-자세히 → [[../security/secrets-manager]]
+자세히 → [[secrets-manager]]
 
 ### 9.1 IAM Authentication
 
@@ -249,7 +249,7 @@ RDS Console → Performance Insights
 - 시간대 별 부하
 ```
 
-자체 모니터링 = pg_stat_statements + CloudWatch. 자세히 → [[../observability/cloudwatch]]
+자체 모니터링 = pg_stat_statements + CloudWatch. 자세히 → [[cloudwatch]]
 
 ---
 
@@ -261,7 +261,7 @@ RDS Console → Performance Insights
 - **암호화** at rest (KMS) + transit (TLS)
 - **IAM auth** 또는 Secrets Manager (자동 rotation)
 
-자세히 → [[../security/secrets-manager]], [[../network/vpc]]
+자세히 → [[secrets-manager]], [[vpc]]
 
 ---
 
@@ -356,6 +356,6 @@ resource "aws_db_proxy" "myapp" {
 - [[database]] — Database hub
 - [[aurora]] — 분산 RDB
 - [[dynamodb]] — NoSQL
-- [[../../../database/postgresql/postgresql|↗ Postgres 자체]]
-- [[../security/secrets-manager]]
-- [[../network/vpc]]
+- [[postgresql|↗ Postgres 자체]]
+- [[secrets-manager]]
+- [[vpc]]

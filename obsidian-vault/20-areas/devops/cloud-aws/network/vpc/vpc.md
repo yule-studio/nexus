@@ -17,7 +17,7 @@ tags:
 | --- | --- | --- | --- |
 | v.1.0.0 | 2026-05-14 | engineering-agent/tech-lead | VPC 개념 + 토폴로지 |
 
-**[[network|↑ Network]]** · **[[../cloud-aws|↑↑ AWS]]**
+**[[network|↑ Network]]** · **[[cloud-aws|↑↑ AWS]]**
 
 ---
 
@@ -322,5 +322,5 @@ unused EIP 도 과금.
 
 - [[network]] — Network hub
 - [[alb]] / [[cloudfront]] / [[route53]]
-- [[../security/iam]]
-- [[../../../computer-science/network/network|↗ network 이론]]
+- [[iam]]
+- [[network|↗ network 이론]]

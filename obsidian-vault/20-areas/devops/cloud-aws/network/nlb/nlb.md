@@ -522,5 +522,5 @@ TLS termination: 추가 NLCU.
 
 - [[cloud-aws|↑ cloud-aws]]
 - [[alb]]
-- [[../../networking-ops/load-balancer-types|↗ LB types]]
-- [[../compute/eks|↗ EKS]]
+- [[load-balancer-types|↗ LB types]]
+- [[eks|↗ EKS]]

@@ -18,7 +18,7 @@ tags:
 | --- | --- | --- | --- |
 | v.1.0.0 | 2026-05-14 | engineering-agent/tech-lead | Route 53 개념 + 사용 |
 
-**[[network|↑ Network]]** · **[[../cloud-aws|↑↑ AWS]]**
+**[[network|↑ Network]]** · **[[cloud-aws|↑↑ AWS]]**
 
 ---
 
@@ -280,7 +280,7 @@ zone 삭제 전에 record 모두 제거.
 ## 13. 학습 자료
 
 - AWS Route 53 docs
-- **DNS 자체** — [[../../../computer-science/network/dns/dns|↗ DNS hub]]
+- **DNS 자체** — [[dns|↗ DNS hub]]
 
 ---
 
@@ -288,4 +288,4 @@ zone 삭제 전에 record 모두 제거.
 
 - [[network]] — Network hub
 - [[alb]] / [[cloudfront]] — Alias target
-- [[../../../computer-science/network/dns/dns|↗ DNS 이론]]
+- [[dns|↗ DNS 이론]]

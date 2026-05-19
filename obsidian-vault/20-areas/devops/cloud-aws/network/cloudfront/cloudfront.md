@@ -18,7 +18,7 @@ tags:
 | --- | --- | --- | --- |
 | v.1.0.0 | 2026-05-14 | engineering-agent/tech-lead | CloudFront 개념 + 사용 |
 
-**[[network|↑ Network]]** · **[[../cloud-aws|↑↑ AWS]]**
+**[[network|↑ Network]]** · **[[cloud-aws|↑↑ AWS]]**
 
 ---
 
@@ -294,6 +294,6 @@ ALB / S3 의 CORS 설정 + Cache 의 Vary header.
 
 - [[network]] — Network hub
 - [[alb]] — 동적 origin
-- [[../storage/s3]] — 정적 origin
+- [[s3]] — 정적 origin
 - [[route53]] — DNS
-- [[../security/security]] — WAF
+- [[security]] — WAF

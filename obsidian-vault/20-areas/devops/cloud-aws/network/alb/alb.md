@@ -19,7 +19,7 @@ tags:
 | --- | --- | --- | --- |
 | v.1.0.0 | 2026-05-14 | engineering-agent/tech-lead | ALB / NLB 비교 + 사용 |
 
-**[[network|↑ Network]]** · **[[../cloud-aws|↑↑ AWS]]**
+**[[network|↑ Network]]** · **[[cloud-aws|↑↑ AWS]]**
 
 ---
 
@@ -222,7 +222,7 @@ resource "aws_route53_record" "cert_validation" {
 ```
 
 → DNS validation → 자동 renewal. 무료.
-자세히 → [[../security/security#3-추가-서비스-별도-노트-예정]]
+자세히 → [[security#3-추가-서비스-별도-노트-예정]]
 
 ---
 
@@ -307,5 +307,5 @@ target_type=instance → 클라이언트 IP 보존. ip 모드 = LB IP 보임 (X-
 - [[network]] — Network hub
 - [[cloudfront]] — 앞단 CDN
 - [[route53]] — DNS
-- [[../security/security]] — WAF / ACM
+- [[security]] — WAF / ACM
 - [[vpc]] — subnet

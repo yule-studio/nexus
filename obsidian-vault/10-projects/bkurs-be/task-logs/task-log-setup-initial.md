@@ -68,7 +68,8 @@ FLUSH PRIVILEGES;
 main push 대기 사이에 local 로 진행 — push 시 한 번에 GitHub 반영.
 
 ```
-* feature/issue-1-setup (4 commit)
+* feature/issue-1-setup (5 commit)
+  ├─ e39c560 :whale: docker-compose.yml — MySQL 컨테이너 한 줄 가동 + README 옵션 A/B
   ├─ 777eb2e :memo: docs / CI / PR 템플릿 / editorconfig
   ├─ 39a2b09 :sparkles: HealthController + SecurityConfig + Flyway V1 + smoke test
   ├─ 4138a18 :wrench: application.yml 분리 (공통 + local profile) + DB 연결 설정
@@ -84,6 +85,7 @@ main (53c50f7 와 동일)
 | `:wrench:` application.yml | application.properties 삭제 + yml 2개 (공통 / local) + HikariCP + JPA validate + Flyway 활성화 + actuator 노출 |
 | `:sparkles:` Health + Security + Flyway + tests | HealthController GET /api/v1/health + SecurityConfig stateless permitAll + V1__init_schema.sql placeholder + 4 smoke 테스트 (context / dataSource / health / actuator) |
 | `:memo:` docs | AGENTS / CLAUDE / COMMIT / BRANCH / CHANGELOG / ci.yml (MySQL 9 service) / PR template / ISSUE template / .editorconfig |
+| `:whale:` docker-compose | mysql:9.0 + bkurs-local + mw user 자동 셋업 + healthcheck + named volume. README 의 빠른 시작 = 옵션 A (Docker) / B (로컬 설치) 분리 |
 
 ### 6. 테스트 통과 (local)
 

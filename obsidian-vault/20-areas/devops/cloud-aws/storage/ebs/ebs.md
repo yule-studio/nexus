@@ -17,7 +17,7 @@ tags:
 | --- | --- | --- | --- |
 | v.1.0.0 | 2026-05-14 | engineering-agent/tech-lead | EBS 개념 + 사용 |
 
-**[[storage|↑ Storage]]** · **[[../cloud-aws|↑↑ AWS]]**
+**[[storage|↑ Storage]]** · **[[cloud-aws|↑↑ AWS]]**
 
 ---
 
@@ -260,5 +260,5 @@ KMS key 삭제 = 볼륨 영구 손실. 신중.
 
 - [[storage]] — Storage hub
 - [[s3]] — Object 대안
-- [[../compute/ec2]] — EBS 의 user
-- [[../security/kms]] — 암호화
+- [[ec2]] — EBS 의 user
+- [[kms]] — 암호화

@@ -470,5 +470,5 @@ S3:
 - [[cloud-aws|↑ cloud-aws]]
 - [[s3]]
 - [[ebs]]
-- [[../compute/eks|↗ EKS]]
-- [[../compute/lambda|↗ Lambda]]
+- [[eks|↗ EKS]]
+- [[lambda|↗ Lambda]]

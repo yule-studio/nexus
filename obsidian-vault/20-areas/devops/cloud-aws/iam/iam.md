@@ -17,7 +17,7 @@ tags:
 | --- | --- | --- | --- |
 | v.1.0.0 | 2026-05-14 | engineering-agent/tech-lead | IAM 개념 + 정책 + 사용 |
 
-**[[security|↑ Security]]** · **[[../cloud-aws|↑↑ AWS]]**
+**[[security|↑ Security]]** · **[[cloud-aws|↑↑ AWS]]**
 
 ---
 
@@ -234,7 +234,7 @@ aws iam list-attached-role-policies --role-name myapp
 aws cloudtrail lookup-events --lookup-attributes AttributeKey=Username,AttributeValue=alice
 ```
 
-자세히 → [[../observability/cloudtrail]]
+자세히 → [[cloudtrail]]
 
 ---
 
@@ -297,5 +297,5 @@ STS token = 1-12 시간. 응용 자동 renewal (SDK 가 처리).
 - [[security]] — Security hub
 - [[kms]] — 암호화 키 권한
 - [[secrets-manager]] — secret + IAM
-- [[../observability/cloudtrail]] — audit
-- [[../../../computer-science/security-theory/security-theory|↗ 보안 이론]]
+- [[cloudtrail]] — audit
+- [[security-theory|↗ 보안 이론]]

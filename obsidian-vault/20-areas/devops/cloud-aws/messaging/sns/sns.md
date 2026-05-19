@@ -18,7 +18,7 @@ tags:
 | --- | --- | --- | --- |
 | v.1.0.0 | 2026-05-14 | engineering-agent/tech-lead | SNS 개념 + 사용 |
 
-**[[messaging|↑ Messaging]]** · **[[../cloud-aws|↑↑ AWS]]**
+**[[messaging|↑ Messaging]]** · **[[cloud-aws|↑↑ AWS]]**
 
 ---
 
@@ -276,5 +276,5 @@ SNS = region 단위. cross-region 은 외부 fanout.
 
 - [[messaging]] — Messaging hub
 - [[sqs]] — fan-out 의 받는 쪽
-- [[../compute/lambda]] — subscriber
-- [[../observability/cloudwatch]] — Alarm → SNS
+- [[lambda]] — subscriber
+- [[cloudwatch]] — Alarm → SNS

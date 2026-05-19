@@ -17,7 +17,7 @@ tags:
 | --- | --- | --- | --- |
 | v.1.0.0 | 2026-05-14 | engineering-agent/tech-lead | SQS 개념 + 사용 |
 
-**[[messaging|↑ Messaging]]** · **[[../cloud-aws|↑↑ AWS]]**
+**[[messaging|↑ Messaging]]** · **[[cloud-aws|↑↑ AWS]]**
 
 ---
 
@@ -269,5 +269,5 @@ DLQ 보고만 — 원인 분석 + replay.
 
 - [[messaging]] — Messaging hub
 - [[sns]] — fan-out
-- [[../compute/lambda]] — consumer
-- [[../../../computer-science/network/rpc-messaging/mqtt-amqp-kafka|↗ MQ 이론]]
+- [[lambda]] — consumer
+- [[mqtt-amqp-kafka|↗ MQ 이론]]

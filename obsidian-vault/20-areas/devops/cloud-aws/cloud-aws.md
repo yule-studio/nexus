@@ -16,6 +16,7 @@ tags:
 
 | 문서 버전 | 작성일 | 작성자 | 주요 변경 사항 |
 | --- | --- | --- | --- |
+| v.1.2.0 | 2026-05-19 | engineering-agent/tech-lead | 서비스별 subfolder 구조로 재편 (compute/ec2/ec2.md 형식) + iam 을 별도 top-level 카테고리로 승격 |
 | v.1.1.0 | 2026-05-14 | engineering-agent/tech-lead | 카테고리별 서비스 분리 hub |
 | v.1.0.0 | 2026-05-13 | engineering-agent/tech-lead | 최초 placeholder |
 
@@ -29,13 +30,16 @@ tags:
 
 | 카테고리 | 폴더 | 서비스 |
 | --- | --- | --- |
-| Compute | [[compute/compute]] | EC2 / ECS / Lambda |
-| Storage | [[storage/storage]] | S3 / EBS |
+| Compute | [[compute/compute]] | EC2 / ECS / EKS / Lambda / ECR / Auto Scaling |
+| Storage | [[storage/storage]] | S3 / EBS / EFS |
 | Database | [[database/database]] | RDS / Aurora / DynamoDB |
-| Network | [[network/network]] | VPC / ALB / CloudFront / Route 53 |
-| Security / IAM | [[security/security]] | IAM / KMS / Secrets Manager |
+| Network | [[network/network]] | VPC / ALB / NLB / CloudFront / Route 53 |
+| Security | [[security/security]] | KMS / Secrets Manager |
+| IAM | [[iam/iam]] | IAM / (STS / Identity Center / Organizations 예정) |
 | Messaging | [[messaging/messaging]] | SQS / SNS |
 | Observability | [[observability/observability]] | CloudWatch / CloudTrail |
+
+> 각 서비스는 서브폴더로 분리 (예: `compute/ecs/ecs.md`). 향후 서비스별 deep 노트 (운영 / 보안 / 비용 / 패턴) 누적.
 
 ---
 
@@ -79,7 +83,7 @@ aws configure sso              # 조직
 
 ## 4. IAM 기본
 
-자세히 → [[security/iam]]
+자세히 → [[iam/iam]]
 
 User / Role / Group / Policy. **Least Privilege**.
 

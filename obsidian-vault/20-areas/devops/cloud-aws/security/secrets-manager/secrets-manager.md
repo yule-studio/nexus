@@ -17,7 +17,7 @@ tags:
 | --- | --- | --- | --- |
 | v.1.0.0 | 2026-05-14 | engineering-agent/tech-lead | Secrets Manager 개념 + rotation |
 
-**[[security|↑ Security]]** · **[[../cloud-aws|↑↑ AWS]]**
+**[[security|↑ Security]]** · **[[cloud-aws|↑↑ AWS]]**
 
 ---
 
@@ -315,5 +315,5 @@ ECS:
 - [[security]] — Security hub
 - [[iam]] — Secret access
 - [[kms]] — 암호화
-- [[../database/rds]] — RDS rotation
-- [[../compute/lambda]] — rotation Lambda
+- [[rds]] — RDS rotation
+- [[lambda]] — rotation Lambda

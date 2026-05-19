@@ -18,7 +18,7 @@ tags:
 | --- | --- | --- | --- |
 | v.1.0.0 | 2026-05-14 | engineering-agent/tech-lead | KMS 개념 + envelope encryption |
 
-**[[security|↑ Security]]** · **[[../cloud-aws|↑↑ AWS]]**
+**[[security|↑ Security]]** · **[[cloud-aws|↑↑ AWS]]**
 
 ---
 
@@ -281,5 +281,5 @@ key 가 region 단위. multi-region key 또는 envelope 의 DEK 만 region 간.
 - [[security]] — Security hub
 - [[iam]] — KMS policy
 - [[secrets-manager]] — KMS 로 암호화
-- [[../storage/s3]] — SSE-KMS
-- [[../database/rds]] — at-rest 암호화
+- [[s3]] — SSE-KMS
+- [[rds]] — at-rest 암호화

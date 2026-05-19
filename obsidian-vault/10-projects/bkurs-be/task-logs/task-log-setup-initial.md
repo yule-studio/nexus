@@ -63,26 +63,64 @@ FLUSH PRIVILEGES;
 > `git commit -m ":tada: initial commit (README + .gitignore)"` 로 local commit.
 > `git push -u origin main` 은 **classifier 차단** — 사용자가 직접 한 줄 실행해야 함 (빈 repo 의 첫 push 라 PR review 불가).
 
+### 5. dev / feature 분기 + setup PR 작업 (local)
+
+main push 대기 사이에 local 로 진행 — push 시 한 번에 GitHub 반영.
+
+```
+* feature/issue-1-setup (4 commit)
+  ├─ 777eb2e :memo: docs / CI / PR 템플릿 / editorconfig
+  ├─ 39a2b09 :sparkles: HealthController + SecurityConfig + Flyway V1 + smoke test
+  ├─ 4138a18 :wrench: application.yml 분리 (공통 + local profile) + DB 연결 설정
+  └─ 53c50f7 :tada: initial commit — README + .gitignore + Spring Boot 3.5 base
+dev (53c50f7 와 동일)
+main (53c50f7 와 동일)
+```
+
+각 commit 의 변경:
+
+| commit | 핵심 변경 |
+|---|---|
+| `:wrench:` application.yml | application.properties 삭제 + yml 2개 (공통 / local) + HikariCP + JPA validate + Flyway 활성화 + actuator 노출 |
+| `:sparkles:` Health + Security + Flyway + tests | HealthController GET /api/v1/health + SecurityConfig stateless permitAll + V1__init_schema.sql placeholder + 4 smoke 테스트 (context / dataSource / health / actuator) |
+| `:memo:` docs | AGENTS / CLAUDE / COMMIT / BRANCH / CHANGELOG / ci.yml (MySQL 9 service) / PR template / ISSUE template / .editorconfig |
+
+### 6. 테스트 통과 (local)
+
+```
+$ ./gradlew test --no-daemon
+> Task :test
+BUILD SUCCESSFUL in 14s
+```
+
+4 테스트 (contextLoads / dataSourceCanConnect / healthEndpointReturnsOk / actuatorHealthIsUp) 모두 GREEN.
+
 # 다음 단계
 
-사용자 main push 후:
-1. dev branch 분기 + push
-2. issue #1 (B1 Setup) 생성
-3. feature/issue-1-setup 브랜치에서:
-   - `application.properties` → `application.yml` + `application-local.yml` 분리
-   - 패키지 구조 (`com.bkurs.common.health` 등)
-   - HealthController + DB 연결 smoke test
-   - CI (`.github/workflows/ci.yml`) — Gradle / JDK21 / check
-   - docs (AGENTS.md / CLAUDE.md / docs/COMMIT_CONVENTION.md / BRANCH_STRATEGY.md / CHANGELOG.md)
-   - Flyway V1__init.sql placeholder
-   - ISSUE/PR template (`.github/`)
-4. PR 생성 → CI → 머지
+사용자 한 줄 push 후 자동 진행:
+```
+cd ~/masterway-dev/bkurs-be && \
+  git push -u origin main && \
+  git push -u origin dev && \
+  git push -u origin feature/issue-1-setup
+```
 
-# 회수 / pitfall
+자동 후속:
+1. `gh issue create` — B1 Setup
+2. `gh pr create --base dev --label enhancement --assignee codwithyc`
+3. CI (MySQL 9 service + JDK21 + ./gradlew clean check) 통과 대기
+4. `gh pr merge --merge --delete-branch`
+5. `gh issue close`
+6. 본 task-log 진행 로그에 PR 머지 결과 추가
+7. [[../bkurs-be|hub]] 의 "진행 로그" 표 업데이트
 
-- **Spring Initializr 의 boot 버전 hardcode 금지** — metadata 먼저 조회 ([[../research/research-spring-3-4-vs-3-5-gradle-dsl]])
+# 회수 / pitfall (누적)
+
+- **Spring Initializr 의 boot 버전 hardcode 금지** — metadata 먼저 조회. vault [[../../../20-areas/backend/spring/java-spring/pitfalls/spring-initializr-version]]
 - **DB 이름에 hyphen 있으면 SQL 백틱 필수** — `\`bkurs-local\``
 - **빈 repo 의 첫 push 는 PR 불가** — classifier 우회 못 함, 사용자 직접 실행
+- **Spring Boot 3.5 + MySQL 9 = flyway-mysql 필수** — flyway-core 만으로는 `Unsupported Database` 에러. vault [[../../../20-areas/backend/spring/java-spring/database/flyway]]
+- **ddl-auto: validate 가 정답** — create / update 는 운영 schema drift. Flyway 와 충돌
 
 # 참고
 

@@ -10,6 +10,8 @@
 | 프로젝트 | 진입점 | 상태 |
 | --- | --- | --- |
 | **yule-studio-agent** | [[yule-studio-agent/yule-studio-agent]] | active (자동화 에이전트 본체) |
+| **bkurs-fe** | [[bkurs-fe/bkurs-fe]] | in-progress (B-KURS 프론트 — S2 시리즈 28 PR 완료, mock 단계) |
+| **bkurs-be** | [[bkurs-be/bkurs-be]] | in-progress (B-KURS 백엔드 — Spring Boot 3.5 / Java 21, 부트스트랩 중) |
 | homelab | [[homelab/]] | active |
 | spring-sandbox | [[spring-sandbox/]] | active (학습) |
 | yule-smoke-test | [[yule-smoke-test/]] | smoke 테스트 산출물 |

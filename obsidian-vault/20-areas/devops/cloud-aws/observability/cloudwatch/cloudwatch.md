@@ -18,7 +18,7 @@ tags:
 | --- | --- | --- | --- |
 | v.1.0.0 | 2026-05-14 | engineering-agent/tech-lead | CloudWatch 개념 + 사용 |
 
-**[[observability|↑ Observability]]** · **[[../cloud-aws|↑↑ AWS]]**
+**[[observability|↑ Observability]]** · **[[cloud-aws|↑↑ AWS]]**
 
 ---
 
@@ -328,6 +328,6 @@ ingest 가 가장 큰 비용. 응용 로그 — 디버그 logs filter / sample.
 
 - [[observability]] — Observability hub
 - [[cloudtrail]] — audit log
-- [[../compute/lambda]] — 자동 log
-- [[../messaging/sns]] — Alarm action
-- [[../../../computer-science/operating-system/linux/monitoring|↗ Linux 모니터링]]
+- [[lambda]] — 자동 log
+- [[sns]] — Alarm action
+- [[monitoring|↗ Linux 모니터링]]

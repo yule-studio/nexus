@@ -18,7 +18,7 @@ tags:
 | --- | --- | --- | --- |
 | v.1.0.0 | 2026-05-14 | engineering-agent/tech-lead | CloudTrail 개념 + 사용 |
 
-**[[observability|↑ Observability]]** · **[[../cloud-aws|↑↑ AWS]]**
+**[[observability|↑ Observability]]** · **[[cloud-aws|↑↑ AWS]]**
 
 ---
 
@@ -311,5 +311,5 @@ default = `WriteOnly`. 일부 보안 의미 있는 read 누락 (GetObject 등). 
 
 - [[observability]] — Observability hub
 - [[cloudwatch]] — metric + alarm
-- [[../security/iam]] — userIdentity
-- [[../security/security]] — 보안 종합
+- [[iam]] — userIdentity
+- [[security]] — 보안 종합

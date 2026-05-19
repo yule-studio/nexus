@@ -26,6 +26,7 @@ related:
 | v.1.0.0 | 2026-05-13 | engineering-agent/tech-lead | 최초 placeholder |
 | v.2.0.0 | 2026-05-19 | engineering-agent/tech-lead | placeholder → 본 hub: 영역 분류 / 학습 순서 / api-design 19 레시피 인덱스 / 공통 / DB / pitfalls / api-docs 연결 |
 | v.2.1.0 | 2026-05-19 | engineering-agent/tech-lead | observability/ (로그 + 메트릭 모니터링) 추가 — Logback / MDC / ELK + Actuator / Prometheus / Grafana / Discord Alert |
+| v.2.2.0 | 2026-05-20 | engineering-agent/tech-lead | bkurs-be 시작 회수 — database/flyway / pitfalls/spring-initializr-version 추가 |
 
 **[[../spring|↑ Spring framework hub]]** · **[[../../backend|↑ backend hub]]**
 
@@ -57,9 +58,9 @@ related:
 | [[api-design/api-design|api-design]] | api-design.md | 실전 API 구현 레시피 (19) — auth / 게시판 / 채팅 / 결제 / 검색 / 분산 / 운영 |
 | [[api-docs/api-docs|api-docs]] | api-docs.md | OpenAPI / Swagger / springdoc |
 | [[common/response-envelope|common]] | (디렉토리 직접) | 모든 레시피 공통 — response envelope / security config |
-| [[database/database|database]] | database.md | JPA / MyBatis / 두 ORM 공존 |
+| [[database/database|database]] | database.md | JPA / MyBatis / 두 ORM 공존 / [[database/flyway|Flyway 마이그레이션]] |
 | [[observability/observability|observability]] | observability.md | 로그 (Logback / MDC / ELK) + 메트릭 (Actuator / Prometheus / Grafana / Discord Alert) 처음부터 끝까지 |
-| [[pitfalls/pitfalls|pitfalls]] | pitfalls.md | n+1 / null safety / 자주 부딪히는 함정 |
+| [[pitfalls/pitfalls|pitfalls]] | pitfalls.md | n+1 / null safety / [[pitfalls/spring-initializr-version\|Initializr 버전]] / 자주 부딪히는 함정 |
 
 ---
 

@@ -17,7 +17,7 @@ tags:
 | --- | --- | --- | --- |
 | v.1.0.0 | 2026-05-14 | engineering-agent/tech-lead | EC2 개념 + 설치 + 사용 |
 
-**[[compute|↑ Compute]]** · **[[../cloud-aws|↑↑ AWS]]**
+**[[compute|↑ Compute]]** · **[[cloud-aws|↑↑ AWS]]**
 
 ---
 
@@ -46,10 +46,10 @@ tags:
 | --- | --- |
 | **Instance Type** | CPU/RAM 종류 (`t3.medium`, `c6i.large`, `r6i.xlarge`) |
 | **AMI** | Amazon Machine Image — OS + pre-install snapshot |
-| **EBS Volume** | 디스크 ([[../storage/ebs]]) |
+| **EBS Volume** | 디스크 ([[ebs]]) |
 | **Key Pair** | SSH key (생성 시 1회만 download) |
 | **Security Group** | 인스턴스 방화벽 (stateful) |
-| **VPC / Subnet** | 네트워크 ([[../network/vpc]]) |
+| **VPC / Subnet** | 네트워크 ([[vpc]]) |
 | **Elastic IP** | 고정 public IP |
 | **Auto Scaling Group (ASG)** | 부하 따라 수량 ↑↓ |
 | **Launch Template** | 인스턴스 생성 템플릿 |
@@ -157,7 +157,7 @@ systemctl enable --now docker
 
 ## 8. EBS — 디스크
 
-자세히 → [[../storage/ebs]]
+자세히 → [[ebs]]
 
 ```bash
 # 추가 볼륨 attach
@@ -278,6 +278,6 @@ Systems Manager Patch Manager — 자동.
 - [[compute]] — Compute hub
 - [[ecs]] — Container 대안
 - [[lambda]] — Serverless 대안
-- [[../storage/ebs]] — 디스크
-- [[../network/vpc]] — 네트워크
-- [[../security/iam]] — IAM role
+- [[ebs]] — 디스크
+- [[vpc]] — 네트워크
+- [[iam]] — IAM role

@@ -18,7 +18,7 @@ tags:
 | --- | --- | --- | --- |
 | v.1.0.0 | 2026-05-14 | engineering-agent/tech-lead | Lambda 개념 + 사용 |
 
-**[[compute|↑ Compute]]** · **[[../cloud-aws|↑↑ AWS]]**
+**[[compute|↑ Compute]]** · **[[cloud-aws|↑↑ AWS]]**
 
 ---
 
@@ -302,5 +302,5 @@ S3 / SNS 등 async = 자동 재시도. DLQ (Dead-Letter Queue) 설정 필수.
 
 - [[compute]] — Compute hub
 - [[ec2]] / [[ecs]] — 대안
-- [[../messaging/sqs]] — 자주 함께
-- [[../observability/cloudwatch]] — 로그
+- [[sqs]] — 자주 함께
+- [[cloudwatch]] — 로그

@@ -614,5 +614,5 @@ kubectl logs -n kube-system -l k8s-app=aws-node
 
 - [[cloud-aws|↑ cloud-aws]]
 - [[compute]]
-- [[../kubernetes/kubernetes|↗ k8s]]
-- [[../k3s/migration|↗ k3s ↔ EKS]]
+- [[kubernetes|↗ k8s]]
+- [[migration|↗ k3s ↔ EKS]]

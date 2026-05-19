@@ -482,5 +482,5 @@ pull-through cache:
 
 - [[cloud-aws|↑ cloud-aws]]
 - [[eks]]
-- [[../security-ops/supply-chain-security|↗ supply chain]]
-- [[../docker/buildkit-deep|↗ BuildKit]]
+- [[supply-chain-security|↗ supply chain]]
+- [[buildkit-deep|↗ BuildKit]]

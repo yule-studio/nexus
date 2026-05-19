@@ -454,5 +454,5 @@ desired=1, 24/7
 - [[cloud-aws|↑ cloud-aws]]
 - [[ec2]]
 - [[eks]]
-- [[../alb|↗ ALB]]
-- [[../../finops/right-sizing|↗ right-sizing]]
+- [[alb|↗ ALB]]
+- [[right-sizing|↗ right-sizing]]

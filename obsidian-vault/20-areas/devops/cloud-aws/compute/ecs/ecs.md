@@ -18,7 +18,7 @@ tags:
 | --- | --- | --- | --- |
 | v.1.0.0 | 2026-05-14 | engineering-agent/tech-lead | ECS 개념 + Fargate + 사용 |
 
-**[[compute|↑ Compute]]** · **[[../cloud-aws|↑↑ AWS]]**
+**[[compute|↑ Compute]]** · **[[cloud-aws|↑↑ AWS]]**
 
 ---
 
@@ -242,7 +242,7 @@ task 마다 최소 0.25 vCPU 과금. 묶을 수 있으면 1 task 안에.
 | 생태계 | AWS | CNCF 전체 |
 | 비용 | 작음 | EKS control plane $73/월 |
 
-EKS 자세히 → [[../../kubernetes/kubernetes]]
+EKS 자세히 → [[kubernetes]]
 
 ---
 
@@ -259,4 +259,4 @@ EKS 자세히 → [[../../kubernetes/kubernetes]]
 - [[compute]] — Compute hub
 - [[ec2]] — VM
 - [[lambda]] — Serverless
-- [[../../kubernetes/kubernetes]] — EKS
+- [[kubernetes]] — EKS

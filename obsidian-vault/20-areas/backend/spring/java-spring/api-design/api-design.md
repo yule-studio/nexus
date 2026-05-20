@@ -18,6 +18,7 @@ tags:
 | 문서 버전 | 작성일 | 작성자 | 주요 변경 사항 |
 | --- | --- | --- | --- |
 | v.1.0.0 | 2026-05-14 | engineering-agent/tech-lead | hub + Tier 1 (auth) 3개 레시피 — Java 21 + Spring Boot 3 |
+| v.1.1.0 | 2026-05-20 | engineering-agent/tech-lead | 공통 Response Envelope 표준 추가 (Tier 2 §3.2, source: codwithyc/spring-sandbox) |
 
 **[[../java-spring|↑ Java Spring]]** · **[[../../spring|↑ Spring hub]]**
 
@@ -249,6 +250,7 @@ public interface XQueryRepository {                 // 복잡 검색 / 보고서
 - **RBAC / 권한 모델** — Role + Permission + `@PreAuthorize`
 
 ### 3.2 횡단 관심사
+- **[[common-response-envelope|↗ 공통 Response Envelope]]** ✅ — `ApiEnvelope<T>` (success/data/error/meta) + `ApiError` (code/messageKey/fieldErrors) + GlobalExceptionHandler + RequestIdFilter. **모든 신규 프로젝트 표준.**
 - **페이지네이션·검색·표준 응답** — cursor vs offset / Specification / `@RestControllerAdvice`
 - **Rate limiting** — Bucket4j + Redis
 - **Audit log** — Hibernate Envers / `@CreatedBy`

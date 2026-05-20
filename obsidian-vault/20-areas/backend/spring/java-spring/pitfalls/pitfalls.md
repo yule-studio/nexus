@@ -17,6 +17,7 @@ tags:
 | 문서 버전 | 작성일 | 작성자 | 주요 변경 사항 |
 | --- | --- | --- | --- |
 | v.1.0.0 | 2026-05-14 | engineering-agent/tech-lead | hub — 8 카테고리 함정 카탈로그 |
+| v.1.1.0 | 2026-05-20 | engineering-agent/tech-lead | Spring Security 401 vs 403 함정 추가 (bkurs-be B2A 회수) |
 
 **[[../java-spring|↑ Java Spring]]**
 
@@ -38,6 +39,7 @@ tags:
 | 6 | **메모리 / 리소스** | [[resource-leaks]] | connection pool / file handle / OOM / GC. |
 | 7 | **시간 / 인코딩** | [[time-encoding]] | timezone / DST / utf8mb4 / 이모지 / NFC. |
 | 8 | **에러 / 로깅** | error-handling-pitfalls (예정) | 삼킨 예외 / 평문 로깅 / @Async exception. |
+| 9 | **인증 / 권한** | [[spring-security-401-vs-403]] | Spring Security default 가 인증 실패도 403 — REST API 면 401 명시 필수. |
 
 ---
 
@@ -101,6 +103,7 @@ tags:
 | [[resource-leaks]] | 🟡 |
 | [[time-encoding]] | 🟡 |
 | error-handling-pitfalls | 🟡 |
+| [[spring-security-401-vs-403]] | ✅ |
 
 ---
 

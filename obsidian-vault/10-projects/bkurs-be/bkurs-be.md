@@ -38,6 +38,7 @@ related:
 | v.1.15.0 | 2026-05-20 | engineering-agent/tech-lead | B7A 진행 로그 + 결정 1개 (Homework + Submission + 채점, stacked PR #32). 회귀 142/142. **B7 학습 콘텐츠 시리즈 시작.** |
 | v.1.16.0 | 2026-05-20 | engineering-agent/tech-lead | B7B 진행 로그 + 결정 1개 (PersonalStatement + Feedback + DRAFT/SUBMITTED, stacked PR #34). 회귀 152/152. |
 | v.1.17.0 | 2026-05-20 | engineering-agent/tech-lead | REFACTOR — AbstractIntegrationTest 추출 (16 테스트 cleanup 통합, **+122 / -1377 lines**), stacked PR #36. 회귀 152/152 유지. 회수 누적의 종결. |
+| v.1.18.0 | 2026-05-20 | engineering-agent/tech-lead | B7C 진행 로그 + 결정 1개 (Question type 통합 + Attempt upsert, stacked PR #38). 회귀 162/162. **REFACTOR 효과 확인 — cleanup 보강 0 곳.** |
 
 **[[../projects|↑ 10-projects]]** · **짝 프로젝트 [[../bkurs-fe/bkurs-fe]]**
 
@@ -109,7 +110,7 @@ bkurs-fe 의 S2A-S2N 시리즈 패턴을 그대로 따른다. 한 PR = 한 issue
 | **B6C** (강사 권한 매트릭스) ✅ 로컬 132/132 GREEN | `Course.updateLimited` (description 만) + `CourseService.updateByTeacher` (write 트랜잭션) + `StudentProfileService.getStudentOnly` + 3 endpoint (OWNER 출결 / TEACHER course PATCH / TEACHER 학생 프로필) + DTO 1. PR #30 (stacked, **B6 시리즈 완결**) |
 | **B7A** (Homework + Submission) ✅ 로컬 142/142 GREEN | `Homework` (course_id + assigned_by + due_at) + `HomeworkSubmission` (uk upsert + grade 0-100 + graded_by audit) + V14 + service 2 + 9 endpoint (TEACHER 6 + STUDENT 3) + DTO 6 + 예외 3. PR #32 (stacked, **B7 학습 콘텐츠 시리즈 시작**) |
 | **B7B** (PersonalStatement + Feedback) ✅ 로컬 152/152 GREEN | `PersonalStatement` (DRAFT/SUBMITTED + invariant) + `StatementFeedback` (강사 댓글 + audit) + V15 + service 2 + 9 endpoint (학생 5 + 강사 4) + DTO 5 + 예외 2. PR #34 (stacked) |
-| B7C (예상질문 / 기출) | ExpectedQuestion + PastQuestion — 강사/학원장 출제 + 학생 풀이 |
+| **B7C** (Question 통합 + Attempt) ✅ 로컬 162/162 GREEN | `Question` (type EXPECTED/PAST + year/subject) + `QuestionAttempt` (uk + score 0-100) + V16 + service 2 + 9 endpoint (강사 6 + 학생 3) + DTO 6 + 예외 3. PR #38 (stacked). REFACTOR 효과 — cleanup 보강 0 곳. |
 | B7D (모의면접) | MockInterview — 학생 응답 + 강사 평가 |
 | B7E (생기부) | StudentRecord — 학원/강사 평가 누적 + PDF |
 | B7F (토론 / 수행평가 / 독서 / 시뮬레이션) | 추가 학습 도메인 |

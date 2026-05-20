@@ -139,6 +139,7 @@ export function useUpdateConceptProgress() {
 - [[architecture-async-mq-batch]] — bkurs-be 의 비동기 / MQ / 배치 구조
 - [[spring-response-policy]] — ApiEnvelope 표준 자체
 - [[bkurs-fe]] — bkurs-fe 프로젝트 메인 허브
+- [[decisions/decision-hook-convention|Hook 디렉터리 컨벤션]] — page-local vs lib/hooks 결정 (Cycle 1)
 
 ## 5. 참고
 

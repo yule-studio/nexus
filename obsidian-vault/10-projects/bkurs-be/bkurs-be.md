@@ -52,6 +52,7 @@ related:
 | v.1.29.0 | 2026-05-20 | engineering-agent/tech-lead | B16 진행 로그 + 결정 1개 (학원장 dashboard 학원 9 지표 rollup + 1 endpoint, stacked PR #60). 회귀 268/268. |
 | v.1.30.0 | 2026-05-20 | engineering-agent/tech-lead | B12 진행 로그 + 결정 1개 (bridge 자동 period 한국 학년도, stacked PR #62). 회귀 276/276. |
 | v.1.31.0 | 2026-05-20 | engineering-agent/tech-lead | Phase A-1 Secret cleanup PR (#64) — docker-compose / application-local env var 화 + application-prod.yml + .env.example + CI throwaway. vault 4 docs (architecture / response-envelope / accounts / fe-be-gap) + 2 decisions (secret-mgmt / academic-period). |
+| v.1.32.0 | 2026-05-20 | engineering-agent/tech-lead | Phase A-2 Common Response Envelope foundation PR (#66) — common.api/error/enums/exception/handler/web 19 파일 + ApiEnvelopeTest 8 unit. 신규 endpoint (B17~B21) 부터 강제, 기존 153 마이그레이션은 별도 PR. |
 
 **[[../projects|↑ 10-projects]]** · **짝 프로젝트 [[../bkurs-fe/bkurs-fe]]**
 

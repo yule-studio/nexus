@@ -60,6 +60,8 @@ PR 28개 (S2A → S2N) 모두 머지, issue 모두 close.
 ## 5. 다음 작업 후보
 
 1. **백엔드 API 연동** — [[../bkurs-be/bkurs-be]] 진행 따라 mock → axios hook 으로 한 줄씩 교체
+   - **S1 DONE (#60)**: [[architecture-api-foundation|Supabase → bkurs-be API 전환 기반]] — envelope / apiClient / conceptApi
+   - S2/S3 후속: 화면별 hook 격리 + 실 호출 swap
 2. Supabase wrapper 제거 + docstring 표현 일괄 정정
 3. 번들 lazy split (route-level)
 4. unit test (Vitest) / E2E (Playwright)

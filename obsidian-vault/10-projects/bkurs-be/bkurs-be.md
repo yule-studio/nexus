@@ -33,6 +33,7 @@ related:
 | v.1.10.0 | 2026-05-20 | engineering-agent/tech-lead | B4D 진행 로그 + 결정 1개 (학원장 이관 양측 confirm + audit, stacked PR #22). 회귀 92/92. **B4 시리즈 완결.** |
 | v.1.11.0 | 2026-05-20 | engineering-agent/tech-lead | B5 진행 로그 + 결정 1개 (학생 프로필 1:1 + 학원장 조회, stacked PR #24). 회귀 102/102. **B5 시리즈 시작.** |
 | v.1.12.0 | 2026-05-20 | engineering-agent/tech-lead | B6A 진행 로그 + 결정 1개 (Course + Enrollment + 강사 배정, stacked PR #26). 회귀 112/112. **B6 시리즈 시작.** |
+| v.1.13.0 | 2026-05-20 | engineering-agent/tech-lead | B6B 진행 로그 + 결정 1개 (CourseSession + Attendance upsert, stacked PR #28). 회귀 122/122. |
 
 **[[../projects|↑ 10-projects]]** · **짝 프로젝트 [[../bkurs-fe/bkurs-fe]]**
 
@@ -100,7 +101,7 @@ bkurs-fe 의 S2A-S2N 시리즈 패턴을 그대로 따른다. 한 PR = 한 issue
 | **B4D** (학원장 이관 + audit) ✅ 로컬 92/92 GREEN | `AcademyOwnerTransfer` (PENDING/CONFIRMED/REJECTED/CANCELLED + actor invariant) + V10 + `Academy.transferTo` + `OwnerTransferService` (양측 confirm + 1인 1학원 유지) + 6 endpoint (FROM 3 + TO 3) + DTO 2 + 예외 6. PR #22 (stacked, **B4 시리즈 완결**) |
 | **B5** (학생 프로필) ✅ 로컬 102/102 GREEN | `StudentProfile` (account 1:1 + grade INT 1-3 + schoolName + birthDate + parentPhone) + V11 + service (upsert/patch/get + 학원장 ownership) + 4 endpoint (STUDENT 3 + OWNER 1) + DTO 3 + 예외 3. PR #24 (stacked, **B5 시리즈 시작**) |
 | **B6A** (Course + Enrollment) ✅ 로컬 112/112 GREEN | `Course` (academy_id + teacher_assignment_id nullable + maxStudents) + `CourseEnrollment` (ACTIVE/DROPPED) + V12 + service 2 + 9 endpoint (OWNER 5 + TEACHER 2 + STUDENT 3) + DTO 4 + 예외 5. PR #26 (stacked, **B6 시리즈 시작**) |
-| B6B (수업 일정 + 출결) | CourseSession (시간표) + Attendance (출결 상태) + 강사 입력 |
+| **B6B** (CourseSession + Attendance) ✅ 로컬 122/122 GREEN | `CourseSession` (start/end + room + invariant end > start) + `Attendance` (PRESENT/ABSENT/LATE/EXCUSED + uk upsert + recorded_by audit) + V13 + service 2 + 9 endpoint (OWNER 4 + TEACHER 3 + STUDENT 2) + DTO 5 + 예외 2. PR #28 (stacked) |
 | B6C (강사 권한 매트릭스) | 강사가 본인 수업 출결 / 학생 데이터 수정 권한 정밀화 |
 | B7 (Roadmap) | 학년 × 분기 × 미션 + 학생별 진행 상태 |
 | B6+ | inroad-high 의 도메인 (생기부 / 자소서 / 예상질문 / 기출 / 모의면접 / 시뮬 / 토론 / 수행평가 / 독서 / 숙제 / 학사관리 ...) 별 endpoint |
@@ -134,6 +135,7 @@ bkurs-fe 의 mock 타입 (StudentEssay, MyHomework, PastQuestion, ...) 이 API �
 | 2026-05-20 | B4D #22 stacked PR | issue #21 → feature/issue-21-b4d-owner-transfer (4 commit) base=B4C → AcademyOwnerTransfer + OwnerTransferStatus enum + V10 + Academy.transferTo + OwnerTransferService (양측 confirm + 1인 1학원 유지) + 6 endpoint (FROM 3 + TO 3) + DTO 2 + 예외 6 + OwnerTransferApiTest 10. **92/92 GREEN**. **B4 시리즈 완결.** |
 | 2026-05-20 | B5 #24 stacked PR | issue #23 → feature/issue-23-b5-student-profile (4 commit) base=B4D → StudentProfile entity (account 1:1) + V11 + StudentProfileService (upsert/patch/get + 학원장 ownership) + 4 endpoint (STUDENT 3 + OWNER 1) + DTO 3 + 예외 3 + StudentProfileApiTest 10. **102/102 GREEN**. **B5 시리즈 시작.** 회수: grade TINYINT → INT (JPA Integer schema validate 충돌). |
 | 2026-05-20 | B6A #26 stacked PR | issue #25 → feature/issue-25-b6a-course-enrollment (4 commit) base=B5 → Course + CourseEnrollment + V12 + CourseService (OWNER CRUD + 강사 검증) + EnrollmentService (학생 enroll/drop + max/중복) + 9 endpoint (OWNER 5 + TEACHER 2 + STUDENT 3) + DTO 4 + 예외 5 + CourseApiTest 10. **112/112 GREEN**. **B6 시리즈 시작.** |
+| 2026-05-20 | B6B #28 stacked PR | issue #27 → feature/issue-27-b6b-session-attendance (4 commit) base=B6A → CourseSession + Attendance + V13 + AttendanceStatus enum + SessionService + AttendanceService (TEACHER/OWNER upsert + recorded_by audit) + 9 endpoint (OWNER 4 + TEACHER 3 + STUDENT 2) + DTO 5 + 예외 2 + SessionAttendanceApiTest 10 + 10 테스트 cleanup 보강. **122/122 GREEN**. |
 
 ## 7. cross-link
 

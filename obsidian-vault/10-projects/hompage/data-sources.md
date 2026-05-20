@@ -66,7 +66,7 @@ related:
 - 모든 topics
 - stars, forks, created/updated/pushed 날짜
 - README.md → GitHub `/markdown` API 로 HTML 렌더링해서 저장
-- `homepage` 필드 → Live 배지 결정
+- `homepage` 필드 → **Live 배지 결정** (설정 방법은 [[how-to-edit#4-A-프로젝트를-LIVE-로-표시하기]])
 
 #### 새 repo 가 자동 등장하려면
 1. public repo 만들기

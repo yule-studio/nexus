@@ -44,6 +44,7 @@ GitHub repo / Tistory blog 데이터를 자동으로 끌어와서 보여주는 *
 | 자격증·수상 목록 바꾸기 | [[how-to-edit#3-자격증-수상-홈랩-목록-바꾸기]] → `src/data/certs.ts` / `awards.ts` |
 | Homelab 호스트·서비스 목록 | [[how-to-edit#3-자격증-수상-홈랩-목록-바꾸기]] → `src/data/homelab.ts` |
 | GitHub 가서 보여줄 repo 추가 | (자동) GitHub 에 push 만 하면 됨, 따로 작업 없음 — [[data-sources#projects]] |
+| 프로젝트에 **LIVE 배지** 붙이기 | repo About → Website 필드 한 줄, 코드 수정 0 — [[how-to-edit#4-A-프로젝트를-LIVE-로-표시하기]] |
 | 블로그 글 갱신 | (자동) Tistory 에 글 올리면 RSS 통해서 따라옴 — [[data-sources#blog]] |
 | 색 / 폰트 바꾸기 | [[how-to-edit#5-색이나-폰트-바꾸기]] → `src/styles/tokens.css` |
 | 페이지 메뉴 (목차) 항목 추가 | [[how-to-edit#6-목차-항목-추가]] → `src/components/Navigation/Navigation.tsx` |

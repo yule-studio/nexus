@@ -224,6 +224,76 @@ export const events = [
 
 ---
 
+## 4-A. 프로젝트를 LIVE 로 표시하기
+
+Projects 페이지의 카드는 두 가지 상태:
+- **LIVE 배지 (강조 테두리)** — 실제 배포된 사이트가 있는 repo
+- **상태 라벨 (active / shipped / archived 등)** — 그 외
+
+이 차이는 **GitHub repo 의 "Website" (homepage) 필드 한 줄로 결정** 됩니다. 코드 수정 0줄.
+
+### 방법 1 — GitHub UI 에서 (가장 쉬움)
+1. https://github.com/{owner}/{repo} 접속 (예: `https://github.com/yule-studio/hompage`)
+2. 우측 상단 **About** 박스 옆의 ⚙️ (톱니바퀴) 아이콘 클릭
+3. **Website** 필드에 배포 URL 입력
+   - 예: `https://yule-studio.github.io/hompage/`
+   - 예: `https://my-app.vercel.app`
+   - 예: `https://example.com`
+4. **Save changes** 클릭
+5. 다음 hompage deploy (약 5분) 후 사이트의 Projects 페이지에서 그 카드에 **LIVE** 배지 + 청록 테두리 등장 + footer 에 `↗ live` 링크
+
+### 방법 2 — gh CLI 로 (여러 repo 한 번에)
+```bash
+gh repo edit yule-studio/hompage --homepage "https://yule-studio.github.io/hompage/"
+gh repo edit yule-studio/yule-studio-agent --homepage "https://yule-agent.example.com"
+```
+
+### LIVE 해제 (배포 내렸을 때)
+**Website** 필드를 비우면 (또는 ⚙️ 에서 **Save** 후 빈 값) 다음 deploy 부터 LIVE 배지 사라지고 일반 상태로 돌아감.
+```bash
+gh repo edit yule-studio/some-repo --homepage ""
+```
+
+### 어떤 기준으로 LIVE/Code-only 가 결정되나
+`scripts/fetch-github-projects.mjs` 에서 GitHub API 의 `repo.homepage` 필드를 받아 다음과 같이 처리:
+
+```javascript
+const homepageUrl = typeof repo.homepage === "string" && repo.homepage.trim()
+  ? repo.homepage.trim()
+  : undefined;
+
+// status 자동 결정:
+//   archived  → "archived"
+//   homepage 있음 → "shipped"
+//   그 외      → "active"
+```
+
+그리고 사이트 측 (`src/pages/Projects/Projects.tsx`) 에서:
+```typescript
+function isLive(p: Project): boolean {
+  return Boolean(p.homepageUrl);
+}
+```
+→ `homepage` 가 비어 있으면 Code-only, 있으면 LIVE.
+
+### 빠른 확인 — 현재 LIVE 인 repo 보기
+```bash
+gh repo list yule-studio --json name,homepageUrl --jq '.[] | select(.homepageUrl != "") | .name'
+gh repo list codwithyc  --json name,homepageUrl --jq '.[] | select(.homepageUrl != "") | .name'
+```
+
+### 일반적인 패턴
+| repo 종류 | Website 에 넣을 값 | 결과 |
+| --- | --- | --- |
+| GitHub Pages 로 배포한 정적 사이트 | `https://{owner}.github.io/{repo}/` | LIVE |
+| Vercel 배포한 Next.js / React | `https://{project}.vercel.app` | LIVE |
+| Netlify 배포 | `https://{project}.netlify.app` | LIVE |
+| 자체 도메인 / 자가 호스트 | `https://example.com` | LIVE |
+| 학습용 / 샘플 / 라이브러리 / 백엔드만 (UI 없음) | (비워둠) | Code-only |
+| README 자기 자신 (예: `codwithyc/codwithyc` 프로필 repo) | (비워둠 권장) | Code-only |
+
+---
+
 ## 5. 색이나 폰트 바꾸기
 
 **파일**: `src/styles/tokens.css`

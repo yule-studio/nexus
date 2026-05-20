@@ -18,6 +18,35 @@ home_hub: bkurs-be
 > production 운영을 위해 가입 / 발급 받아야 할 SaaS 계정 + 환경변수 목록.
 > 각 항목은 **누가 가입 / 어떤 키 / BE 어디서 사용 / 비용 예상** 4 정보.
 
+## 0. Supabase → Java Spring 마이그레이션 매핑
+
+bkurs-fe 가 현재 `@supabase/supabase-js` 의존 (13 곳 import). Supabase 의 4 가지 BaaS 기능을 bkurs-be (Java Spring) + 외부 SaaS 조합으로 치환.
+
+| Supabase 기능 | 현재 FE 사용 | Java Spring 치환 | 필요 외부 계정 |
+|---|---|---|---|
+| **Auth** (`supabase.auth.signInWithPassword`) | `admin/_pages/login/`, `master/_pages/login/` | bkurs-be **자체 JWT** (B2A 구현 완료) — Supabase 의존성 제거 | 없음 |
+| **Storage** (`supabase.storage.from(...).upload`) | 영상/음성/로고/PDF 7곳 | bkurs-be **FileStorageService** (B17) + **AWS S3** presigned URL | **AWS** (S3 + IAM) |
+| **Database** (Postgres + REST 자동) | 현재 mock 단계 | bkurs-be **REST API** (153 endpoint) + **MySQL** | **AWS RDS** |
+| **Realtime** (postgres_changes / WS) | `pending/Pending.tsx` polling | bkurs-be **WebSocket** 또는 SSE (B42 후속) | 없음 |
+
+### 환경 변수 치환
+
+| FE 현재 | FE 변경 후 |
+|---|---|
+| `VITE_SUPABASE_URL` | (삭제) |
+| `VITE_SUPABASE_ANON_KEY` | (삭제) |
+| `VITE_API_BASE_URL=/api` | `VITE_API_BASE_URL=https://api.bkurs.com` |
+
+### 마이그레이션 절차 (FE 측 별도 PR)
+
+1. `supabase.auth.*` → bkurs-be `/api/v1/auth/*` REST + `Authorization: Bearer`
+2. `supabase.storage.upload` → `POST /api/v1/files/upload-url` (B17) → presigned PUT → BE 도메인 endpoint 에 finalUrl 저장 (2단계)
+3. `supabase.storage.getPublicUrl` → BE download URL endpoint
+4. `supabase.channel().on(...)` → BE WebSocket `/ws` subscribe
+5. `@supabase/supabase-js` package + `src/lib/supabase.ts` 제거
+
+---
+
 ## 1. Tier P0 — production 띄우기 위한 필수
 
 ### 1.1 AWS 계정 (또는 GCP)

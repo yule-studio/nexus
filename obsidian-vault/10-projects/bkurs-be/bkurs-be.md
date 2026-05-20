@@ -49,6 +49,7 @@ related:
 | v.1.26.0 | 2026-05-20 | engineering-agent/tech-lead | B10 진행 로그 + 결정 1개 (통합 검색 5 도메인 LIKE aggregator + 권한 3 endpoint, stacked PR #54). 회귀 242/242. |
 | v.1.27.0 | 2026-05-20 | engineering-agent/tech-lead | B11 진행 로그 + 결정 1개 (학생 통계 7 영역 aggregation + 권한 3 endpoint, stacked PR #56). 회귀 252/252. |
 | v.1.28.0 | 2026-05-20 | engineering-agent/tech-lead | B13 진행 로그 + 결정 1개 (강사 dashboard 수업별 5 지표 + 1 endpoint, stacked PR #58). 회귀 260/260. |
+| v.1.29.0 | 2026-05-20 | engineering-agent/tech-lead | B16 진행 로그 + 결정 1개 (학원장 dashboard 학원 9 지표 rollup + 1 endpoint, stacked PR #60). 회귀 268/268. |
 
 **[[../projects|↑ 10-projects]]** · **짝 프로젝트 [[../bkurs-fe/bkurs-fe]]**
 
@@ -131,6 +132,7 @@ bkurs-fe 의 S2A-S2N 시리즈 패턴을 그대로 따른다. 한 PR = 한 issue
 | **B10** (통합 검색) ✅ 로컬 242/242 GREEN | `SearchResultType` enum 5종 + `SearchResult` record (snippet 100자) + 5 repo ContainingIgnoreCase + `SearchService` aggregator (5 도메인 + 권한 3) + 3 endpoint (TEACHER/STUDENT/OWNER) + 예외 1. LIKE '%q%' + limit 50 (후속 FULLTEXT + pagination). PR #54 (stacked) |
 | **B11** (학생 통계 7 영역) ✅ 로컬 252/252 GREEN | 7 sub-record (Attendance/Homework/Performance/Discussion/Reading/Simulation/Record) + `StudentStatsView` 통합 + `StatsService` aggregator (findAll + Java reduce, 권한 3 method) + 3 endpoint + 예외 1. PR #56 (stacked). 후속 @Query COUNT 최적화. |
 | **B13** (강사 dashboard 수업별) ✅ 로컬 260/260 GREEN | `TeacherDashboardView` + `CourseDashboard` (수업별 5 지표) + `TeacherDashboardService` (본인 배정 수업 loop) + 1 endpoint. 5 지표: enrolledCount (ACTIVE만) / pendingHomeworkCount / pendingPECount / sessionCount / avgAttendanceRate. PR #58 (stacked) |
+| **B16** (학원장 dashboard 학원 rollup) ✅ 로컬 268/268 GREEN | `AcademyDashboardView` (9 지표 + empty factory) + `AcademyDashboardService` (학원 전체 집계) + 1 endpoint (OWNER). 9 지표: activeStudent/activeTeacher/course/session/enrollment/attendance/gradedHomework/gradedPE/record counts. PR #60 (stacked) |
 | B7F (토론 / 수행평가 / 독서 / 시뮬레이션) | 추가 학습 도메인 |
 | B6+ | inroad-high 의 도메인 (생기부 / 자소서 / 예상질문 / 기출 / 모의면접 / 시뮬 / 토론 / 수행평가 / 독서 / 숙제 / 학사관리 ...) 별 endpoint |
 
@@ -179,6 +181,7 @@ bkurs-fe 의 mock 타입 (StudentEssay, MyHomework, PastQuestion, ...) 이 API �
 | 2026-05-20 | B10 #54 stacked PR | issue #53 → feature/issue-53-b10-search (4 commit) base=B9 → SearchResultType enum 5종 + SearchResult record (snippet 100자) + 5 repo (Record/Reading/Discussion/PE/Sim) findBy...ContainingIgnoreCase + SearchService aggregator (5 도메인 호출 + createdAt desc + limit 50) + 3 endpoint (TEACHER `/teachers/me/students/{sid}/search`, STUDENT `/students/me/search`, OWNER `/academies/me/students/{sid}/search`) + 예외 1 + SearchApiTest 10. **242/242 GREEN**. LIKE '%q%' PoC — 후속 FULLTEXT + ngram + pagination 검토. |
 | 2026-05-20 | B11 #56 stacked PR | issue #55 → feature/issue-55-b11-student-stats (4 commit) base=B10 → 7 sub-record DTO (Attendance/Homework/Performance/Discussion/Reading/Simulation/Record) + 통합 StudentStatsView + StatsService aggregator (7 영역 findAll + Java reduce + 권한 3 method) + 3 endpoint (STUDENT `/students/me/stats`, TEACHER `/teachers/me/students/{sid}/stats`, OWNER `/academies/me/students/{sid}/stats`) + 예외 1 + StudentStatsApiTest 10. **252/252 GREEN**. attendance rate / homework·PE avg / discussion avg / reading avgRecommended / simulation avgFeasibility / record byCategory (수동 + bridge 합산). |
 | 2026-05-20 | B13 #58 stacked PR | issue #57 → feature/issue-57-b13-teacher-dashboard (3 commit) base=B11 → TeacherDashboardView + CourseDashboard 5 지표 (enrolledCount ACTIVE / pendingHomeworkCount / pendingPECount / sessionCount / avgAttendanceRate) + TeacherDashboardService (본인 배정 수업 loop + Java reduce) + 1 endpoint (TEACHER `/teachers/me/dashboard`) + TeacherDashboardApiTest 8. **260/260 GREEN**. 수업 1:N 폭 (학생 1:1 깊이는 B11). DTO+service 한 commit (분리 인위적 — 3 commit 패턴). |
+| 2026-05-20 | B16 #60 stacked PR | issue #59 → feature/issue-59-b16-owner-dashboard (3 commit) base=B13 → AcademyDashboardView 9 지표 + AcademyDashboardService (학원 전체 rollup, AcademyManagementService.getMine 검증) + 1 endpoint (OWNER `/academies/me/dashboard`) + AcademyDashboardApiTest 8. **268/268 GREEN**. 학원 단위 — 학생 1:1 (B11) / 수업 1:N (B13) 와 분리. |
 
 ## 7. cross-link
 

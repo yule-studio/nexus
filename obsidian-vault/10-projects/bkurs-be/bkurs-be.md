@@ -43,6 +43,7 @@ related:
 | v.1.20.0 | 2026-05-20 | engineering-agent/tech-lead | B7E 진행 로그 + 결정 1개 (StudentRecord 8 카테고리 + 강사 입력 + 학생/학원장 조회, stacked PR #42). 회귀 182/182. |
 | v.1.21.0 | 2026-05-20 | engineering-agent/tech-lead | B7F 진행 로그 + 결정 1개 (Discussion topic+post upsert + 협업 평가, stacked PR #44). 회귀 192/192. |
 | v.1.22.0 | 2026-05-20 | engineering-agent/tech-lead | B7G 진행 로그 + 결정 1개 (ReadingNote 학생 owner + 강사 feedback upsert, stacked PR #46). 회귀 202/202. |
+| v.1.23.0 | 2026-05-20 | engineering-agent/tech-lead | B7H 진행 로그 + 결정 1개 (PerformanceEvaluation 4 카테고리 + 재제출 채점 무효화, stacked PR #48). 회귀 212/212. |
 
 **[[../projects|↑ 10-projects]]** · **짝 프로젝트 [[../bkurs-fe/bkurs-fe]]**
 
@@ -119,6 +120,7 @@ bkurs-fe 의 S2A-S2N 시리즈 패턴을 그대로 따른다. 한 PR = 한 issue
 | **B7E** (StudentRecord 생기부 8 카테고리) ✅ 로컬 182/182 GREEN | `RecordCategory` enum 8종 (AWARD/AUTONOMY/CLUB/CAREER/SERVICE/SUBJECT/BEHAVIOR/READING — 학종 표준) + `StudentRecordEntry` (course nullable + author audit) + V18 + service 1 (ownership 2계층) + 6 endpoint (TEACHER 4 + STUDENT 1 + OWNER 1) + DTO 3 + 예외 2. PR #42 (stacked) |
 | **B7F** (Discussion 토론 + 평가) ✅ 로컬 192/192 GREEN | `DiscussionTopic` (DEBATE/SEMINAR/QNA) + `DiscussionPost` (FOR/AGAINST/NEUTRAL + uk topic+account upsert + evaluate 0-100) + V19 + service 1 (협업 평가) + 8 endpoint (TEACHER 6 + STUDENT 2) + DTO 6 + 예외 3 + CourseEnrollmentRepository.findByAccountIdAndStatus 추가. PR #44 (stacked) |
 | **B7G** (ReadingNote 독서 + feedback) ✅ 로컬 202/202 GREEN | `ReadingNote` (학생 owner, academy 격리 없음) + `ReadingFeedback` (uk note+teacher upsert + recommended_score 0-5) + V20 + service 1 + 7 endpoint (STUDENT 5 + TEACHER 2) + DTO 5 + 예외 2. PR #46 (stacked) |
+| **B7H** (PerformanceEvaluation 수행평가 + 채점) ✅ 로컬 212/212 GREEN | `PerformanceCategory` enum 4종 (WRITTEN/PROJECT/PRESENTATION/EXPERIMENT) + `PerformanceEvaluation` (max_score 1-1000) + `PerformanceSubmission` (uk + resubmit 채점 무효화 + grade audit) + V21 + service 1 (협업 채점) + 8 endpoint (TEACHER 6 + STUDENT 2) + DTO 6 + 예외 3. PR #48 (stacked) |
 | B7F (토론 / 수행평가 / 독서 / 시뮬레이션) | 추가 학습 도메인 |
 | B6+ | inroad-high 의 도메인 (생기부 / 자소서 / 예상질문 / 기출 / 모의면접 / 시뮬 / 토론 / 수행평가 / 독서 / 숙제 / 학사관리 ...) 별 endpoint |
 
@@ -161,6 +163,7 @@ bkurs-fe 의 mock 타입 (StudentEssay, MyHomework, PastQuestion, ...) 이 API �
 | 2026-05-20 | B7E #42 stacked PR | issue #41 → feature/issue-41-b7e-student-record (5 commit incl fixup) base=B7D → RecordCategory enum 8종 + StudentRecordEntry + V18 + StudentRecordService (ownership 2계층 — courseService.listByTeacher + enrollment ACTIVE / membership ACTIVE) + 6 endpoint (TEACHER 4 + STUDENT 1 + OWNER 1) + DTO 3 + 예외 2 + StudentRecordApiTest 10. **182/182 GREEN**. STUDENT 거부 케이스는 Spring 6 환경 차이로 401/403 둘 다 허용. |
 | 2026-05-20 | B7F #44 stacked PR | issue #43 → feature/issue-43-b7f-discussion (4 commit) base=B7E → DiscussionTopic + DiscussionPost (uk topic+account upsert + evaluate 0-100) + V19 + DiscussionService (강사 topic CRUD + 학생 post upsert + 협업 평가) + CourseEnrollmentRepository.findByAccountIdAndStatus 추가 + 8 endpoint (TEACHER 6 + STUDENT 2) + DTO 6 + 예외 3 + DiscussionApiTest 10. **192/192 GREEN**. peer reply 는 후속 PR. |
 | 2026-05-20 | B7G #46 stacked PR | issue #45 → feature/issue-45-b7g-reading-note (4 commit) base=B7F → ReadingNote (학생 owner, academy 격리 없음) + ReadingFeedback (uk note+teacher upsert + recommended_score 0-5) + V20 + ReadingService (학생 CRUD + 강사 enrolled 학생 조회/feedback) + 7 endpoint (STUDENT 5 + TEACHER 2) + DTO 5 + 예외 2 + ReadingNoteApiTest 10. **202/202 GREEN**. 생기부 (B7E) READING 카테고리 원천 자료. |
+| 2026-05-20 | B7H #48 stacked PR | issue #47 → feature/issue-47-b7h-performance-evaluation (4 commit) base=B7G → PerformanceCategory enum 4종 + PerformanceEvaluation (max_score 1-1000 invariant) + PerformanceSubmission (uk eval+student upsert + resubmit 채점 무효화) + V21 + PerformanceEvaluationService (강사 CRUD + 학생 upsert + 협업 채점) + 8 endpoint (TEACHER 6 + STUDENT 2) + DTO 6 + 예외 3 + PerformanceEvaluationApiTest 10. **212/212 GREEN**. Homework 와 의미 분리 — 공식 평가 (생기부 SUBJECT 후속 연계). |
 
 ## 7. cross-link
 

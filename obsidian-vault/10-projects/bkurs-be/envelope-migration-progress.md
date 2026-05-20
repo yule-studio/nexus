@@ -23,6 +23,7 @@ bkurs-be 전체 endpoint (~153) 를 `ApiEnvelope<T> {success, data, error, meta}
 | **1-A** | auth (AuthController + AuthExceptionHandler) | [#101](https://github.com/seum-running/bkurs-be/pull/101) | **DONE** |
 | **1-B** | student-profile (Student + Owner) | [#103](https://github.com/seum-running/bkurs-be/pull/103) | **DONE** |
 | **1-C** | dashboard (Owner + Teacher, read-only) | [#105](https://github.com/seum-running/bkurs-be/pull/105) | **DONE** |
+| **C3-신규** | suhaeng (PR #109) + saenggibu (PR #111) — 신규는 envelope 표준부터 | [#109](https://github.com/seum-running/bkurs-be/pull/109) [#111](https://github.com/seum-running/bkurs-be/pull/111) | **DONE** |
 | **2-1** | course / homework / reading | — | pending |
 | **2-2** | question / interview / simulation | — | pending |
 | **2-3** | record / performance / statement | — | pending |

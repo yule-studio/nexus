@@ -81,8 +81,8 @@ bkurs-fe 의 S2A-S2N 시리즈 패턴을 그대로 따른다. 한 PR = 한 issue
 | **B1** (Setup) ✅ | application.yml 분리 (local/prod) + 패키지 구조 (`com.bkurs.{domain}`) + `HealthController` + DB 연결 smoke 테스트 + CI (Gradle / JDK21) + docs (AGENTS/CLAUDE/COMMIT/BRANCH/CHANGELOG/PR-template) + Flyway V1 placeholder |
 | **B2A** (Account + JWT) ✅ CI GREEN | `Account` 단일 테이블 + Role (5) / Status (5) enum + Flyway V2 + BCrypt 회원가입 + JWT HS256 access (30분) + `AuthController` (signup/login/me) + `AuthExceptionHandler` (401/409) + AuthApiTest 5 통합. PR #4 |
 | **B2B** (Refresh + Cookie + CORS) ✅ 로컬 16/16 GREEN | `RefreshToken` (`refresh_token` + uk_token_hash + family_id) + `RefreshTokenService` (issue/rotate/logout/reuse 감지) + `RefreshCookieFactory` (HttpOnly/SameSite=Lax/Path=/api/v1/auth/Secure-prod) + `/api/v1/auth/refresh`/`/logout` + `CorsConfig` (allowedOriginPatterns + allow-credentials=true) + `noRollbackFor` reuse family revoke 보존. PR #6 (stacked) |
-| B2C (Connect / Approve) | 학원 코드 입력 endpoint + 학원 측 승인 / 거부 endpoint + `PENDING_CONNECT → PENDING_APPROVE → ACTIVE` 상태 전이 |
-| B3 (Academy) | 학원 / 강사 / 학원 코드 발급·재발급 / 플랜 / 결제 / 공지 |
+| **B2C** (Connect / Approve / 상태 전이) ✅ 로컬 24/24 GREEN | `Academy` + `AcademyCode` + `StudentAcademyMembership` (이중 상태 트랙) + V4 + `AcademyConnectService` + `MembershipService` (ownership 2계층 검증) + `/api/v1/auth/connect` + `/api/v1/academies/memberships/{id}/approve|reject` + `@PreAuthorize("hasRole('OWNER')")` + `AcademyExceptionHandler` 7 매핑. PR #8 (stacked, B2 완결) |
+| B3 (Academy 전체 도메인) | 학원 생성·변경 / 강사 등록 / 학원 코드 발급·재발급·만료 / 학원 정보 변경 / 플랜 / 결제 / 공지 |
 | B4 (Student) | 학생 프로필 + 학교급 분기 (고등/중등) + 학원 매칭 |
 | B5 (Roadmap) | 학년 × 분기 × 미션 + 학생별 진행 상태 |
 | B6+ | inroad-high 의 도메인 (생기부 / 자소서 / 예상질문 / 기출 / 모의면접 / 시뮬 / 토론 / 수행평가 / 독서 / 숙제 / 학사관리 ...) 별 endpoint |

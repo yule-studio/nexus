@@ -26,6 +26,7 @@ related:
 | v.1.3.0 | 2026-05-20 | engineering-agent/tech-lead | B2C 진행 로그 + 결정 1개 (학원 connect + membership + 이중 상태 트랙, stacked PR #8). B2 완결. |
 | v.1.4.0 | 2026-05-20 | engineering-agent/tech-lead | B3A 진행 로그 + 결정 1개 (학원 CRUD + 코드 관리, stacked PR #10) + 회수 pitfall 1개 (save vs saveAndFlush). |
 | v.1.5.0 | 2026-05-20 | engineering-agent/tech-lead | B3B 진행 로그 + 결정 1개 (강사 invite + assignment, stacked PR #12). 회귀 44/44. |
+| v.1.6.0 | 2026-05-20 | engineering-agent/tech-lead | B3C 진행 로그 + 결정 1개 (학원 공지 + read 추적, stacked PR #14). 회귀 54/54. B3 시리즈 완결. |
 
 **[[../projects|↑ 10-projects]]** · **짝 프로젝트 [[../bkurs-fe/bkurs-fe]]**
 
@@ -86,10 +87,10 @@ bkurs-fe 의 S2A-S2N 시리즈 패턴을 그대로 따른다. 한 PR = 한 issue
 | **B2C** (Connect / Approve / 상태 전이) ✅ 로컬 24/24 GREEN | `Academy` + `AcademyCode` + `StudentAcademyMembership` (이중 상태 트랙) + V4 + `AcademyConnectService` + `MembershipService` (ownership 2계층 검증) + `/api/v1/auth/connect` + `/api/v1/academies/memberships/{id}/approve|reject` + `@PreAuthorize("hasRole('OWNER')")` + `AcademyExceptionHandler` 7 매핑. PR #8 (stacked, B2 완결) |
 | **B3A** (학원 CRUD + 코드 관리) ✅ 로컬 34/34 GREEN | `AcademyManagementService` (1인 1학원) + `AcademyCodeService` (32-char alphabet random + saveAndFlush 재시도) + AcademyController/AcademyCodeController/OwnerMembershipQueueController + @PreAuthorize OWNER + ownership 2계층 + 예외 3 + 회귀 10. PR #10 (stacked) |
 | **B3B** (강사 invite + 학원 assignment) ✅ 로컬 44/44 GREEN | `TeacherInvite` (32-byte base64url + 7일 + 1회용 consume invariant) + `TeacherAcademyAssignment` (ACTIVE/REMOVED) + V5 + service 2 + endpoint 5 + 예외 5 + 회귀 10. PR #12 (stacked) |
-| B3C (학원 공지) | 학원 → 학원생 알림 / 공지 endpoint + read 상태 추적 |
+| **B3C** (학원 공지 + read 추적) ✅ 로컬 54/54 GREEN | `Announcement` + `AnnouncementRead` (uk + CASCADE) + V6 + `AcademyMembershipResolver` (role→academyId 통합) + service 2 + endpoint 6 (/me OWNER + /my role 무관) + DTO 4 + 예외 2 + 회귀 10. PR #14 (stacked, **B3 완결**) |
 | B4 (플랜 + 결제 + 학원 이관) | 학원 플랜 / 결제 연동 / 학원 정보 (전화번호/주소/로고) / 학원장 이관 |
-| B4 (Student) | 학생 프로필 + 학교급 분기 (고등/중등) + 학원 매칭 |
-| B5 (Roadmap) | 학년 × 분기 × 미션 + 학생별 진행 상태 |
+| B5 (Student 프로필) | 학생 프로필 + 학교급 분기 (고등/중등) + 학원 매칭 |
+| B6 (Roadmap) | 학년 × 분기 × 미션 + 학생별 진행 상태 |
 | B6+ | inroad-high 의 도메인 (생기부 / 자소서 / 예상질문 / 기출 / 모의면접 / 시뮬 / 토론 / 수행평가 / 독서 / 숙제 / 학사관리 ...) 별 endpoint |
 
 bkurs-fe 의 mock 타입 (StudentEssay, MyHomework, PastQuestion, ...) 이 API 응답 스키마 초안으로 활용 — 한쪽씩 협의 후 정식화.
@@ -114,6 +115,7 @@ bkurs-fe 의 mock 타입 (StudentEssay, MyHomework, PastQuestion, ...) 이 API �
 | 2026-05-20 | B2C #8 stacked PR | issue #7 → feature/issue-7-b2c-academy-connect (4 commit) base=B2B → Academy + AcademyCode + StudentAcademyMembership + V4 + AcademyConnectService + MembershipService + ConnectController + MembershipController + @PreAuthorize OWNER + AcademyExceptionHandler 7매핑 + AcademyApprovalApiTest 8 회귀. **24/24 GREEN**. B2 시리즈 완결. |
 | 2026-05-20 | B3A #10 stacked PR | issue #9 → feature/issue-9-b3a-academy-management (3 commit) base=B2C → AcademyManagementService + AcademyCodeService (random 8자 + saveAndFlush 재시도) + AcademyController + AcademyCodeController + OwnerMembershipQueueController + DTO 4 + 예외 3 + AcademyManagementApiTest 10 회귀. **34/34 GREEN**. B3 시리즈 시작. |
 | 2026-05-20 | B3B #12 stacked PR | issue #11 → feature/issue-11-b3b-teacher-invite (4 commit) base=B3A → TeacherInvite + TeacherAcademyAssignment + V5 + TeacherInviteService (32-byte base64url 7일 1회용) + TeacherAssignmentService + 5 endpoint + DTO 3 + 예외 5 + TeacherInviteApiTest 10 + 기존 4 테스트 cleanup 보강. **44/44 GREEN**. |
+| 2026-05-20 | B3C #14 stacked PR | issue #13 → feature/issue-13-b3c-announcement (5 commit) base=B3B → Announcement + AnnouncementRead + V6 + AcademyMembershipResolver (role→academyId) + AnnouncementService (OWNER CRUD) + AnnouncementReadService (N+1 회피 + upsert) + 6 endpoint (/me OWNER + /my role 무관) + DTO 4 + 예외 2 + AnnouncementApiTest 10. **54/54 GREEN**. B3 시리즈 완결. |
 
 ## 7. cross-link
 

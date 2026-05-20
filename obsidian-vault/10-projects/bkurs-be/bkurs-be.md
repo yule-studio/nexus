@@ -35,6 +35,7 @@ related:
 | v.1.12.0 | 2026-05-20 | engineering-agent/tech-lead | B6A 진행 로그 + 결정 1개 (Course + Enrollment + 강사 배정, stacked PR #26). 회귀 112/112. **B6 시리즈 시작.** |
 | v.1.13.0 | 2026-05-20 | engineering-agent/tech-lead | B6B 진행 로그 + 결정 1개 (CourseSession + Attendance upsert, stacked PR #28). 회귀 122/122. |
 | v.1.14.0 | 2026-05-20 | engineering-agent/tech-lead | B6C 진행 로그 + 결정 1개 (강사 권한 매트릭스 정밀화, stacked PR #30). 회귀 132/132. **B6 시리즈 완결.** |
+| v.1.15.0 | 2026-05-20 | engineering-agent/tech-lead | B7A 진행 로그 + 결정 1개 (Homework + Submission + 채점, stacked PR #32). 회귀 142/142. **B7 학습 콘텐츠 시리즈 시작.** |
 
 **[[../projects|↑ 10-projects]]** · **짝 프로젝트 [[../bkurs-fe/bkurs-fe]]**
 
@@ -104,7 +105,12 @@ bkurs-fe 의 S2A-S2N 시리즈 패턴을 그대로 따른다. 한 PR = 한 issue
 | **B6A** (Course + Enrollment) ✅ 로컬 112/112 GREEN | `Course` (academy_id + teacher_assignment_id nullable + maxStudents) + `CourseEnrollment` (ACTIVE/DROPPED) + V12 + service 2 + 9 endpoint (OWNER 5 + TEACHER 2 + STUDENT 3) + DTO 4 + 예외 5. PR #26 (stacked, **B6 시리즈 시작**) |
 | **B6B** (CourseSession + Attendance) ✅ 로컬 122/122 GREEN | `CourseSession` (start/end + room + invariant end > start) + `Attendance` (PRESENT/ABSENT/LATE/EXCUSED + uk upsert + recorded_by audit) + V13 + service 2 + 9 endpoint (OWNER 4 + TEACHER 3 + STUDENT 2) + DTO 5 + 예외 2. PR #28 (stacked) |
 | **B6C** (강사 권한 매트릭스) ✅ 로컬 132/132 GREEN | `Course.updateLimited` (description 만) + `CourseService.updateByTeacher` (write 트랜잭션) + `StudentProfileService.getStudentOnly` + 3 endpoint (OWNER 출결 / TEACHER course PATCH / TEACHER 학생 프로필) + DTO 1. PR #30 (stacked, **B6 시리즈 완결**) |
-| B7 (Roadmap) | 학년 × 분기 × 미션 + 학생별 진행 상태 |
+| **B7A** (Homework + Submission) ✅ 로컬 142/142 GREEN | `Homework` (course_id + assigned_by + due_at) + `HomeworkSubmission` (uk upsert + grade 0-100 + graded_by audit) + V14 + service 2 + 9 endpoint (TEACHER 6 + STUDENT 3) + DTO 6 + 예외 3. PR #32 (stacked, **B7 학습 콘텐츠 시리즈 시작**) |
+| B7B (자소서) | PersonalStatement — 학생 작성 / 강사 피드백 |
+| B7C (예상질문 / 기출) | ExpectedQuestion + PastQuestion — 강사/학원장 출제 + 학생 풀이 |
+| B7D (모의면접) | MockInterview — 학생 응답 + 강사 평가 |
+| B7E (생기부) | StudentRecord — 학원/강사 평가 누적 + PDF |
+| B7F (토론 / 수행평가 / 독서 / 시뮬레이션) | 추가 학습 도메인 |
 | B6+ | inroad-high 의 도메인 (생기부 / 자소서 / 예상질문 / 기출 / 모의면접 / 시뮬 / 토론 / 수행평가 / 독서 / 숙제 / 학사관리 ...) 별 endpoint |
 
 bkurs-fe 의 mock 타입 (StudentEssay, MyHomework, PastQuestion, ...) 이 API 응답 스키마 초안으로 활용 — 한쪽씩 협의 후 정식화.
@@ -138,6 +144,7 @@ bkurs-fe 의 mock 타입 (StudentEssay, MyHomework, PastQuestion, ...) 이 API �
 | 2026-05-20 | B6A #26 stacked PR | issue #25 → feature/issue-25-b6a-course-enrollment (4 commit) base=B5 → Course + CourseEnrollment + V12 + CourseService (OWNER CRUD + 강사 검증) + EnrollmentService (학생 enroll/drop + max/중복) + 9 endpoint (OWNER 5 + TEACHER 2 + STUDENT 3) + DTO 4 + 예외 5 + CourseApiTest 10. **112/112 GREEN**. **B6 시리즈 시작.** |
 | 2026-05-20 | B6B #28 stacked PR | issue #27 → feature/issue-27-b6b-session-attendance (4 commit) base=B6A → CourseSession + Attendance + V13 + AttendanceStatus enum + SessionService + AttendanceService (TEACHER/OWNER upsert + recorded_by audit) + 9 endpoint (OWNER 4 + TEACHER 3 + STUDENT 2) + DTO 5 + 예외 2 + SessionAttendanceApiTest 10 + 10 테스트 cleanup 보강. **122/122 GREEN**. |
 | 2026-05-20 | B6C #30 stacked PR | issue #29 → feature/issue-29-b6c-teacher-permission (4 commit) base=B6B → Course.updateLimited + CourseService.updateByTeacher (write 트랜잭션) + StudentProfileService.getStudentOnly + 3 endpoint (OWNER 출결 + TEACHER PATCH description + TEACHER 학생 프로필) + DTO 1 + TeacherPermissionApiTest 10. **132/132 GREEN**. **B6 시리즈 완결.** |
+| 2026-05-20 | B7A #32 stacked PR | issue #31 → feature/issue-31-b7a-homework (4 commit) base=B6C → Homework + HomeworkSubmission + V14 + HomeworkService (강사 CRUD) + SubmissionService (학생 upsert + 강사 채점 0-100) + 9 endpoint (TEACHER 6 + STUDENT 3) + DTO 6 + 예외 3 + HomeworkApiTest 10 + 14 테스트 cleanup 보강. **142/142 GREEN**. **B7 학습 콘텐츠 시리즈 시작.** |
 
 ## 7. cross-link
 

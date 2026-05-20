@@ -47,6 +47,7 @@ related:
 | v.1.24.0 | 2026-05-20 | engineering-agent/tech-lead | B7I 진행 로그 + 결정 1개 (Simulation 3 type + feasibility 1-5 review, stacked PR #50). 회귀 222/222. |
 | v.1.25.0 | 2026-05-20 | engineering-agent/tech-lead | B9 진행 로그 + 결정 1개 (StudentRecord auto-bridge 4 도메인 → 4 카테고리 same-TX upsert, stacked PR #52). 회귀 232/232. **B7 series + bridge 완결.** |
 | v.1.26.0 | 2026-05-20 | engineering-agent/tech-lead | B10 진행 로그 + 결정 1개 (통합 검색 5 도메인 LIKE aggregator + 권한 3 endpoint, stacked PR #54). 회귀 242/242. |
+| v.1.27.0 | 2026-05-20 | engineering-agent/tech-lead | B11 진행 로그 + 결정 1개 (학생 통계 7 영역 aggregation + 권한 3 endpoint, stacked PR #56). 회귀 252/252. |
 
 **[[../projects|↑ 10-projects]]** · **짝 프로젝트 [[../bkurs-fe/bkurs-fe]]**
 
@@ -127,6 +128,7 @@ bkurs-fe 의 S2A-S2N 시리즈 패턴을 그대로 따른다. 한 PR = 한 issue
 | **B7I** (Simulation 모의지원 + review) ✅ 로컬 222/222 GREEN | `SimulationType` enum 3종 (UNIV_APPLICATION/CAREER/FINANCIAL) + `SimulationCase` (scenario + expected_outcome) + `SimulationResponse` (uk + resubmit review 무효화 + feasibility 1-5 별점) + V22 + service 1 (협업 review) + 8 endpoint (TEACHER 6 + STUDENT 2) + DTO 6 + 예외 3. PR #50 (stacked) |
 | **B9** (StudentRecord auto-bridge) ✅ 로컬 232/232 GREEN | V23 ALTER + `RecordSourceType` enum 4종 + uk(source_type, source_id) + `record.bridge/` 패키지 (4 event + StudentRecordBridgeService 4 @EventListener) + 4 service (PE/Disc/Sim/Reading) publish. 매핑: PERFORMANCE→SUBJECT / DISCUSSION→AUTONOMY / SIMULATION→CAREER / READING→READING. same-TX upsert + idempotent + 학생부 영구. PR #52 (stacked) |
 | **B10** (통합 검색) ✅ 로컬 242/242 GREEN | `SearchResultType` enum 5종 + `SearchResult` record (snippet 100자) + 5 repo ContainingIgnoreCase + `SearchService` aggregator (5 도메인 + 권한 3) + 3 endpoint (TEACHER/STUDENT/OWNER) + 예외 1. LIKE '%q%' + limit 50 (후속 FULLTEXT + pagination). PR #54 (stacked) |
+| **B11** (학생 통계 7 영역) ✅ 로컬 252/252 GREEN | 7 sub-record (Attendance/Homework/Performance/Discussion/Reading/Simulation/Record) + `StudentStatsView` 통합 + `StatsService` aggregator (findAll + Java reduce, 권한 3 method) + 3 endpoint + 예외 1. PR #56 (stacked). 후속 @Query COUNT 최적화. |
 | B7F (토론 / 수행평가 / 독서 / 시뮬레이션) | 추가 학습 도메인 |
 | B6+ | inroad-high 의 도메인 (생기부 / 자소서 / 예상질문 / 기출 / 모의면접 / 시뮬 / 토론 / 수행평가 / 독서 / 숙제 / 학사관리 ...) 별 endpoint |
 
@@ -173,6 +175,7 @@ bkurs-fe 의 mock 타입 (StudentEssay, MyHomework, PastQuestion, ...) 이 API �
 | 2026-05-20 | B7I #50 stacked PR | issue #49 → feature/issue-49-b7i-simulation (4 commit) base=B7H → SimulationType enum 3종 + SimulationCase (scenario + expected_outcome) + SimulationResponse (uk + resubmit review 무효화 + feasibility 1-5) + V22 + SimulationService (강사 CRUD + 학생 respond upsert + 협업 review) + 8 endpoint + DTO 6 + 예외 3 + SimulationApiTest 10. **222/222 GREEN**. PE 와 의미 분리 — 정답 없는 시나리오 / 현실성 별점. |
 | 2026-05-20 | B9 #52 stacked PR | issue #51 → feature/issue-51-b9-record-bridge (5 commit incl fixup) base=B7I → V23 ALTER student_record_entry source_type/source_id + uk + RecordSourceType enum 4종 + StudentRecordEntry overwriteFromSource + Repository findBySourceTypeAndSourceId + bridge 패키지 (4 event record + StudentRecordBridgeService 4 @EventListener) + 4 service (PE/Disc/Sim/Reading) ApplicationEventPublisher publish + StudentRecordBridgeApiTest 10. **232/232 GREEN**. 4 도메인 → 4 카테고리 자동 매핑 (PERFORMANCE→SUBJECT, DISCUSSION→AUTONOMY, SIMULATION→CAREER, READING→READING), idempotent (uk source), 학생부 영구 (domain DELETE 시 record 보존), 강사 수동 record coexist. |
 | 2026-05-20 | B10 #54 stacked PR | issue #53 → feature/issue-53-b10-search (4 commit) base=B9 → SearchResultType enum 5종 + SearchResult record (snippet 100자) + 5 repo (Record/Reading/Discussion/PE/Sim) findBy...ContainingIgnoreCase + SearchService aggregator (5 도메인 호출 + createdAt desc + limit 50) + 3 endpoint (TEACHER `/teachers/me/students/{sid}/search`, STUDENT `/students/me/search`, OWNER `/academies/me/students/{sid}/search`) + 예외 1 + SearchApiTest 10. **242/242 GREEN**. LIKE '%q%' PoC — 후속 FULLTEXT + ngram + pagination 검토. |
+| 2026-05-20 | B11 #56 stacked PR | issue #55 → feature/issue-55-b11-student-stats (4 commit) base=B10 → 7 sub-record DTO (Attendance/Homework/Performance/Discussion/Reading/Simulation/Record) + 통합 StudentStatsView + StatsService aggregator (7 영역 findAll + Java reduce + 권한 3 method) + 3 endpoint (STUDENT `/students/me/stats`, TEACHER `/teachers/me/students/{sid}/stats`, OWNER `/academies/me/students/{sid}/stats`) + 예외 1 + StudentStatsApiTest 10. **252/252 GREEN**. attendance rate / homework·PE avg / discussion avg / reading avgRecommended / simulation avgFeasibility / record byCategory (수동 + bridge 합산). |
 
 ## 7. cross-link
 

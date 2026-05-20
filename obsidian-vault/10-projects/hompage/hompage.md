@@ -37,17 +37,24 @@ GitHub repo / Tistory blog 데이터를 자동으로 끌어와서 보여주는 *
 
 > 코드 한 줄 안 짜본 사람도 따라할 수 있게 단계별로 정리. **TS/JS 문법 몰라도 됩니다.**
 
-### 자주 바꿀 것
-| 하고 싶은 일 | 어떤 문서 보고 / 어떤 파일 만지기 |
+### 자주 바꿀 것 (가이드 문서로 연결)
+| 하고 싶은 일 | 보세요 |
 | --- | --- |
-| 내 이름·역할·위치 바꾸기 | [[how-to-edit#1-프로필-바꾸기]] → `src/data/profile.ts` |
-| 자격증·수상 목록 바꾸기 | [[how-to-edit#3-자격증-수상-홈랩-목록-바꾸기]] → `src/data/certs.ts` / `awards.ts` |
-| Homelab 호스트·서비스 목록 | [[how-to-edit#3-자격증-수상-홈랩-목록-바꾸기]] → `src/data/homelab.ts` |
-| GitHub 가서 보여줄 repo 추가 | (자동) GitHub 에 push 만 하면 됨, 따로 작업 없음 — [[data-sources#projects]] |
-| 프로젝트에 **LIVE 배지** 붙이기 | repo About → Website 필드 한 줄, 코드 수정 0 — [[how-to-edit#4-A-프로젝트를-LIVE-로-표시하기]] |
-| 블로그 글 갱신 | (자동) Tistory 에 글 올리면 RSS 통해서 따라옴 — [[data-sources#blog]] |
-| 색 / 폰트 바꾸기 | [[how-to-edit#5-색이나-폰트-바꾸기]] → `src/styles/tokens.css` |
-| 페이지 메뉴 (목차) 항목 추가 | [[how-to-edit#6-목차-항목-추가]] → `src/components/Navigation/Navigation.tsx` |
+| 내 이름·역할·위치·SNS 바꾸기 | [[guides/profile]] |
+| Hero CTA 버튼 추가/제거/스타일 | [[guides/hero-ctas]] |
+| 자격증·수상·홈랩·이벤트 목록 | [[guides/lists-data]] |
+| 프로젝트 **LIVE 배지** 설정 / 필터 | [[guides/projects]] |
+| Skills (언어 / 토픽 / 카테고리) | [[guides/skills]] |
+| 색 변경 (액센트 / 배경 / 카드) | [[styling/colors]] |
+| 폰트 / 글자 크기 / 한국어 줄바꿈 | [[styling/typography]] |
+| 카드 디자인 / span / scoped 스타일 | [[styling/cards]] |
+| 그리드 / 레이아웃 / 컨테이너 폭 | [[styling/layout-grid]] |
+| 페이지 전환 애니메이션 / hover 효과 | [[styling/animations]] |
+| 모바일 / 태블릿 반응형 | [[styling/responsive]] |
+| 모든 CSS 토큰 사전 | [[styling/tokens]] |
+| Home 화면 카드 추가/제거/순서 | [[pages/home]] |
+| 데이터 출처 / 자동 동기화 흐름 | [[data-sources]] |
+| 배포 (push → live) 흐름 + 실시간 트리거 | [[deploy]] |
 
 ### 절대 만지지 말 것 (망가짐)
 - `node_modules/` 폴더 전체 — 외부 도구 캐시, 손대지 마세요
@@ -57,11 +64,31 @@ GitHub repo / Tistory blog 데이터를 자동으로 끌어와서 보여주는 *
 
 ## 3. 문서 지도
 
-- [[architecture]] — 큰 그림: 어떤 부품이 어디서 돌아가는지 (사용자 / GitHub / Tistory / Pages 흐름)
-- [[how-to-edit]] — "이거 바꾸려면 어디 만져야 해?" 케이스별 직접 수정 가이드
-- [[data-sources]] — 각 화면이 어떤 데이터를 어디서 가져오는지 (자동 동기화 출처)
-- [[deploy]] — git push 부터 사이트 갱신까지 흐름 + 트러블슈팅
-- [[troubleshooting]] — 자주 만나는 문제 + 빠른 해결
+### 진입 / 큰 그림
+- [[architecture]] — 큰 그림: 어떤 부품이 어디서 돌아가는지
+- [[how-to-edit]] — 가이드 색인 (작업 종류별 → 상세 문서 안내)
+- [[data-sources]] — 각 화면이 어떤 데이터를 어디서 가져오는지
+- [[deploy]] — push → live 흐름 + 실시간 트리거 셋업
+- [[troubleshooting]] — 자주 만나는 문제 + 해결
+
+### Guides (작업 별 가이드)
+- [[guides/profile]] — 이름 / 역할 / SNS / 아바타
+- [[guides/hero-ctas]] — Hero CTA 버튼
+- [[guides/lists-data]] — 자격증 / 수상 / Homelab / Calendar / Skills
+- [[guides/projects]] — 프로젝트 (LIVE / Code-only / 필터)
+- [[guides/skills]] — Languages / Topics / 카테고리
+
+### Styling (디자인 변경)
+- [[styling/tokens]] — 모든 CSS 변수 사전
+- [[styling/colors]] — 색상 변경 레시피
+- [[styling/typography]] — 폰트 / 크기 / 한국어
+- [[styling/cards]] — Card 컴포넌트 해부
+- [[styling/layout-grid]] — Page / Container / Grid
+- [[styling/animations]] — 페이지 전환 / hover
+- [[styling/responsive]] — 모바일 / 태블릿
+
+### Pages (페이지별 anatomy)
+- [[pages/home]] — Home 대시보드 10 카드 해부
 
 ## 4. 기술 스택 (참고만, 몰라도 됩니다)
 

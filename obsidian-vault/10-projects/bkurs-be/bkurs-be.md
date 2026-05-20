@@ -40,6 +40,7 @@ related:
 | v.1.17.0 | 2026-05-20 | engineering-agent/tech-lead | REFACTOR — AbstractIntegrationTest 추출 (16 테스트 cleanup 통합, **+122 / -1377 lines**), stacked PR #36. 회귀 152/152 유지. 회수 누적의 종결. |
 | v.1.18.0 | 2026-05-20 | engineering-agent/tech-lead | B7C 진행 로그 + 결정 1개 (Question type 통합 + Attempt upsert, stacked PR #38). 회귀 162/162. **REFACTOR 효과 확인 — cleanup 보강 0 곳.** |
 | v.1.19.0 | 2026-05-20 | engineering-agent/tech-lead | B7D 진행 로그 + 결정 1개 (MockInterview + Response 미디어 URL + 평가, stacked PR #40). 회귀 172/172. |
+| v.1.20.0 | 2026-05-20 | engineering-agent/tech-lead | B7E 진행 로그 + 결정 1개 (StudentRecord 8 카테고리 + 강사 입력 + 학생/학원장 조회, stacked PR #42). 회귀 182/182. |
 
 **[[../projects|↑ 10-projects]]** · **짝 프로젝트 [[../bkurs-fe/bkurs-fe]]**
 
@@ -113,7 +114,7 @@ bkurs-fe 의 S2A-S2N 시리즈 패턴을 그대로 따른다. 한 PR = 한 issue
 | **B7B** (PersonalStatement + Feedback) ✅ 로컬 152/152 GREEN | `PersonalStatement` (DRAFT/SUBMITTED + invariant) + `StatementFeedback` (강사 댓글 + audit) + V15 + service 2 + 9 endpoint (학생 5 + 강사 4) + DTO 5 + 예외 2. PR #34 (stacked) |
 | **B7C** (Question 통합 + Attempt) ✅ 로컬 162/162 GREEN | `Question` (type EXPECTED/PAST + year/subject) + `QuestionAttempt` (uk + score 0-100) + V16 + service 2 + 9 endpoint (강사 6 + 학생 3) + DTO 6 + 예외 3. PR #38 (stacked). REFACTOR 효과 — cleanup 보강 0 곳. |
 | **B7D** (MockInterview + 미디어 응답) ✅ 로컬 172/172 GREEN | `MockInterview` (type 4종 + expectedMinutes) + `InterviewResponse` (uk + 텍스트 + audio/video URL + 평가 0-100) + V17 + service 2 + 9 endpoint + DTO 6 + 예외 3. PR #40 (stacked) |
-| B7E (생기부) | StudentRecord — 학원/강사 평가 누적 + PDF |
+| **B7E** (StudentRecord 생기부 8 카테고리) ✅ 로컬 182/182 GREEN | `RecordCategory` enum 8종 (AWARD/AUTONOMY/CLUB/CAREER/SERVICE/SUBJECT/BEHAVIOR/READING — 학종 표준) + `StudentRecordEntry` (course nullable + author audit) + V18 + service 1 (ownership 2계층) + 6 endpoint (TEACHER 4 + STUDENT 1 + OWNER 1) + DTO 3 + 예외 2. PR #42 (stacked) |
 | B7F (토론 / 수행평가 / 독서 / 시뮬레이션) | 추가 학습 도메인 |
 | B6+ | inroad-high 의 도메인 (생기부 / 자소서 / 예상질문 / 기출 / 모의면접 / 시뮬 / 토론 / 수행평가 / 독서 / 숙제 / 학사관리 ...) 별 endpoint |
 
@@ -153,6 +154,7 @@ bkurs-fe 의 mock 타입 (StudentEssay, MyHomework, PastQuestion, ...) 이 API �
 | 2026-05-20 | REFACTOR #36 stacked PR | issue #35 → feature/issue-35-refactor-abstract-test (2 commit) base=B7B → AbstractIntegrationTest 추출 + 16 테스트 extends + 중복 제거. **+122 / -1377 lines (-1270)**. 회귀 **152/152 GREEN 유지**. 신규 entity 추가 시 base 한 곳 보강. 회수 누적의 종결. |
 | 2026-05-20 | B7C #38 stacked PR | issue #37 → feature/issue-37-b7c-question (5 commit) base=REFACTOR → Question (type EXPECTED/PAST 통합) + QuestionAttempt (uk upsert) + V16 + service 2 + 9 endpoint + DTO 6 + 예외 3 + QuestionApiTest 10. **162/162 GREEN**. **REFACTOR 효과 — cleanup 보강 0 곳.** |
 | 2026-05-20 | B7D #40 stacked PR | issue #39 → feature/issue-39-b7d-mock-interview (5 commit) base=B7C → MockInterview (type 4종) + InterviewResponse (audio/video URL + 평가 0-100) + V17 + service 2 + 9 endpoint + DTO 6 + 예외 3 + MockInterviewApiTest 10. **172/172 GREEN**. |
+| 2026-05-20 | B7E #42 stacked PR | issue #41 → feature/issue-41-b7e-student-record (5 commit incl fixup) base=B7D → RecordCategory enum 8종 + StudentRecordEntry + V18 + StudentRecordService (ownership 2계층 — courseService.listByTeacher + enrollment ACTIVE / membership ACTIVE) + 6 endpoint (TEACHER 4 + STUDENT 1 + OWNER 1) + DTO 3 + 예외 2 + StudentRecordApiTest 10. **182/182 GREEN**. STUDENT 거부 케이스는 Spring 6 환경 차이로 401/403 둘 다 허용. |
 
 ## 7. cross-link
 

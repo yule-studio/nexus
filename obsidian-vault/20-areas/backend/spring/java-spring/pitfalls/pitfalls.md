@@ -20,6 +20,7 @@ tags:
 | v.1.1.0 | 2026-05-20 | engineering-agent/tech-lead | Spring Security 401 vs 403 함정 추가 (bkurs-be B2A 회수) |
 | v.1.2.0 | 2026-05-20 | engineering-agent/tech-lead | @Transactional default rollback noRollbackFor 함정 추가 (bkurs-be B2B 회수) + 인증/권한 카테고리 |
 | v.1.3.0 | 2026-05-20 | engineering-agent/tech-lead | save() vs saveAndFlush 의 lazy flush 함정 추가 (bkurs-be B3A 회수) |
+| v.1.4.0 | 2026-05-20 | engineering-agent/tech-lead | @Valid 실패 시 ERROR dispatch /error 가 permitAll 부재로 401 함정 추가 (bkurs-be B4A 회수) |
 
 **[[../java-spring|↑ Java Spring]]**
 
@@ -41,7 +42,7 @@ tags:
 | 6 | **메모리 / 리소스** | [[resource-leaks]] | connection pool / file handle / OOM / GC. |
 | 7 | **시간 / 인코딩** | [[time-encoding]] | timezone / DST / utf8mb4 / 이모지 / NFC. |
 | 8 | **에러 / 로깅** | error-handling-pitfalls (예정) | 삼킨 예외 / 평문 로깅 / @Async exception. |
-| 9 | **인증 / 권한** | [[spring-security-401-vs-403]] | Spring Security default 가 인증 실패도 403 — REST API 면 401 명시 필수. |
+| 9 | **인증 / 권한** | [[spring-security-401-vs-403]] · [[error-dispatch-permitAll-trap]] | Spring Security default 가 인증 실패도 403 — REST API 면 401 명시 필수 / @Valid 실패 시 ERROR dispatch /error 가 permitAll 부재로 401. |
 
 ---
 
@@ -108,6 +109,7 @@ tags:
 | [[spring-security-401-vs-403]] | ✅ |
 | [[transactional-rollback-noRollbackFor]] | ✅ |
 | [[save-vs-saveAndFlush-unique-retry]] | ✅ |
+| [[error-dispatch-permitAll-trap]] | ✅ |
 
 ---
 

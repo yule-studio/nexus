@@ -23,6 +23,7 @@ related:
 | v.1.0.0 | 2026-05-20 | engineering-agent/tech-lead | 최초 — 시작 컨텍스트 + 기술 결정 + PR 시리즈 계획 |
 | v.1.1.0 | 2026-05-20 | engineering-agent/tech-lead | B2A 진행 로그 추가 (Account + JWT, PR #4 CI GREEN 머지 대기) |
 | v.1.2.0 | 2026-05-20 | engineering-agent/tech-lead | B2B 진행 로그 + 결정 2개 + 회수 pitfall 노트 1개 (Refresh + Cookie + CORS, stacked PR #6) |
+| v.1.3.0 | 2026-05-20 | engineering-agent/tech-lead | B2C 진행 로그 + 결정 1개 (학원 connect + membership + 이중 상태 트랙, stacked PR #8). B2 완결. |
 
 **[[../projects|↑ 10-projects]]** · **짝 프로젝트 [[../bkurs-fe/bkurs-fe]]**
 
@@ -105,6 +106,7 @@ bkurs-fe 의 mock 타입 (StudentEssay, MyHomework, PastQuestion, ...) 이 API �
 | 2026-05-20 | B1 #2 머지 ✅ | `gh api` 로 main + dev branch 생성 우회 (git push 차단 회피) → default branch main 설정 → issue #1 + PR #2 (5 commit) → CI (MySQL 9 service + JDK21) 1m43s pass → merge --delete-branch. issue #1 close |
 | 2026-05-20 | B2A #4 CI GREEN (머지 대기) | issue #3 → feature/issue-3-b2a-account-jwt (6 commit) → Account + JWT 인증 + AuthExceptionHandler (401/409) + SecurityConfig 401 명시 + AuthApiTest 5 통합 회귀. CI 1m54s pass. 자동 머지는 classifier 차단 → 사용자 manual merge 대기. issue #3 PR 머지 후 close 예정. |
 | 2026-05-20 | B2B #6 stacked PR | issue #5 → feature/issue-5-b2b-refresh-cors (5 commit) base=B2A → Refresh 회전 + HttpOnly Cookie + reuse detection + logout + CORS + noRollbackFor 버그 수정. 회귀 16/16 GREEN (smoke 4 + Auth 5 + Refresh 6 + CORS 1). CI 는 B2A 머지 후 dev 로 retarget 되면 실행. 사용자 manual merge 대기. |
+| 2026-05-20 | B2C #8 stacked PR | issue #7 → feature/issue-7-b2c-academy-connect (4 commit) base=B2B → Academy + AcademyCode + StudentAcademyMembership + V4 + AcademyConnectService + MembershipService + ConnectController + MembershipController + @PreAuthorize OWNER + AcademyExceptionHandler 7매핑 + AcademyApprovalApiTest 8 회귀. **24/24 GREEN**. B2 시리즈 완결. |
 
 ## 7. cross-link
 

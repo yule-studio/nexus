@@ -36,6 +36,7 @@ related:
 | v.1.13.0 | 2026-05-20 | engineering-agent/tech-lead | B6B 진행 로그 + 결정 1개 (CourseSession + Attendance upsert, stacked PR #28). 회귀 122/122. |
 | v.1.14.0 | 2026-05-20 | engineering-agent/tech-lead | B6C 진행 로그 + 결정 1개 (강사 권한 매트릭스 정밀화, stacked PR #30). 회귀 132/132. **B6 시리즈 완결.** |
 | v.1.15.0 | 2026-05-20 | engineering-agent/tech-lead | B7A 진행 로그 + 결정 1개 (Homework + Submission + 채점, stacked PR #32). 회귀 142/142. **B7 학습 콘텐츠 시리즈 시작.** |
+| v.1.16.0 | 2026-05-20 | engineering-agent/tech-lead | B7B 진행 로그 + 결정 1개 (PersonalStatement + Feedback + DRAFT/SUBMITTED, stacked PR #34). 회귀 152/152. |
 
 **[[../projects|↑ 10-projects]]** · **짝 프로젝트 [[../bkurs-fe/bkurs-fe]]**
 
@@ -106,7 +107,7 @@ bkurs-fe 의 S2A-S2N 시리즈 패턴을 그대로 따른다. 한 PR = 한 issue
 | **B6B** (CourseSession + Attendance) ✅ 로컬 122/122 GREEN | `CourseSession` (start/end + room + invariant end > start) + `Attendance` (PRESENT/ABSENT/LATE/EXCUSED + uk upsert + recorded_by audit) + V13 + service 2 + 9 endpoint (OWNER 4 + TEACHER 3 + STUDENT 2) + DTO 5 + 예외 2. PR #28 (stacked) |
 | **B6C** (강사 권한 매트릭스) ✅ 로컬 132/132 GREEN | `Course.updateLimited` (description 만) + `CourseService.updateByTeacher` (write 트랜잭션) + `StudentProfileService.getStudentOnly` + 3 endpoint (OWNER 출결 / TEACHER course PATCH / TEACHER 학생 프로필) + DTO 1. PR #30 (stacked, **B6 시리즈 완결**) |
 | **B7A** (Homework + Submission) ✅ 로컬 142/142 GREEN | `Homework` (course_id + assigned_by + due_at) + `HomeworkSubmission` (uk upsert + grade 0-100 + graded_by audit) + V14 + service 2 + 9 endpoint (TEACHER 6 + STUDENT 3) + DTO 6 + 예외 3. PR #32 (stacked, **B7 학습 콘텐츠 시리즈 시작**) |
-| B7B (자소서) | PersonalStatement — 학생 작성 / 강사 피드백 |
+| **B7B** (PersonalStatement + Feedback) ✅ 로컬 152/152 GREEN | `PersonalStatement` (DRAFT/SUBMITTED + invariant) + `StatementFeedback` (강사 댓글 + audit) + V15 + service 2 + 9 endpoint (학생 5 + 강사 4) + DTO 5 + 예외 2. PR #34 (stacked) |
 | B7C (예상질문 / 기출) | ExpectedQuestion + PastQuestion — 강사/학원장 출제 + 학생 풀이 |
 | B7D (모의면접) | MockInterview — 학생 응답 + 강사 평가 |
 | B7E (생기부) | StudentRecord — 학원/강사 평가 누적 + PDF |
@@ -145,6 +146,7 @@ bkurs-fe 의 mock 타입 (StudentEssay, MyHomework, PastQuestion, ...) 이 API �
 | 2026-05-20 | B6B #28 stacked PR | issue #27 → feature/issue-27-b6b-session-attendance (4 commit) base=B6A → CourseSession + Attendance + V13 + AttendanceStatus enum + SessionService + AttendanceService (TEACHER/OWNER upsert + recorded_by audit) + 9 endpoint (OWNER 4 + TEACHER 3 + STUDENT 2) + DTO 5 + 예외 2 + SessionAttendanceApiTest 10 + 10 테스트 cleanup 보강. **122/122 GREEN**. |
 | 2026-05-20 | B6C #30 stacked PR | issue #29 → feature/issue-29-b6c-teacher-permission (4 commit) base=B6B → Course.updateLimited + CourseService.updateByTeacher (write 트랜잭션) + StudentProfileService.getStudentOnly + 3 endpoint (OWNER 출결 + TEACHER PATCH description + TEACHER 학생 프로필) + DTO 1 + TeacherPermissionApiTest 10. **132/132 GREEN**. **B6 시리즈 완결.** |
 | 2026-05-20 | B7A #32 stacked PR | issue #31 → feature/issue-31-b7a-homework (4 commit) base=B6C → Homework + HomeworkSubmission + V14 + HomeworkService (강사 CRUD) + SubmissionService (학생 upsert + 강사 채점 0-100) + 9 endpoint (TEACHER 6 + STUDENT 3) + DTO 6 + 예외 3 + HomeworkApiTest 10 + 14 테스트 cleanup 보강. **142/142 GREEN**. **B7 학습 콘텐츠 시리즈 시작.** |
+| 2026-05-20 | B7B #34 stacked PR | issue #33 → feature/issue-33-b7b-personal-statement (4 commit) base=B7A → PersonalStatement + StatementFeedback + V15 + StatementStatus enum (DRAFT/SUBMITTED) + StatementService + FeedbackService + 9 endpoint (학생 5 + 강사 4) + DTO 5 + 예외 2 + PersonalStatementApiTest 10 + 15 테스트 cleanup 보강. **152/152 GREEN**. |
 
 ## 7. cross-link
 

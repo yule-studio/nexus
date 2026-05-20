@@ -18,6 +18,7 @@ tags:
 | --- | --- | --- | --- |
 | v.1.0.0 | 2026-05-14 | engineering-agent/tech-lead | hub — 8 카테고리 함정 카탈로그 |
 | v.1.1.0 | 2026-05-20 | engineering-agent/tech-lead | Spring Security 401 vs 403 함정 추가 (bkurs-be B2A 회수) |
+| v.1.2.0 | 2026-05-20 | engineering-agent/tech-lead | @Transactional default rollback noRollbackFor 함정 추가 (bkurs-be B2B 회수) + 인증/권한 카테고리 |
 
 **[[../java-spring|↑ Java Spring]]**
 
@@ -33,7 +34,7 @@ tags:
 | --- | --- | --- | --- |
 | 1 | **쿼리 / ORM** | [[n-plus-one]] | 가장 흔한 성능 사고. 목록 = N+1 쿼리. |
 | 2 | **null / 타입 안정성** | [[null-safety]] | NPE 천국. Optional / @Nullable / record. |
-| 3 | **트랜잭션 / 락** | [[transaction-pitfalls]] | self-invocation / lazy outside session / 긴 트랜잭션. |
+| 3 | **트랜잭션 / 락** | [[transaction-pitfalls]] · [[transactional-rollback-noRollbackFor]] | self-invocation / lazy outside session / 긴 트랜잭션 / default rollback 이 부수효과 묻음. |
 | 4 | **동시성** | [[concurrency-pitfalls]] | race / lost update / 낙관·비관·분산. |
 | 5 | **캐시** | [[cache-stampede]] | hot key, dog-pile, thundering herd. |
 | 6 | **메모리 / 리소스** | [[resource-leaks]] | connection pool / file handle / OOM / GC. |
@@ -104,6 +105,7 @@ tags:
 | [[time-encoding]] | 🟡 |
 | error-handling-pitfalls | 🟡 |
 | [[spring-security-401-vs-403]] | ✅ |
+| [[transactional-rollback-noRollbackFor]] | ✅ |
 
 ---
 

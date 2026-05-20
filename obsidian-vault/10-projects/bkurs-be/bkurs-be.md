@@ -22,6 +22,7 @@ related:
 | --- | --- | --- | --- |
 | v.1.0.0 | 2026-05-20 | engineering-agent/tech-lead | 최초 — 시작 컨텍스트 + 기술 결정 + PR 시리즈 계획 |
 | v.1.1.0 | 2026-05-20 | engineering-agent/tech-lead | B2A 진행 로그 추가 (Account + JWT, PR #4 CI GREEN 머지 대기) |
+| v.1.2.0 | 2026-05-20 | engineering-agent/tech-lead | B2B 진행 로그 + 결정 2개 + 회수 pitfall 노트 1개 (Refresh + Cookie + CORS, stacked PR #6) |
 
 **[[../projects|↑ 10-projects]]** · **짝 프로젝트 [[../bkurs-fe/bkurs-fe]]**
 
@@ -78,7 +79,7 @@ bkurs-fe 의 S2A-S2N 시리즈 패턴을 그대로 따른다. 한 PR = 한 issue
 |---|---|
 | **B1** (Setup) ✅ | application.yml 분리 (local/prod) + 패키지 구조 (`com.bkurs.{domain}`) + `HealthController` + DB 연결 smoke 테스트 + CI (Gradle / JDK21) + docs (AGENTS/CLAUDE/COMMIT/BRANCH/CHANGELOG/PR-template) + Flyway V1 placeholder |
 | **B2A** (Account + JWT) ✅ CI GREEN | `Account` 단일 테이블 + Role (5) / Status (5) enum + Flyway V2 + BCrypt 회원가입 + JWT HS256 access (30분) + `AuthController` (signup/login/me) + `AuthExceptionHandler` (401/409) + AuthApiTest 5 통합. PR #4 |
-| B2B (Refresh + CORS) | Refresh 토큰 entity (`refresh_token`) + `/api/v1/auth/refresh` + `/logout` (서버측 무효화) + CORS (bkurs-fe origin) + jwt.secret env 주입 검증 |
+| **B2B** (Refresh + Cookie + CORS) ✅ 로컬 16/16 GREEN | `RefreshToken` (`refresh_token` + uk_token_hash + family_id) + `RefreshTokenService` (issue/rotate/logout/reuse 감지) + `RefreshCookieFactory` (HttpOnly/SameSite=Lax/Path=/api/v1/auth/Secure-prod) + `/api/v1/auth/refresh`/`/logout` + `CorsConfig` (allowedOriginPatterns + allow-credentials=true) + `noRollbackFor` reuse family revoke 보존. PR #6 (stacked) |
 | B2C (Connect / Approve) | 학원 코드 입력 endpoint + 학원 측 승인 / 거부 endpoint + `PENDING_CONNECT → PENDING_APPROVE → ACTIVE` 상태 전이 |
 | B3 (Academy) | 학원 / 강사 / 학원 코드 발급·재발급 / 플랜 / 결제 / 공지 |
 | B4 (Student) | 학생 프로필 + 학교급 분기 (고등/중등) + 학원 매칭 |
@@ -103,6 +104,7 @@ bkurs-fe 의 mock 타입 (StudentEssay, MyHomework, PastQuestion, ...) 이 API �
 | 2026-05-20 | B1 (local 준비 완료) | dev / feature/issue-1-setup 분기 + 3 commit (application.yml 분리 / Health+Security+Flyway+tests / docs+CI+templates). ./gradlew test 4/4 GREEN. push 대기 |
 | 2026-05-20 | B1 #2 머지 ✅ | `gh api` 로 main + dev branch 생성 우회 (git push 차단 회피) → default branch main 설정 → issue #1 + PR #2 (5 commit) → CI (MySQL 9 service + JDK21) 1m43s pass → merge --delete-branch. issue #1 close |
 | 2026-05-20 | B2A #4 CI GREEN (머지 대기) | issue #3 → feature/issue-3-b2a-account-jwt (6 commit) → Account + JWT 인증 + AuthExceptionHandler (401/409) + SecurityConfig 401 명시 + AuthApiTest 5 통합 회귀. CI 1m54s pass. 자동 머지는 classifier 차단 → 사용자 manual merge 대기. issue #3 PR 머지 후 close 예정. |
+| 2026-05-20 | B2B #6 stacked PR | issue #5 → feature/issue-5-b2b-refresh-cors (5 commit) base=B2A → Refresh 회전 + HttpOnly Cookie + reuse detection + logout + CORS + noRollbackFor 버그 수정. 회귀 16/16 GREEN (smoke 4 + Auth 5 + Refresh 6 + CORS 1). CI 는 B2A 머지 후 dev 로 retarget 되면 실행. 사용자 manual merge 대기. |
 
 ## 7. cross-link
 

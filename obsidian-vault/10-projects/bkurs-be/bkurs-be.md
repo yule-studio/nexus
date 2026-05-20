@@ -56,6 +56,7 @@ related:
 | v.1.33.0 | 2026-05-20 | engineering-agent/tech-lead | Phase B-1 B17 FileStorageService PR (#68) — interface + MockFileStorage + presigned URL endpoint + envelope 첫 케이스 + ValidationHandler envelope 마이그레이션 + Supabase→Spring 매핑 vault. |
 | v.1.34.0 | 2026-05-20 | engineering-agent/tech-lead | Phase B-2~B-5 완료 (B18 Notification PR #70, B19 Ai PR #72, B20 Stt PR #74, B21 Pdf PR #76). 5 service interface + Mock + 통합. TeacherInvite 자동 이메일, 생기부 PDF 3 endpoint, AI/STT 추상화. Phase B-task-log 통합 정리. |
 | v.1.35.0 | 2026-05-20 | engineering-agent/tech-lead | **Phase C 완료 — dev cascade merge (commit 941ebaf)**. 35 PR close + 37 issue close + 33 feature branch 삭제. dev = 모든 Phase A/B stack 반영. ~165 endpoint / ~295 회귀 GREEN / V1~V23 / 6 외부 abstraction. **bkurs-be 1차 사이클 완료.** 후속: 실 SaaS plug-in (B22~B29) + bkurs-fe 작업. |
+| v.1.36.0 | 2026-05-21 | engineering-agent/tech-lead | **사이클 2 완료 (commit 218a89b)** — B22~B25 real plug-ins (PortOne / SendGrid / Claude / Clova) + restructure (web→controller, dto split, handler 분리) + Swagger UI 8 group 한국어 + Dockerfile + GHCR workflow + application-dev.yml + docker-compose.dev.yml. **dev 배포 준비 완료**. 후속: B26~B29 plug-in + envelope migration (#87) + inroad-high. |
 
 **[[../projects|↑ 10-projects]]** · **짝 프로젝트 [[../bkurs-fe/bkurs-fe]]**
 

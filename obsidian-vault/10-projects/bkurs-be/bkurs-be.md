@@ -29,6 +29,7 @@ related:
 | v.1.6.0 | 2026-05-20 | engineering-agent/tech-lead | B3C 진행 로그 + 결정 1개 (학원 공지 + read 추적, stacked PR #14). 회귀 54/54. B3 시리즈 완결. |
 | v.1.7.0 | 2026-05-20 | engineering-agent/tech-lead | B4A 진행 로그 + 결정 1개 (학원 정보 4필드 + 학생·강사 조회, stacked PR #16) + 회수 pitfall 1개 (ERROR dispatch /error 401). 회귀 62/62. B4 시리즈 시작. |
 | v.1.8.0 | 2026-05-20 | engineering-agent/tech-lead | B4B 진행 로그 + 결정 1개 (Plan catalog + Subscription 분리, stacked PR #18). 회귀 72/72. |
+| v.1.9.0 | 2026-05-20 | engineering-agent/tech-lead | B4C 진행 로그 + 결정 1개 (PaymentGateway 추상화 + Mock 구현 + 환불, stacked PR #20). 회귀 82/82. |
 
 **[[../projects|↑ 10-projects]]** · **짝 프로젝트 [[../bkurs-fe/bkurs-fe]]**
 
@@ -92,7 +93,7 @@ bkurs-fe 의 S2A-S2N 시리즈 패턴을 그대로 따른다. 한 PR = 한 issue
 | **B3C** (학원 공지 + read 추적) ✅ 로컬 54/54 GREEN | `Announcement` + `AnnouncementRead` (uk + CASCADE) + V6 + `AcademyMembershipResolver` (role→academyId 통합) + service 2 + endpoint 6 (/me OWNER + /my role 무관) + DTO 4 + 예외 2 + 회귀 10. PR #14 (stacked, **B3 완결**) |
 | **B4A** (학원 정보 보강 + 학생·강사 조회) ✅ 로컬 62/62 GREEN | Academy 4 필드 (phone/address/logoUrl/website) + V7 + updateInfo invariant + PATCH /me 확장 + 신규 GET /my/academy + `GlobalValidationExceptionHandler` (회수: ERROR dispatch /error 401 함정) + 회귀 8. PR #16 (stacked, B4 시리즈 시작) |
 | **B4B** (학원 플랜 + 구독) ✅ 로컬 72/72 GREEN | `Plan` catalog (MASTER CRUD) + `AcademyPlanSubscription` (ACTIVE/CANCELLED/EXPIRED) + V8 + service 2 + endpoint 7 (admin 3 + catalog 1 + owner 4) + DTO 5 + 예외 4. 결제는 B4C — mock subscribe. PR #18 (stacked) |
-| B4C (결제 연동) | 결제 게이트웨이 (포트원/토스/네이버 등 추상화) + 영수증 / 환불 |
+| **B4C** (PaymentGateway + 환불) ✅ 로컬 82/82 GREEN | `Payment` (PENDING/SUCCESS/FAILED/REFUNDED + invariant) + V9 + `PaymentGateway` interface + `MockPaymentGateway` + `PaymentService` + `SubscriptionService.chargeOrFail/cancelAndRefund` + 신규 endpoint 3 (refund + /me/payments OWNER + /admin/payments MASTER) + 402 매핑. PR #20 (stacked) |
 | B4D (학원장 이관) | owner_account_id 변경 endpoint + 감사 로그 + 양측 confirm |
 | B5 (Student 프로필) | 학생 프로필 + 학교급 분기 (고등/중등) + 학원 매칭 |
 | B6 (Roadmap) | 학년 × 분기 × 미션 + 학생별 진행 상태 |
@@ -123,6 +124,7 @@ bkurs-fe 의 mock 타입 (StudentEssay, MyHomework, PastQuestion, ...) 이 API �
 | 2026-05-20 | B3C #14 stacked PR | issue #13 → feature/issue-13-b3c-announcement (5 commit) base=B3B → Announcement + AnnouncementRead + V6 + AcademyMembershipResolver (role→academyId) + AnnouncementService (OWNER CRUD) + AnnouncementReadService (N+1 회피 + upsert) + 6 endpoint (/me OWNER + /my role 무관) + DTO 4 + 예외 2 + AnnouncementApiTest 10. **54/54 GREEN**. B3 시리즈 완결. |
 | 2026-05-20 | B4A #16 stacked PR | issue #15 → feature/issue-15-b4a-academy-info (3 commit) base=B3C → V7 ALTER academy + 4 nullable 컬럼 (phone/address/logoUrl/website) + Academy.updateInfo invariant + PATCH /me 확장 + 신규 GET /my/academy (학생·강사) + GlobalValidationExceptionHandler (회수: ERROR dispatch /error 401) + AcademyInfoApiTest 8. **62/62 GREEN**. B4 시리즈 시작. |
 | 2026-05-20 | B4B #18 stacked PR | issue #17 → feature/issue-17-b4b-plan-subscription (4 commit) base=B4A → Plan + AcademyPlanSubscription + V8 + PlanService (MASTER CRUD) + SubscriptionService (subscribe/cancel/change ACTIVE 1개) + 7 endpoint (admin 3 + catalog 1 + owner 4) + DTO 5 + 예외 4 + PlanSubscriptionApiTest 10. **72/72 GREEN**. 결제 연동은 B4C. |
+| 2026-05-20 | B4C #20 stacked PR | issue #19 → feature/issue-19-b4c-payment-gateway (4 commit) base=B4B → Payment + V9 + PaymentGateway interface + MockPaymentGateway + PaymentService + SubscriptionService chargeOrFail/cancelAndRefund + 3 endpoint (refund/me-payments/admin-payments) + 402 매핑 + PaymentApiTest 10. **82/82 GREEN**. |
 
 ## 7. cross-link
 

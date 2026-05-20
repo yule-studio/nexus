@@ -1,0 +1,111 @@
+---
+title: bkurs-be — envelope 마이그레이션 진척표
+kind: tracker
+status: active
+created_at: 2026-05-21
+tags: [bkurs-be, envelope, migration, refactor]
+related:
+  - "[[bkurs-be]]"
+  - "[[../bkurs-fe/architecture-api-foundation]]"
+  - "[[architecture-async-mq-batch]]"
+home_hub: "[[bkurs-be]]"
+---
+
+# bkurs-be — envelope 마이그레이션 진척표
+
+## 1. 핵심 요약
+
+bkurs-be 전체 endpoint (~153) 를 `ApiEnvelope<T> {success, data, error, meta}`
+표준으로 마이그레이션. phase 1 (안전한 3 도메인) 완료 → phase 2~5 점진.
+
+| Phase | 도메인 | PR | 상태 |
+|-------|--------|-----|------|
+| **1-A** | auth (AuthController + AuthExceptionHandler) | [#101](https://github.com/seum-running/bkurs-be/pull/101) | **DONE** |
+| **1-B** | student-profile (Student + Owner) | [#103](https://github.com/seum-running/bkurs-be/pull/103) | **DONE** |
+| **1-C** | dashboard (Owner + Teacher, read-only) | [#105](https://github.com/seum-running/bkurs-be/pull/105) | **DONE** |
+| **2-1** | course / homework / reading | — | pending |
+| **2-2** | question / interview / simulation | — | pending |
+| **2-3** | record / performance / statement | — | pending |
+| **2-4** | plan / payment / search / announcement / discussion | — | pending |
+| **2-5** | concept / suhaeng / saenggibu (Cycle 3 신규 도메인 포함) | — | pending |
+
+## 2. 내 해석 (왜 이 순서로)
+
+### phase 1 = "안전한 3 도메인" 선정 기준
+- **auth**: 모든 도메인이 의존 → 표준 잡으면 나머지 패턴 복제 쉬움.
+- **student-profile**: 도메인 exception 3종 + happy/error 모두 있음 — handler+
+  controller 양쪽 envelope 검증.
+- **dashboard**: read-only + handler 없음 — controller envelope 만 패턴 검증.
+
+이 3 조합으로 envelope 마이그레이션의 **3 가지 변형 (handler/controller/test)**
+패턴을 모두 검증 → phase 2 부터는 같은 template 복제.
+
+### phase 2~5 묶음 기준
+도메인 응집도 (학습 / 평가 / 기록 / 지원 / 신규) 로 ~10 controller 씩 묶어
+각 PR 4-5 commit. envelope 마이그레이션 자체는 mechanical — 한 묶음 ~1 cycle.
+
+## 3. 적용 맥락
+
+### 3.1. 도메인별 작업 template
+
+각 도메인 envelope 마이그레이션은 항상 같은 3 commit:
+
+**Commit 1** — `<Domain>ErrorCode` enum + Handler envelope
+- `src/main/java/com/bkurs/<domain>/enums/<Domain>ErrorCode.java` (신규)
+  - code prefix: 도메인 약자 (AUTH, STU, ACA, PAY, ...)
+  - status 별 4001/4002... + 4040 (NotFound) + 4091 (Conflict) 패턴
+- `<Domain>ExceptionHandler.java` 갱신
+  - `ApiEnvelopes` 주입
+  - 각 exception → `envelopes.fail(code.status(), ApiError.of(code, msg, null, requestId), request)`
+
+**Commit 2** — Controller envelope
+- 응답 type: `ResponseEntity<ApiEnvelope<T>>`
+- `ApiEnvelopes` 주입 + `HttpServletRequest http` 파라미터 추가
+- 본문: `return envelopes.ok(data, http);`
+- POST + cookie 같은 hybrid 응답은 envelope.body 만 추출해서 새 ResponseEntity 빌드
+- logout 등 204 No Content 는 envelope 없이 그대로
+
+**Commit 3** — Test envelope assertion 갱신
+- helper 함수 추가 (envelope.data 추출):
+  ```java
+  private Map<String, Object> data(ResponseEntity<Map> res) {
+      return (Map<String, Object>) res.getBody().get("data");
+  }
+  private Map<String, Object> error(ResponseEntity<Map> res) {
+      return (Map<String, Object>) res.getBody().get("error");
+  }
+  ```
+- 또는 도메인 단일 endpoint 면 helper 안에서 envelope unwrap (dashboard 패턴)
+- error 응답은 `error.get("code")` 까지 검증 (AUTH-4001 등)
+
+### 3.2. 테스트 환경 변수
+
+`./gradlew test` 단독은 실패 — DB_PASSWORD env 필요:
+```bash
+DB_PASSWORD='<로컬 mysql 비번>' ./gradlew test --tests "com.bkurs.<domain>.*"
+```
+
+`application-local.yml` 의 `password: ${DB_PASSWORD:?DB_PASSWORD env required ...}`
+plac eholder 가 환경변수 없을 때 fail-fast.
+
+### 3.3. 회귀 방지
+
+- **OpenAPI 스펙 변화**: envelope 적용 시 OpenAPI doc 의 response schema 가 `T` →
+  `ApiEnvelope<T>` 로 변함. FE 가 `apiClient` (envelope unwrap helper) 통해 호출하면
+  영향 X — 단, raw fetch 가정한 코드 grep 으로 사전 점검.
+- **client 호환**: bkurs-fe 의 `src/lib/api/concept.ts` 가 표준 (envelope unwrap) — 신규
+  도메인 client 도 본 패턴 따름.
+
+## 4. 관련 노트
+
+- [[bkurs-be]] — 프로젝트 허브
+- [[../bkurs-fe/architecture-api-foundation]] — FE 쪽 envelope unwrap 구조 (S1/S2)
+- [[architecture-async-mq-batch]] — async / MQ / batch 인프라
+- [[../yule-studio-agent/research-tech-lead-runtime-loop-issue-73|tech-lead loop research]]
+
+## 5. 참고
+
+- 코드 SSoT: `bkurs-be/src/main/java/com/bkurs/common/api/{ApiEnvelope,ApiEnvelopes,ApiMeta}.java`
+- 도메인 ErrorCode 예: `auth/enums/AuthErrorCode.java` / `student/enums/StudentErrorCode.java`
+- 마이그레이션 template: 본 노트 3.1
+- 후속: Cycle 3 (suhaeng/saenggibu 신규 도메인) + phase 2~5 mechanical 복제.

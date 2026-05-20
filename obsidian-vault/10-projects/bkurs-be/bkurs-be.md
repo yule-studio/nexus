@@ -37,6 +37,7 @@ related:
 | v.1.14.0 | 2026-05-20 | engineering-agent/tech-lead | B6C 진행 로그 + 결정 1개 (강사 권한 매트릭스 정밀화, stacked PR #30). 회귀 132/132. **B6 시리즈 완결.** |
 | v.1.15.0 | 2026-05-20 | engineering-agent/tech-lead | B7A 진행 로그 + 결정 1개 (Homework + Submission + 채점, stacked PR #32). 회귀 142/142. **B7 학습 콘텐츠 시리즈 시작.** |
 | v.1.16.0 | 2026-05-20 | engineering-agent/tech-lead | B7B 진행 로그 + 결정 1개 (PersonalStatement + Feedback + DRAFT/SUBMITTED, stacked PR #34). 회귀 152/152. |
+| v.1.17.0 | 2026-05-20 | engineering-agent/tech-lead | REFACTOR — AbstractIntegrationTest 추출 (16 테스트 cleanup 통합, **+122 / -1377 lines**), stacked PR #36. 회귀 152/152 유지. 회수 누적의 종결. |
 
 **[[../projects|↑ 10-projects]]** · **짝 프로젝트 [[../bkurs-fe/bkurs-fe]]**
 
@@ -147,6 +148,7 @@ bkurs-fe 의 mock 타입 (StudentEssay, MyHomework, PastQuestion, ...) 이 API �
 | 2026-05-20 | B6C #30 stacked PR | issue #29 → feature/issue-29-b6c-teacher-permission (4 commit) base=B6B → Course.updateLimited + CourseService.updateByTeacher (write 트랜잭션) + StudentProfileService.getStudentOnly + 3 endpoint (OWNER 출결 + TEACHER PATCH description + TEACHER 학생 프로필) + DTO 1 + TeacherPermissionApiTest 10. **132/132 GREEN**. **B6 시리즈 완결.** |
 | 2026-05-20 | B7A #32 stacked PR | issue #31 → feature/issue-31-b7a-homework (4 commit) base=B6C → Homework + HomeworkSubmission + V14 + HomeworkService (강사 CRUD) + SubmissionService (학생 upsert + 강사 채점 0-100) + 9 endpoint (TEACHER 6 + STUDENT 3) + DTO 6 + 예외 3 + HomeworkApiTest 10 + 14 테스트 cleanup 보강. **142/142 GREEN**. **B7 학습 콘텐츠 시리즈 시작.** |
 | 2026-05-20 | B7B #34 stacked PR | issue #33 → feature/issue-33-b7b-personal-statement (4 commit) base=B7A → PersonalStatement + StatementFeedback + V15 + StatementStatus enum (DRAFT/SUBMITTED) + StatementService + FeedbackService + 9 endpoint (학생 5 + 강사 4) + DTO 5 + 예외 2 + PersonalStatementApiTest 10 + 15 테스트 cleanup 보강. **152/152 GREEN**. |
+| 2026-05-20 | REFACTOR #36 stacked PR | issue #35 → feature/issue-35-refactor-abstract-test (2 commit) base=B7B → AbstractIntegrationTest 추출 + 16 테스트 extends + 중복 제거. **+122 / -1377 lines (-1270)**. 회귀 **152/152 GREEN 유지**. 신규 entity 추가 시 base 한 곳 보강. 회수 누적의 종결. |
 
 ## 7. cross-link
 

@@ -36,6 +36,9 @@ tags: [area, frontend, javascript, hub, beginner]
 - [[async/promises-async-await]] — Promise / async/await / fetch
 - [[modules/modules-and-imports]] — import / export
 
+### Week 4 — Modern JS (현업 필수)
+- [[modern/es-modern]] — ES2020+ (`?.` / `??` / structuredClone / Array.at / Object.groupBy 등)
+
 ---
 
 ## 2. 자주 묻는 질문

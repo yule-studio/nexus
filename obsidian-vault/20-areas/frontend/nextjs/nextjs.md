@@ -44,6 +44,10 @@ tags: [area, frontend, nextjs, react, hub, beginner]
 - [[api-routes]] — `route.ts` 로 API 만들기
 - [[deploy/vercel]] — Vercel 배포 / 환경변수
 
+### 고급 (현업)
+- [[advanced/middleware]] — 인증 / 리다이렉트 / 헤더 (Edge runtime)
+- [[i18n/internationalization]] — 다국어 (ko/en/ja)
+
 ---
 
 ## 2. 자주 묻는 질문

@@ -42,6 +42,9 @@ tags: [area, frontend, html, css, hub, beginner]
 - [[forms/forms-basics]] — input / form / button
 - [[semantic-and-accessibility]] — header / nav / main / footer
 
+### Day 11~12 — 모션
+- [[animations/css-animations]] — transition / @keyframes / transform / View Transitions
+
 ---
 
 ## 2. 자주 묻는 질문

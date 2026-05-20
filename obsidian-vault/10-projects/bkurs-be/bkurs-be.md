@@ -55,6 +55,7 @@ related:
 | v.1.32.0 | 2026-05-20 | engineering-agent/tech-lead | Phase A-2 Common Response Envelope foundation PR (#66) — common.api/error/enums/exception/handler/web 19 파일 + ApiEnvelopeTest 8 unit. 신규 endpoint (B17~B21) 부터 강제, 기존 153 마이그레이션은 별도 PR. |
 | v.1.33.0 | 2026-05-20 | engineering-agent/tech-lead | Phase B-1 B17 FileStorageService PR (#68) — interface + MockFileStorage + presigned URL endpoint + envelope 첫 케이스 + ValidationHandler envelope 마이그레이션 + Supabase→Spring 매핑 vault. |
 | v.1.34.0 | 2026-05-20 | engineering-agent/tech-lead | Phase B-2~B-5 완료 (B18 Notification PR #70, B19 Ai PR #72, B20 Stt PR #74, B21 Pdf PR #76). 5 service interface + Mock + 통합. TeacherInvite 자동 이메일, 생기부 PDF 3 endpoint, AI/STT 추상화. Phase B-task-log 통합 정리. |
+| v.1.35.0 | 2026-05-20 | engineering-agent/tech-lead | **Phase C 완료 — dev cascade merge (commit 941ebaf)**. 35 PR close + 37 issue close + 33 feature branch 삭제. dev = 모든 Phase A/B stack 반영. ~165 endpoint / ~295 회귀 GREEN / V1~V23 / 6 외부 abstraction. **bkurs-be 1차 사이클 완료.** 후속: 실 SaaS plug-in (B22~B29) + bkurs-fe 작업. |
 
 **[[../projects|↑ 10-projects]]** · **짝 프로젝트 [[../bkurs-fe/bkurs-fe]]**
 

@@ -21,8 +21,8 @@ bkurs-be 가 도달하면서 **점진 전환** 을 위해 다음 3 단계를 정
 | 단계 | 범위 | 상태 |
 |------|------|------|
 | **S1** | `src/lib/api/` 기반 (envelope / apiClient / 도메인 client) | **DONE (#60)** |
-| **S2** | 화면별 hook 분리 — supabase 호출을 hook 안으로 격리 | 후속 issue |
-| **S3** | env flag 또는 hook 내부 swap 으로 conceptApi 실 호출 | 후속 issue (BE dev 환경 도달 후) |
+| **S2** | conceptApi 위에 react-query hook 격리 | **DONE (#64)** — 화면 swap 은 S3 |
+| **S3** | 화면이 useConceptDiagnosis hook 호출 → supabase 제거 | 후속 issue (BE dev 환경 도달 후) |
 
 S1 은 **구조** 만 깔고 화면 동작은 supabase 그대로 유지 — 회귀 위험 최소화.
 
@@ -105,6 +105,34 @@ export const fooApi = {
 
 `VITE_API_BASE_URL` — bkurs-be base URL. dev 환경 도달 전까지 기본값 `/api`
 (vite proxy 로 로컬 8080 forward 가능).
+
+## 3.4. S2 — react-query hook 패턴 (#64)
+
+```ts
+// src/lib/hooks/useConceptDiagnosis.ts
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { conceptApi, ... } from '@/lib/api'
+
+const CONCEPT_KEY = ['concept', 'mine'] as const
+
+export function useConceptDiagnosis() {
+  return useQuery({ queryKey: CONCEPT_KEY, queryFn: () => conceptApi.getMine() })
+}
+
+export function useUpdateConceptProgress() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (req) => conceptApi.updateProgress(req),
+    onSuccess: (data) => qc.setQueryData(CONCEPT_KEY, data),
+  })
+}
+```
+
+원칙:
+- 쿼리 키는 도메인 + 의미 (`['concept', 'mine']`, `['concept', 'teacher', sid]`).
+- mutation 의 onSuccess 는 같은 자원의 쿼리 캐시를 `setQueryData` 로 갱신
+  (`invalidateQueries` 보다 한 라운드 트립 절약).
+- 강사용 쿼리는 `enabled: sid > 0` 으로 boot 시 placeholder fetch 방지.
 
 ## 4. 관련 노트
 

@@ -24,6 +24,7 @@ related:
 | v.1.1.0 | 2026-05-20 | engineering-agent/tech-lead | B2A 진행 로그 추가 (Account + JWT, PR #4 CI GREEN 머지 대기) |
 | v.1.2.0 | 2026-05-20 | engineering-agent/tech-lead | B2B 진행 로그 + 결정 2개 + 회수 pitfall 노트 1개 (Refresh + Cookie + CORS, stacked PR #6) |
 | v.1.3.0 | 2026-05-20 | engineering-agent/tech-lead | B2C 진행 로그 + 결정 1개 (학원 connect + membership + 이중 상태 트랙, stacked PR #8). B2 완결. |
+| v.1.4.0 | 2026-05-20 | engineering-agent/tech-lead | B3A 진행 로그 + 결정 1개 (학원 CRUD + 코드 관리, stacked PR #10) + 회수 pitfall 1개 (save vs saveAndFlush). |
 
 **[[../projects|↑ 10-projects]]** · **짝 프로젝트 [[../bkurs-fe/bkurs-fe]]**
 
@@ -82,7 +83,10 @@ bkurs-fe 의 S2A-S2N 시리즈 패턴을 그대로 따른다. 한 PR = 한 issue
 | **B2A** (Account + JWT) ✅ CI GREEN | `Account` 단일 테이블 + Role (5) / Status (5) enum + Flyway V2 + BCrypt 회원가입 + JWT HS256 access (30분) + `AuthController` (signup/login/me) + `AuthExceptionHandler` (401/409) + AuthApiTest 5 통합. PR #4 |
 | **B2B** (Refresh + Cookie + CORS) ✅ 로컬 16/16 GREEN | `RefreshToken` (`refresh_token` + uk_token_hash + family_id) + `RefreshTokenService` (issue/rotate/logout/reuse 감지) + `RefreshCookieFactory` (HttpOnly/SameSite=Lax/Path=/api/v1/auth/Secure-prod) + `/api/v1/auth/refresh`/`/logout` + `CorsConfig` (allowedOriginPatterns + allow-credentials=true) + `noRollbackFor` reuse family revoke 보존. PR #6 (stacked) |
 | **B2C** (Connect / Approve / 상태 전이) ✅ 로컬 24/24 GREEN | `Academy` + `AcademyCode` + `StudentAcademyMembership` (이중 상태 트랙) + V4 + `AcademyConnectService` + `MembershipService` (ownership 2계층 검증) + `/api/v1/auth/connect` + `/api/v1/academies/memberships/{id}/approve|reject` + `@PreAuthorize("hasRole('OWNER')")` + `AcademyExceptionHandler` 7 매핑. PR #8 (stacked, B2 완결) |
-| B3 (Academy 전체 도메인) | 학원 생성·변경 / 강사 등록 / 학원 코드 발급·재발급·만료 / 학원 정보 변경 / 플랜 / 결제 / 공지 |
+| **B3A** (학원 CRUD + 코드 관리) ✅ 로컬 34/34 GREEN | `AcademyManagementService` (1인 1학원) + `AcademyCodeService` (32-char alphabet random + saveAndFlush 재시도) + AcademyController/AcademyCodeController/OwnerMembershipQueueController + @PreAuthorize OWNER + ownership 2계층 + 예외 3 + 회귀 10. PR #10 (stacked) |
+| B3B (강사 등록 + 학원 소속) | TEACHER role 의 학원 소속 (academy_member 또는 invite-based) + 강사 endpoint + 권한 |
+| B3C (학원 공지) | 학원 → 학원생 알림 / 공지 endpoint + read 상태 추적 |
+| B4 (플랜 + 결제 + 학원 이관) | 학원 플랜 / 결제 연동 / 학원 정보 (전화번호/주소/로고) / 학원장 이관 |
 | B4 (Student) | 학생 프로필 + 학교급 분기 (고등/중등) + 학원 매칭 |
 | B5 (Roadmap) | 학년 × 분기 × 미션 + 학생별 진행 상태 |
 | B6+ | inroad-high 의 도메인 (생기부 / 자소서 / 예상질문 / 기출 / 모의면접 / 시뮬 / 토론 / 수행평가 / 독서 / 숙제 / 학사관리 ...) 별 endpoint |
@@ -107,6 +111,7 @@ bkurs-fe 의 mock 타입 (StudentEssay, MyHomework, PastQuestion, ...) 이 API �
 | 2026-05-20 | B2A #4 CI GREEN (머지 대기) | issue #3 → feature/issue-3-b2a-account-jwt (6 commit) → Account + JWT 인증 + AuthExceptionHandler (401/409) + SecurityConfig 401 명시 + AuthApiTest 5 통합 회귀. CI 1m54s pass. 자동 머지는 classifier 차단 → 사용자 manual merge 대기. issue #3 PR 머지 후 close 예정. |
 | 2026-05-20 | B2B #6 stacked PR | issue #5 → feature/issue-5-b2b-refresh-cors (5 commit) base=B2A → Refresh 회전 + HttpOnly Cookie + reuse detection + logout + CORS + noRollbackFor 버그 수정. 회귀 16/16 GREEN (smoke 4 + Auth 5 + Refresh 6 + CORS 1). CI 는 B2A 머지 후 dev 로 retarget 되면 실행. 사용자 manual merge 대기. |
 | 2026-05-20 | B2C #8 stacked PR | issue #7 → feature/issue-7-b2c-academy-connect (4 commit) base=B2B → Academy + AcademyCode + StudentAcademyMembership + V4 + AcademyConnectService + MembershipService + ConnectController + MembershipController + @PreAuthorize OWNER + AcademyExceptionHandler 7매핑 + AcademyApprovalApiTest 8 회귀. **24/24 GREEN**. B2 시리즈 완결. |
+| 2026-05-20 | B3A #10 stacked PR | issue #9 → feature/issue-9-b3a-academy-management (3 commit) base=B2C → AcademyManagementService + AcademyCodeService (random 8자 + saveAndFlush 재시도) + AcademyController + AcademyCodeController + OwnerMembershipQueueController + DTO 4 + 예외 3 + AcademyManagementApiTest 10 회귀. **34/34 GREEN**. B3 시리즈 시작. |
 
 ## 7. cross-link
 

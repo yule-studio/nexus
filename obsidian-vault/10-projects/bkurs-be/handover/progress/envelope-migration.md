@@ -5,10 +5,10 @@ status: active
 created_at: 2026-05-21
 tags: [bkurs-be, envelope, migration, refactor]
 related:
-  - "[[bkurs-be]]"
-  - "[[../bkurs-fe/architecture-api-foundation]]"
-  - "[[architecture-async-mq-batch]]"
-home_hub: "[[bkurs-be]]"
+  - "[[../bkurs-be]]"
+  - "[[../../bkurs-fe/architecture-api-foundation]]"
+  - "[[async-mq-batch]]"
+home_hub: "[[../bkurs-be]]"
 ---
 
 # bkurs-be — envelope 마이그레이션 진척표
@@ -129,9 +129,9 @@ plac eholder 가 환경변수 없을 때 fail-fast.
 
 ## 4. 관련 노트
 
-- [[bkurs-be]] — 프로젝트 허브
-- [[../bkurs-fe/architecture-api-foundation]] — FE 쪽 envelope unwrap 구조 (S1/S2)
-- [[architecture-async-mq-batch]] — async / MQ / batch 인프라
+- [[../bkurs-be]] — 프로젝트 허브
+- [[../../bkurs-fe/architecture-api-foundation]] — FE 쪽 envelope unwrap 구조 (S1/S2)
+- [[async-mq-batch]] — async / MQ / batch 인프라
 - [[../yule-studio-agent/research-tech-lead-runtime-loop-issue-73|tech-lead loop research]]
 
 ## 5. 참고

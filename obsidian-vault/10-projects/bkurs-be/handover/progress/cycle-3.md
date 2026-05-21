@@ -7,9 +7,9 @@ tags: [bkurs-be, bkurs-fe, retrospective, cycle-3]
 related:
   - "[[decision-suhaeng-round-table]]"
   - "[[decision-saenggibu-semester-lock]]"
-  - "[[envelope-migration-progress]]"
-  - "[[../bkurs-fe/architecture-api-foundation]]"
-home_hub: "[[bkurs-be]]"
+  - "[[envelope-migration]]"
+  - "[[../../bkurs-fe/architecture-api-foundation]]"
+home_hub: "[[../bkurs-be]]"
 ---
 
 # bkurs-be — Cycle 3 회고
@@ -99,9 +99,9 @@ animation, mobile 최적화) 보류. BE smoke 후 후속 cycle 에서 다듬기.
 
 - [[decision-suhaeng-round-table]]
 - [[decision-saenggibu-semester-lock]]
-- [[envelope-migration-progress]] — phase 1 종료, Cycle 5+ 진행 예정
-- [[../bkurs-fe/architecture-api-foundation]] — FE 쪽 S1/S2 + Cycle 3 hook 추가
-- [[../bkurs-fe/decisions/decision-hook-convention]] — Cycle 3 의 hook 위치 결정 근거
+- [[envelope-migration]] — phase 1 종료, Cycle 5+ 진행 예정
+- [[../../bkurs-fe/architecture-api-foundation]] — FE 쪽 S1/S2 + Cycle 3 hook 추가
+- [[../../bkurs-fe/decisions/decision-hook-convention]] — Cycle 3 의 hook 위치 결정 근거
 
 ## 참고
 

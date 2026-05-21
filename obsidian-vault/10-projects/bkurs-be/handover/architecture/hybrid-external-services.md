@@ -7,8 +7,8 @@ created_at: 2026-05-20T22:00:00+09:00
 agent: engineering-agent/tech-lead
 tags: [architecture, hybrid, external-services, bkurs]
 related:
-  - "[[bkurs-be]]"
-  - "[[../bkurs-fe/bkurs-fe]]"
+  - "[[../bkurs-be]]"
+  - "[[../../bkurs-fe/bkurs-fe]]"
   - "[[decisions/decision-record-bridge]]"
 home_hub: bkurs-be
 ---
@@ -320,9 +320,9 @@ public class MockPaymentGateway implements PaymentGateway { ... }
 - 옵션 1: `git filter-repo` 로 rewrite + force-push (파괴적, 협업자 영향).
 - 옵션 2: 비번 rotate (DB user `mw` 비번 변경) — 권장.
 
-## 10. company-infra 분리
+## 10. 인프라 분리 (별도 운영 영역)
 
-별도 repo `company-infra` 로 이전:
+다음은 본 레포가 아닌 AWS 콘솔 / Terraform / SSM 측 영역:
 - `docker-compose.yml` (현재 bkurs-be 루트)
 - Kubernetes manifests (향후)
 - Terraform / Pulumi IaC (향후)
@@ -336,7 +336,7 @@ public class MockPaymentGateway implements PaymentGateway { ... }
 
 ## 관련
 
-- [[bkurs-be|bkurs-be hub]] — 도메인 + abstraction 진행 로그
-- [[../bkurs-fe/bkurs-fe|bkurs-fe hub]] — 짝 프론트엔드
+- [[../bkurs-be|bkurs-be hub]] — 도메인 + abstraction 진행 로그
+- [[../../bkurs-fe/bkurs-fe|bkurs-fe hub]] — 짝 프론트엔드
 - [[decisions/decision-record-bridge|B9 bridge 결정]] — same-TX 일관성 예시
-- 후속: company-infra repo 신설 / 실 SaaS plug-in PR (B22+)
+- 후속: 인프라 Terraform 모듈 정리 / 실 SaaS plug-in PR (B22+)

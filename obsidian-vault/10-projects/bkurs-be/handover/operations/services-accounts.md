@@ -7,9 +7,9 @@ created_at: 2026-05-20T22:30:00+09:00
 agent: engineering-agent/tech-lead
 tags: [ops, accounts, external-services, secrets, bkurs]
 related:
-  - "[[bkurs-be]]"
-  - "[[architecture-hybrid-external-services]]"
-  - "[[bkurs-fe-vs-bkurs-be-gap]]"
+  - "[[../bkurs-be]]"
+  - "[[hybrid-external-services]]"
+  - "[[fe-be-gap]]"
 home_hub: bkurs-be
 ---
 
@@ -26,7 +26,7 @@ bkurs-fe 가 현재 `@supabase/supabase-js` 의존 (13 곳 import). Supabase 의
 |---|---|---|---|
 | **Auth** (`supabase.auth.signInWithPassword`) | `admin/_pages/login/`, `master/_pages/login/` | bkurs-be **자체 JWT** (B2A 구현 완료) — Supabase 의존성 제거 | 없음 |
 | **Storage** (`supabase.storage.from(...).upload`) | 영상/음성/로고/PDF 7곳 | bkurs-be **FileStorageService** (B17) + **AWS S3** presigned URL | **AWS** (S3 + IAM) |
-| **Database** (Postgres + REST 자동) | 현재 mock 단계 | bkurs-be **REST API** (153 endpoint) + **MySQL** | **AWS RDS** |
+| **Database** (Postgres + REST 자동) | 현재 mock 단계 | bkurs-be **REST API** (153 endpoint) + **MySQL** | **MySQL on EC2** (RDS 안 씀) |
 | **Realtime** (postgres_changes / WS) | `pending/Pending.tsx` polling | bkurs-be **WebSocket** 또는 SSE (B42 후속) | 없음 |
 
 ### 환경 변수 치환
@@ -51,7 +51,7 @@ bkurs-fe 가 현재 `@supabase/supabase-js` 의존 (13 곳 import). Supabase 의
 
 ### 1.1 AWS 계정 (또는 GCP)
 
-- **목적**: S3 (file storage) + RDS (DB) + SSM/Secrets Manager (secret) + IAM
+- **목적**: S3 (file storage + DB 백업) + EC2 (ECS app + MySQL) + ALB + SSM Parameter Store + IAM
 - **가입 주체**: 회사 (사업자) — 결제 카드 + 사업자 등록증
 - **필요 발급물**:
   - IAM user `bkurs-be-app` (least privilege)
@@ -66,7 +66,7 @@ bkurs-fe 가 현재 `@supabase/supabase-js` 의존 (13 곳 import). Supabase 의
   S3_BUCKET_NAME=bkurs-prod-uploads
   S3_PRESIGNED_URL_TTL_SECONDS=600
   ```
-- **비용 예상**: S3 storage ~$0.023/GB·월, presigned URL 무료, RDS db.t3.micro ~$15/월
+- **비용 예상**: S3 storage ~$0.023/GB·월, presigned URL 무료, EC2 r6i.large (DB 자체호스팅) ~$70/월
 - **사용처 (BE)**: `FileStorageService` 구현체 (B17 → B26 PR)
 
 ### 1.2 결제 게이트웨이 — 포트원 (PortOne)
@@ -248,7 +248,7 @@ git history 에 노출된 비번:
 | 항목 | 비용 |
 |---|---|
 | AWS S3 (영상 100GB) | ~$2.3 |
-| RDS db.t3.small | ~$30 |
+| EC2 r6i.large (DB) | ~$70 |
 | SES (월 50K 이메일) | ~$5 |
 | NCP SMS (월 20K 알림톡) | ~₩160K (= ~$120) |
 | Claude Sonnet (월 5M token) | ~$30 |
@@ -261,6 +261,6 @@ git history 에 노출된 비번:
 
 ## 관련
 
-- [[architecture-hybrid-external-services]] — Hybrid 아키텍처 (각 외부 서비스 어디서 어떻게 호출)
-- [[bkurs-fe-vs-bkurs-be-gap]] — FE 에 있고 BE 에 없는 기능 갭
-- [[bkurs-be]] — 프로젝트 hub
+- [[hybrid-external-services]] — Hybrid 아키텍처 (각 외부 서비스 어디서 어떻게 호출)
+- [[fe-be-gap]] — FE 에 있고 BE 에 없는 기능 갭
+- [[../bkurs-be]] — 프로젝트 hub

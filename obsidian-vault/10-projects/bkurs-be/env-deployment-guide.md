@@ -13,6 +13,12 @@ home_hub: "[[bkurs-be]]"
 
 # bkurs — env / 배포 가이드
 
+> 📍 **Read path**: [[getting-started]] (전체 진입점) → [[external-services-guide]]
+> (SaaS 발급) → **본 노트** (env 어디에 설정) → [[bkurs-be]] (코드 SSoT).
+>
+> 본 노트는 **bkurs-be / bkurs-fe 레포 안에서 다루는 env 만** 다룬다. AWS Secret
+> Manager / EKS Cluster 자체 / Terraform tfstate 는 `company-infra` 레포 SSoT.
+
 ## 1. 핵심 요약
 
 이 노트는 **bkurs-fe / bkurs-be 레포에 직접 설정해야 하는 env / secret** 만 다룬다.
@@ -215,14 +221,21 @@ build-time injection (Vite). `VITE_*` 만 client 번들에 포함되므로 **sec
 - **secret 누출 시**: company-infra 의 incident response runbook → 즉시 rotate + 영향
   분석 + git history 점검.
 
-## 8. 관련 노트
+## 8. 다음에 볼 것
 
-- [[bkurs-be]] — 프로젝트 허브
+- ▶ **API 호출 흐름**: [[../bkurs-fe/screen-logic-and-api-map]] (화면 → endpoint)
+- ▶ **새 SaaS 발급 필요**: [[external-services-guide]] §2 (서비스별 발급 단계)
+- ▶ **CI hooks / probe 변경 작업**: `bkurs-be/Dockerfile` + `.github/workflows/dev-deploy.yml`
+- ▶ **전체 진입점으로 돌아가기**: [[getting-started]]
+
+## 9. 관련 노트
+
+- [[bkurs-be]] — 프로젝트 허브 (PR 히스토리 + 결정 누적)
 - [[external-services-guide]] — 각 SaaS 별 발급 / 설정 detail
 - [[../bkurs-fe/bkurs-fe]] — FE 허브
 - (company-infra 레포의 README — Terraform / EKS / Secret Manager 흐름)
 
-## 9. 참고
+## 10. 참고
 
 - bkurs-be SSoT: `bkurs-be/.env.example`
 - bkurs-fe SSoT: `bkurs-fe/.env.example`

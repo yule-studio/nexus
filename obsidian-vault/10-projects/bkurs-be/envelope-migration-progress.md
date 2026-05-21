@@ -40,17 +40,25 @@ bkurs-be 전체 endpoint (~153) 를 `ApiEnvelope<T> {success, data, error, meta}
 
 ## 마이그레이션 종료 (2026-05-21)
 
-phase 1 + phase 2 전체 envelope 마이그레이션 완료. 모든 도메인 controller / handler
-가 ApiEnvelope 표준. 신규 endpoint 는 처음부터 envelope 표준.
+phase 1 + phase 2 + 잔여 누락 도메인 (stats/academy) 전체 envelope 마이그레이션 완료.
+모든 도메인 controller / handler 가 ApiEnvelope 표준. 신규 endpoint 는 처음부터 envelope.
 
-- 총 도메인 17개
-- 총 PR 17개 (phase 1 × 3 + Cycle 3 × 2 신규 + phase 2 × 12)
-- ErrorCode prefix 17개 — AUTH/STU/SUH/SGB/READ/HW/CRS/Q/IVW/SIM/REC/PE/STM/PAY/SRC/ANN/DSC
-- 회귀 0. 통합 test 모두 PASS.
+- 총 도메인 **19개** (auth, student-profile, dashboard, suhaeng, saenggibu, reading,
+  homework, course, question, interview, simulation, record, performance, statement,
+  plan, search, announcement, discussion, stats, academy)
+  · file: 이미 envelope 설계 / pdf: 의도적 raw byte stream (envelope 제외)
+- 총 PR **21개** (phase 1 × 3 + Cycle 3 신규 × 2 + phase 2 × 12 + Cycle helper-fix × 1 +
+  stats × 1 + academy × 1 + cleanup)
+- ErrorCode prefix **19개** — AUTH/STU/SUH/SGB/READ/HW/CRS/Q/IVW/SIM/REC/PE/STM/PAY/SRC/ANN/DSC/STT/ACA
+- 회귀 0. 통합 test 모두 PASS (1 fail = actuator RabbitMQ DOWN, envelope 무관).
 
-(아래 옛 phase 2-1 ~ 2-5 행은 위 세부 행으로 대체됨)
-| **2-4** | plan / payment / search / announcement / discussion | — | pending |
-| **2-5** | concept / suhaeng / saenggibu (Cycle 3 신규 도메인 포함) | — | pending |
+## 사용자 지적 (2026-05-21)
+초기 phase 2 종료 시점에 stats / academy / file / pdf 누락 발견. 본 노트의 PR #139 (test
+helper 회귀 fix) + #141 (stats) + #143 (academy) 로 완전 마감.
+
+(아래 옛 phase 2-4/2-5 행은 위 세부 행으로 대체됨)
+| **2-4** | plan / payment / search / announcement / discussion | — | (위로 분할) |
+| **2-5** | concept / suhaeng / saenggibu (Cycle 3 신규 도메인 포함) | — | (Cycle 3 / 신규는 처음부터 envelope) |
 
 ## 2. 내 해석 (왜 이 순서로)
 

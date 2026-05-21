@@ -7,8 +7,8 @@ created_at: 2026-05-21T01:10:00+09:00
 agent: engineering-agent/tech-lead
 tags: [architecture, async, mq, batch, infrastructure]
 related:
-  - "[[bkurs-be]]"
-  - "[[architecture-hybrid-external-services]]"
+  - "[[../bkurs-be]]"
+  - "[[hybrid-external-services]]"
 home_hub: bkurs-be
 ---
 
@@ -272,6 +272,6 @@ RABBITMQ_PASSWORD=<from secret manager>
 
 ## 관련
 
-- [[architecture-hybrid-external-services]] — 외부 SaaS 추상화
-- [[external-services-accounts]] — RabbitMQ 호스팅 옵션 (후속)
-- [[bkurs-be]] — 진행 로그
+- [[hybrid-external-services]] — 외부 SaaS 추상화
+- [[services-accounts]] — RabbitMQ 호스팅 옵션 (후속)
+- [[../bkurs-be]] — 진행 로그

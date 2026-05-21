@@ -7,9 +7,9 @@ created_at: 2026-05-20T22:35:00+09:00
 agent: engineering-agent/tech-lead
 tags: [gap, fe-be, external-services, bkurs]
 related:
-  - "[[bkurs-be]]"
-  - "[[../bkurs-fe/bkurs-fe]]"
-  - "[[external-services-accounts]]"
+  - "[[../bkurs-be]]"
+  - "[[../../bkurs-fe/bkurs-fe]]"
+  - "[[services-accounts]]"
 home_hub: bkurs-be
 ---
 
@@ -162,7 +162,7 @@ bkurs-fe 가 현재 `@supabase/supabase-js` 의존:
 
 ## 관련
 
-- [[external-services-accounts]] — 필요 SaaS 계정 + API key + 비용
-- [[architecture-hybrid-external-services]] — Hybrid 아키텍처
-- [[bkurs-be]] — 진행 로그
-- [[../bkurs-fe/bkurs-fe]] — FE 쪽 hub
+- [[services-accounts]] — 필요 SaaS 계정 + API key + 비용
+- [[hybrid-external-services]] — Hybrid 아키텍처
+- [[../bkurs-be]] — 진행 로그
+- [[../../bkurs-fe/bkurs-fe]] — FE 쪽 hub

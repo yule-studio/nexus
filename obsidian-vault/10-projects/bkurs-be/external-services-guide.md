@@ -14,6 +14,12 @@ home_hub: "[[bkurs-be]]"
 
 # bkurs-be 외부 SaaS 가이드
 
+> 📍 **Read path**: [[getting-started]] (전체 진입점) → **본 노트** (SaaS 발급) →
+> [[env-deployment-guide]] (받은 키 어디에 설정) → [[bkurs-be]] (코드 SSoT).
+>
+> 본 노트는 **무엇을 발급받고 어디서 받는지** 만 다룬다. 받은 키를 실제로 어디에 박는지
+> (local `.env.local` / prod EKS Secret) 는 [[env-deployment-guide]] §3 참조.
+
 ## 1. 핵심 요약
 
 bkurs-be 가 의존하는 외부 SaaS **7가지** + 각 서비스별:
@@ -305,14 +311,20 @@ SENTRY_RELEASE=bkurs-be@1.2.3
 
 > local 은 가급적 모두 Mock — 키 관리 부담 0. dev / prod 가 실 API.
 
-## 4. 관련 노트
+## 4. 다음에 볼 것
 
-- [[bkurs-be]] — 프로젝트 허브
-- [[external-services-accounts]] — 계정 발급 진척 추적
-- [[architecture-hybrid-external-services]] — 추상화 / 실 impl swap 의 hybrid 패턴
-- [[env-deployment-guide]] — env 변수 → application.yml → 배포 흐름
+- ▶ **키 받았으면**: [[env-deployment-guide]] §2 (local `.env.local`) / §3 (prod EKS Secret)
+- ▶ **신규 SaaS 추가**: [[env-deployment-guide]] §6 (local → dev 승급 체크리스트)
+- ▶ **gateway 추상화 패턴**: [[architecture-hybrid-external-services]]
+- ▶ **계정 발급 진척 추적**: [[external-services-accounts]]
+- ▶ **전체 진입점으로 돌아가기**: [[getting-started]]
 
-## 5. 참고
+## 5. 관련 노트
+
+- [[bkurs-be]] — 프로젝트 허브 (PR 히스토리)
+- [[../bkurs-fe/screen-logic-and-api-map]] — FE 측 어떤 화면이 어떤 SaaS 의존하는지
+
+## 6. 참고
 
 - 코드 SSoT (gateway 인터페이스):
   - `bkurs-be/src/main/java/com/bkurs/file/gateway/FileStorageService.java`

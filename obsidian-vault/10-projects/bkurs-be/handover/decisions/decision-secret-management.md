@@ -8,7 +8,7 @@ agent: engineering-agent/tech-lead
 tags: [decision, secret, ops, security]
 related:
   - "[[../bkurs-be]]"
-  - "[[../external-services-accounts]]"
+  - "[[../services-accounts]]"
 home_hub: bkurs-be
 ---
 
@@ -69,11 +69,11 @@ home_hub: bkurs-be
 
 - **gitleaks** — pre-commit hook 으로 secret 감지.
 - **AWS SSM Parameter Store** — production secret 저장.
-- **External Secrets Operator** (k8s) — SSM ↔ ConfigMap 자동 sync.
+- **ECS Task Definition `secrets` 배열** — `valueFrom: arn:aws:ssm:...` 으로 SSM Parameter Store 값을 컨테이너 env 로 자동 주입 (k8s External Secrets Operator 의 ECS 대응).
 - **Vault** (자체 호스팅) — 대안.
 
 ## 관련
 
-- [[../external-services-accounts]] — 외부 SaaS 계정 별 필요 env
+- [[../services-accounts]] — 외부 SaaS 계정 별 필요 env
 - [[task-log-secret-cleanup]] — 본 작업 task-log
 - 후속: gitleaks workflow 추가 / AWS SSM tree 설계

@@ -6,7 +6,7 @@ created_at: 2026-05-21
 tags: [bkurs-be, saenggibu, schema, lock, adr]
 related:
   - "[[decision-suhaeng-round-table]]"
-  - "[[envelope-migration-progress]]"
+  - "[[envelope-migration]]"
   - "[[bkurs-be]]"
 home_hub: "[[bkurs-be]]"
 ---
@@ -76,7 +76,7 @@ service.setLock(ownerId, academyId, 2, 1, sameDeadline, true);
 ## 관련 노트
 
 - [[decision-suhaeng-round-table]] — 같은 cycle 의 짝 ADR
-- [[envelope-migration-progress]] — Saenggibu 도 envelope 표준
+- [[envelope-migration]] — Saenggibu 도 envelope 표준
 - [[bkurs-be]]
 
 ## 참고

@@ -5,8 +5,8 @@ status: accepted
 created_at: 2026-05-21
 tags: [bkurs-be, suhaeng, schema, state-machine, adr]
 related:
-  - "[[envelope-migration-progress]]"
-  - "[[architecture-async-mq-batch]]"
+  - "[[envelope-migration]]"
+  - "[[async-mq-batch]]"
   - "[[bkurs-be]]"
 home_hub: "[[bkurs-be]]"
 ---
@@ -98,8 +98,8 @@ SuhaengRound r2 = SuhaengRound.builder()
 
 ## 관련 노트
 
-- [[envelope-migration-progress]] — phase 1 종료, 신규 도메인부터 envelope
-- [[architecture-async-mq-batch]] — RabbitMQ `AI_ANALYZE` 토픽 위치
+- [[envelope-migration]] — phase 1 종료, 신규 도메인부터 envelope
+- [[async-mq-batch]] — RabbitMQ `AI_ANALYZE` 토픽 위치
 - [[decision-saenggibu-semester-lock|Saenggibu 학기 lock ADR]]
 
 ## 참고

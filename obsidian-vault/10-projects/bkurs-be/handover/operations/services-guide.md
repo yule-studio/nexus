@@ -5,20 +5,20 @@ status: active
 created_at: 2026-05-21
 tags: [bkurs-be, external-saas, deployment, secrets]
 related:
-  - "[[bkurs-be]]"
-  - "[[architecture-hybrid-external-services]]"
-  - "[[external-services-accounts]]"
-  - "[[env-deployment-guide]]"
-home_hub: "[[bkurs-be]]"
+  - "[[../bkurs-be]]"
+  - "[[hybrid-external-services]]"
+  - "[[services-accounts]]"
+  - "[[env-deployment]]"
+home_hub: "[[../bkurs-be]]"
 ---
 
 # bkurs-be 외부 SaaS 가이드
 
 > 📍 **Read path**: [[getting-started]] (전체 진입점) → **본 노트** (SaaS 발급) →
-> [[env-deployment-guide]] (받은 키 어디에 설정) → [[bkurs-be]] (코드 SSoT).
+> [[env-deployment]] (받은 키 어디에 설정) → [[../bkurs-be]] (코드 SSoT).
 >
 > 본 노트는 **무엇을 발급받고 어디서 받는지** 만 다룬다. 받은 키를 실제로 어디에 박는지
-> (local `.env.local` / prod EKS Secret) 는 [[env-deployment-guide]] §3 참조.
+> (local `.env.local` / prod SSM Parameter Store) 는 [[env-deployment]] §5 참조.
 
 ## 1. 핵심 요약
 
@@ -29,12 +29,11 @@ bkurs-be 가 의존하는 외부 SaaS **7가지** + 각 서비스별:
 4. **검증** (실제 요청 한 번 보내 보는 법)
 5. **장애 시 대안** (mock 으로 떨어뜨리는 스위치)
 
-> 본 가이드는 **bkurs-be 의존성만** 다룬다. infra 자체 (RDS / EKS / ELB / Route53 / Sentry alert 룰)
-> 는 `company-infra` 레포의 README + Terraform 가이드 참조.
+> 본 가이드는 **bkurs-be 의존성만** 다룬다. AWS 인프라 자체 (ALB / ECS / EC2 / Cloudflare/Route53 / Monitoring EC2 / SSM) 는 [[env-deployment]] 참조.
 
 | # | 서비스 | 도메인 | provider 선택지 |
 |---|--------|--------|-----------------|
-| 1 | DB | 핵심 | MySQL 8.x (RDS / 로컬 Docker) |
+| 1 | DB | 핵심 | MySQL 9.x (EC2 자체 호스팅 / 로컬 Docker) |
 | 2 | 메시지 큐 | 비동기 | RabbitMQ (InMemory fallback 가능) |
 | 3 | 객체 저장 | 파일 업로드 | AWS S3 (Mock fallback 가능) |
 | 4 | 이메일 | 알림 | AWS SES **또는** SendGrid |
@@ -300,7 +299,7 @@ SENTRY_RELEASE=bkurs-be@1.2.3
 
 | 서비스 | local | dev (staging) | prod |
 |--------|-------|---------------|------|
-| MySQL | Docker | RDS (소형) | RDS (Multi-AZ) |
+| MySQL | Docker | EC2 single (dev) | EC2 + EBS snapshot 백업 (prod) |
 | RabbitMQ | Docker | RabbitMQ Cloud / EC2 | RabbitMQ HA cluster |
 | S3 | Mock | 실 S3 (dev 버킷) | 실 S3 |
 | Email | Mock | SES sandbox | SES / SendGrid |
@@ -313,16 +312,16 @@ SENTRY_RELEASE=bkurs-be@1.2.3
 
 ## 4. 다음에 볼 것
 
-- ▶ **키 받았으면**: [[env-deployment-guide]] §2 (local `.env.local`) / §3 (prod EKS Secret)
-- ▶ **신규 SaaS 추가**: [[env-deployment-guide]] §6 (local → dev 승급 체크리스트)
-- ▶ **gateway 추상화 패턴**: [[architecture-hybrid-external-services]]
-- ▶ **계정 발급 진척 추적**: [[external-services-accounts]]
+- ▶ **키 받았으면**: [[env-deployment]] §9 (local `.env.local`) / §5 (prod SSM Parameter)
+- ▶ **신규 SaaS 추가**: [[env-deployment]] §6 (local → dev 승급 체크리스트)
+- ▶ **gateway 추상화 패턴**: [[hybrid-external-services]]
+- ▶ **계정 발급 진척 추적**: [[services-accounts]]
 - ▶ **전체 진입점으로 돌아가기**: [[getting-started]]
 
 ## 5. 관련 노트
 
-- [[bkurs-be]] — 프로젝트 허브 (PR 히스토리)
-- [[../bkurs-fe/screen-logic-and-api-map]] — FE 측 어떤 화면이 어떤 SaaS 의존하는지
+- [[../bkurs-be]] — 프로젝트 허브 (PR 히스토리)
+- [[../../bkurs-fe/screen-logic-and-api-map]] — FE 측 어떤 화면이 어떤 SaaS 의존하는지
 
 ## 6. 참고
 

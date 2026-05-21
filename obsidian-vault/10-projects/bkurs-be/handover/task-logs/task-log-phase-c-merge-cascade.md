@@ -118,7 +118,7 @@ done
 ## 관련
 
 - [[task-log-phase-b-abstractions]] — Phase B 5 abstraction 통합
-- [[../architecture-hybrid-external-services]] — 아키텍처 + Mermaid
-- [[../external-services-accounts]] — 외부 SaaS 계정 + 비용 + Supabase 매핑
-- [[../bkurs-fe-vs-bkurs-be-gap]] — FE vs BE gap
+- [[../hybrid-external-services]] — 아키텍처 + Mermaid
+- [[../services-accounts]] — 외부 SaaS 계정 + 비용 + Supabase 매핑
+- [[../fe-be-gap]] — FE vs BE gap
 - [[../bkurs-be]] — 진행 로그 hub

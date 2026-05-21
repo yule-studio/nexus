@@ -8,8 +8,8 @@ agent: engineering-agent/coding
 tags: [task-log, cycle-2, real-plugins, swagger, docker, deploy]
 related:
   - "[[../bkurs-be]]"
-  - "[[../architecture-hybrid-external-services]]"
-  - "[[../external-services-accounts]]"
+  - "[[../hybrid-external-services]]"
+  - "[[../services-accounts]]"
 home_hub: bkurs-be
 ---
 
@@ -127,6 +127,6 @@ dev cascade commit: `218a89b`.
 ## 관련
 
 - [[../bkurs-be]] — hub
-- [[../architecture-hybrid-external-services]] — 아키텍처
-- [[../external-services-accounts]] — 계정 + 비용
+- [[../hybrid-external-services]] — 아키텍처
+- [[../services-accounts]] — 계정 + 비용
 - [[task-log-phase-c-merge-cascade]] — 이전 dev cascade

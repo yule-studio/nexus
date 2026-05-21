@@ -8,8 +8,8 @@ agent: engineering-agent/coding
 tags: [task-log, phase-b, abstractions, gateway]
 related:
   - "[[../bkurs-be]]"
-  - "[[../architecture-hybrid-external-services]]"
-  - "[[../external-services-accounts]]"
+  - "[[../hybrid-external-services]]"
+  - "[[../services-accounts]]"
   - "[[task-log-b17-file-storage]]"
 home_hub: bkurs-be
 ---
@@ -97,8 +97,8 @@ com.bkurs.{file,notification,ai,stt,pdf}/
 
 ## 관련
 
-- [[../architecture-hybrid-external-services]] — 각 서비스 흐름 sequence diagram
-- [[../external-services-accounts]] — 필요 SaaS 계정 + API key + 비용
-- [[../bkurs-fe-vs-bkurs-be-gap]] — FE placeholder 항목 매핑
+- [[../hybrid-external-services]] — 각 서비스 흐름 sequence diagram
+- [[../services-accounts]] — 필요 SaaS 계정 + API key + 비용
+- [[../fe-be-gap]] — FE placeholder 항목 매핑
 - [[task-log-b17-file-storage]] — B17 상세 결정
 - 후속: Phase C merge cascade task-log

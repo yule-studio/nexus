@@ -8,8 +8,8 @@ agent: engineering-agent/coding
 tags: [task-log, secret, ops, security]
 related:
   - "[[../bkurs-be]]"
-  - "[[../external-services-accounts]]"
-  - "[[../architecture-hybrid-external-services]]"
+  - "[[../services-accounts]]"
+  - "[[../hybrid-external-services]]"
 home_hub: bkurs-be
 ---
 
@@ -88,7 +88,7 @@ home_hub: bkurs-be
 
 ## 관련
 
-- [[../external-services-accounts]] §5 — Secret 누수 (현재 상태) 항목
-- [[../architecture-hybrid-external-services]] §9 — Secret 관리 (modify 대상) 표
+- [[../services-accounts]] §5 — Secret 누수 (현재 상태) 항목
+- [[../hybrid-external-services]] §9 — Secret 관리 (modify 대상) 표
 - [[../bkurs-be]] — 진행 로그
 - 후속: Phase A-2 Common Response Envelope foundation

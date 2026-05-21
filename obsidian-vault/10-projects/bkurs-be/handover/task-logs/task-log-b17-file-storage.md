@@ -8,8 +8,8 @@ agent: engineering-agent/coding
 tags: [task-log, file-storage, abstraction, b17, phase-b]
 related:
   - "[[../bkurs-be]]"
-  - "[[../architecture-hybrid-external-services]]"
-  - "[[../external-services-accounts]]"
+  - "[[../hybrid-external-services]]"
+  - "[[../services-accounts]]"
 home_hub: bkurs-be
 ---
 
@@ -101,6 +101,6 @@ src/main/java/com/bkurs/file/
 
 ## 관련
 
-- [[../architecture-hybrid-external-services]] §3 — file upload sequence
-- [[../external-services-accounts]] §0 (Supabase → Spring 매핑) + §1.1 (AWS)
+- [[../hybrid-external-services]] §3 — file upload sequence
+- [[../services-accounts]] §0 (Supabase → Spring 매핑) + §1.1 (AWS)
 - [[../../../20-areas/backend/spring/java-spring/api-design/common-response-envelope]]

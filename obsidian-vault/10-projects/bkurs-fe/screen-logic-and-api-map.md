@@ -22,14 +22,21 @@ bkurs-fe 의 모든 화면을 **사용자 그룹 × 화면 × 사용 hook × BE 
 > swap 진행 상황은 `status` 열 — **DONE** (BE 실데이터) / **MOCK** (정적 mock) /
 > **N/A** (BE 도메인 미존재, 신설 필요).
 
-| 사용자 | 영역 | 화면 수 | DONE | MOCK | N/A |
-|--------|------|--------|------|------|------|
-| admin (학원장) | 9 | 9 | 9 | 0 | 0 |
-| high-student | 17 | 3 | 14 | 0 |
-| middle-student | 16 | 4 | 12 | 0 |
-| master (본사) | 10 | 0 | 0 | 10 |
+| 사용자 | 화면 수 | DONE | MOCK | N/A |
+|--------|--------|------|------|------|
+| admin (학원장 + 강사) | 9 | 9 | 0 | 0 |
+| high-student | 17 | 7 | 0 | 10 |
+| middle-student | 16 | 8 | 0 | 8 |
+| master (본사) | 10 | 1 | 0 | 9 |
 
-(2026-05-21 기준)
+(2026-05-21 기준 — 학생 onboarding 4개 + master/login 모두 DONE)
+
+**그룹별 swap 진척**:
+- admin **100%** swap 완료 (PR #69~#107 누적).
+- high/middle-student **인증 / 학습 핵심 도메인** swap 완료 (login/signup/connect/pending +
+  concept/topic/book/record/suhaeng/(homework)/(saenggibu)). 입시 mock 화면 (expect/past/
+  mockexam/major/presentation/simulation/roadmap) 은 BE 입시 도메인 신설 후 swap 예정.
+- master 는 **login 만 DONE**, 나머지 9개 화면은 BE master 도메인 신설 후 swap 예정.
 
 ---
 
@@ -59,7 +66,10 @@ bkurs-fe 의 모든 화면을 **사용자 그룹 × 화면 × 사용 hook × BE 
 
 | 화면 | 경로 | 핵심 hook | BE endpoint | status |
 |------|------|-----------|-------------|--------|
-| 로그인 / 회원가입 / connect / pending | `/high-student/{login,signup,connect,pending}` | (mock) | `POST /v1/auth/login`, `/signup`, `/v1/auth/connect` 가 BE에 있음 | **MOCK** |
+| 로그인 | `/high-student/login` | `useStudentLogin('high')` | `POST /v1/auth/login` (role 검증 STUDENT_HIGH) | **DONE** |
+| 회원가입 | `/high-student/signup` | `useStudentSignup('high')` | `POST /v1/auth/signup` + `POST /v1/students/me/profile` (grade 4~6) | **DONE** |
+| 학원 연결 | `/high-student/connect` | `useStudentConnect('high')` | `POST /v1/auth/connect` (학원 코드) | **DONE** |
+| 가입 대기 | `/high-student/pending` | `useStudentPending('high')` (5s polling) | `GET /v1/students/me/membership` | **DONE** |
 | 로드맵 | `/high-student/roadmap` | (mock data only) | — | N/A |
 | 진로 진단 | `/high-student/concept` | `useConceptDiagnosis`, `useUpdateConceptProgress`, `useCompleteConcept` | `GET/PUT/POST /v1/students/me/concept-diagnosis` | **DONE** |
 | 탐구주제 | `/high-student/topic` | `useMyDiscussions`, `useMyDiscussionPost`, `useSubmitPost` | `GET /v1/students/me/discussions`, `GET /v1/students/me/discussions/{tid}/my-post`, `POST /v1/students/me/discussions/{tid}/posts` | **DONE** |
@@ -80,7 +90,10 @@ bkurs-fe 의 모든 화면을 **사용자 그룹 × 화면 × 사용 hook × BE 
 
 | 화면 | 경로 | 핵심 hook | BE endpoint | status |
 |------|------|-----------|-------------|--------|
-| 로그인 / 회원가입 / connect / pending | `/middle-student/{login,signup,connect,pending}` | (mock) | BE 동일 | **MOCK** |
+| 로그인 | `/middle-student/login` | `useStudentLogin('middle')` | `POST /v1/auth/login` (role 검증 STUDENT_MIDDLE) | **DONE** |
+| 회원가입 | `/middle-student/signup` | `useStudentSignup('middle')` | `POST /v1/auth/signup` + `POST /v1/students/me/profile` (grade 1~3) | **DONE** |
+| 학원 연결 | `/middle-student/connect` | `useStudentConnect('middle')` | `POST /v1/auth/connect` | **DONE** |
+| 가입 대기 | `/middle-student/pending` | `useStudentPending('middle')` | `GET /v1/students/me/membership` | **DONE** |
 | 진로 진단 | `/middle-student/concept` | `useConceptDiagnosis` | 동일 | **DONE** |
 | 토론 주제 | `/middle-student/debate` | `useMyDiscussions`, `useMyDiscussionPost`, `useSubmitPost` | (high-student/topic 와 동일) | **DONE** |
 | 독서 노트 | `/middle-student/book` | `useMyReadingNotes`, CRUD | 동일 | **DONE** |
@@ -99,8 +112,12 @@ bkurs-fe 의 모든 화면을 **사용자 그룹 × 화면 × 사용 hook × BE 
 
 ## 5. master (본사 super-admin) — 10 화면
 
-전 화면 **MOCK** (BE master 도메인 미존재). 신설 시 별도 BE 도메인 `master/*`:
-- `/master/login` — `Role.MASTER` 검증 후 진입
+| 화면 | 경로 | 핵심 hook | BE endpoint | status |
+|------|------|-----------|-------------|--------|
+| 로그인 | `/master/login` | `useMasterLogin` | `POST /v1/auth/login` (role=MASTER) | **DONE** |
+| 그 외 9 화면 | — | (mock) | BE master 도메인 미존재 | **N/A** |
+
+9 화면 BE 신설 시 별도 도메인 `master/*`:
 - `/master/dashboard` — 전체 academy / 전체 학생 / 결제 합계
 - `/master/academies` — 전체 학원 list + 본사 가입 승인
 - `/master/billing` — 전체 결제 현황 + 미수금

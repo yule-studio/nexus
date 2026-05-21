@@ -14,6 +14,12 @@ home_hub: "[[bkurs-fe]]"
 
 # bkurs-fe — 화면별 로직 / API 매핑
 
+> 📍 **Read path**: [[../bkurs-be/getting-started]] (전체 진입점) →
+> [[architecture-api-foundation]] (ApiEnvelope 구조) → **본 노트** (화면 → hook → endpoint
+> 추적) → [[fe-domain-clients-complete]] (18 도메인 client 표).
+>
+> 새 화면 만들기 → §7 "신규 화면 추가 체크리스트" 부터 시작.
+
 ## 1. 핵심 요약
 
 bkurs-fe 의 모든 화면을 **사용자 그룹 × 화면 × 사용 hook × BE endpoint** 로 정리.
@@ -169,15 +175,21 @@ bkurs-fe 의 모든 화면을 **사용자 그룹 × 화면 × 사용 hook × BE 
 
 > swap 패턴은 `architecture-api-foundation.md` + `decision-hook-convention.md` 참조.
 
-## 8. 관련 노트
+## 8. 다음에 볼 것
+
+- ▶ **새 화면 추가**: §7 체크리스트 → [[architecture-api-foundation]] (envelope 구조)
+- ▶ **외부 SaaS 의존 화면 (S3/AI/STT 등) 작업**: [[../bkurs-be/external-services-guide]] §2
+- ▶ **local 띄우기**: [[../bkurs-be/env-deployment-guide]] §2 (BE 8080 + FE 5173)
+- ▶ **전체 진입점으로 돌아가기**: [[../bkurs-be/getting-started]]
+
+## 9. 관련 노트
 
 - [[bkurs-fe]] — 프로젝트 허브
 - [[architecture-api-foundation]] — ApiEnvelope unwrap 구조
 - [[fe-domain-clients-complete]] — 18 도메인 client 매핑
-- [[../bkurs-be/external-services-guide]] — BE 가 의존하는 외부 SaaS
-- [[../bkurs-be/env-deployment-guide]] — env 배포
+- [[decisions/decision-hook-convention]] — `lib/hooks/` 컨벤션 ADR
 
-## 9. 참고
+## 10. 참고
 
 - 화면 SSoT: `bkurs-fe/src/pages/{admin,high-student,middle-student,master}/_pages/`
 - hook SSoT: `bkurs-fe/src/lib/hooks/`

@@ -5,10 +5,10 @@ status: closed
 created_at: 2026-05-21
 tags: [bkurs-be, retrospective, envelope, cycle-5]
 related:
-  - "[[envelope-migration-progress]]"
-  - "[[cycle-3-retrospective]]"
-  - "[[../bkurs-fe/architecture-api-foundation]]"
-home_hub: "[[bkurs-be]]"
+  - "[[envelope-migration]]"
+  - "[[cycle-3]]"
+  - "[[../../bkurs-fe/architecture-api-foundation]]"
+home_hub: "[[../bkurs-be]]"
 ---
 
 # bkurs-be — Cycle 5 envelope 마이그레이션 완료 회고
@@ -91,9 +91,9 @@ round.recordAiAnalysis() 갱신은 별도 PR. 사용자 의도 (외부 SaaS 실 
 
 ## 관련 노트
 
-- [[envelope-migration-progress]] — 진척표 (Cycle 5 마감 갱신)
-- [[cycle-3-retrospective]] — Cycle 3 회고
-- [[../bkurs-fe/architecture-api-foundation]] — FE 쪽 envelope unwrap 구조
+- [[envelope-migration]] — 진척표 (Cycle 5 마감 갱신)
+- [[cycle-3]] — Cycle 3 회고
+- [[../../bkurs-fe/architecture-api-foundation]] — FE 쪽 envelope unwrap 구조
 
 ## 참고
 

@@ -101,8 +101,58 @@ docker run --network host nginx
 
 ---
 
-## 8. 관련
+## 8. 시각화 — bridge mode
 
-- [[docker|↑ docker]]
+```mermaid
+flowchart LR
+  subgraph host[Host]
+    subgraph dockerbridge["docker0 / br-XXX (172.18.0.0/16)"]
+      A[Container A<br/>172.18.0.2]
+      B[Container B<br/>172.18.0.3]
+      DNS[CoreDNS<br/>127.0.0.11]
+      A -.->|resolve B| DNS
+      A --- B
+    end
+    EXT[Host eth0<br/>192.168.1.10]
+    dockerbridge --- EXT
+  end
+  Client[Client] -->|:8080| EXT
+  EXT -.->|iptables NAT -p 8080:80| A
+```
+
+> user-defined bridge 가 DNS-by-name 지원. default `bridge` 는 IP 만.
+
+## 9. mode 비교
+
+| Mode | host process port | 격리 | 다중 host |
+| --- | --- | --- | --- |
+| **bridge** (default user-defined) | NAT 매핑 | ✓ | ✗ |
+| **host** | 직접 공유 | ✗ | ✗ |
+| **overlay** (Swarm) | NAT + VXLAN tunnel | ✓ | ✓ |
+| **macvlan** | LAN 직접 IP | ✓ (별도 MAC) | ✓ |
+| **none** | network 없음 | 완전 | — |
+
+## 10. 학습 영상
+
+| 영상 | 길이 |
+| --- | --- |
+| [Docker Networking — NetworkChuck](https://www.youtube.com/watch?v=bKFMS5C4CG0) | 18분 ★ |
+| [Container Networking — Bret Fisher](https://www.youtube.com/watch?v=KxWb4CMfBHg) | 35분 |
+| [iptables + Docker — Liz Rice](https://www.youtube.com/watch?v=g7sjMS7ar08) | 25분 |
+
+## 11. 실습 매핑
+
+| 주제 | 실습 |
+| --- | --- |
+| user-defined bridge / DNS-by-name | [[../practice/07-networks-and-dns]] |
+| compose multi-network | [[../practice/09-compose-watch-and-profiles]] |
+| port 격리 / publish | [[../practice/01-hello-world]] |
+
+## 12. 관련
+
+- [[fundamentals]] — fundamentals hub
 - [[concepts]]
-- [[../networking-ops/networking-ops|↗ networking-ops]]
+- [[mental-models]] — network namespace
+- [[../desktop/networking-and-proxy]] (예정) — Desktop host.docker.internal
+- [[../orbstack/networking]] — OrbStack `*.orb.local` 자동 DNS
+- [[../../networking-ops/networking-ops|↗ networking-ops]]

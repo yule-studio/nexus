@@ -1,618 +1,234 @@
 ---
-title: "EKS — Elastic Kubernetes Service ★"
+title: "AWS EKS — Elastic Kubernetes Service (hub)"
 kind: knowledge
-project: devops
-agent: engineering-agent/tech-lead
 status: current
-created_at: 2026-05-15T13:00:00+09:00
-tags: [devops, cloud-aws, eks, kubernetes]
+created_at: 2026-05-14T21:18:00+09:00
+updated_at: 2026-05-22T16:00:00+09:00
+tags: [aws, compute, eks, kubernetes, hub]
+home_hub: cloud-aws
 ---
 
-# EKS — Elastic Kubernetes Service ★
+# AWS EKS — Elastic Kubernetes Service
 
-**[[cloud-aws|↑ cloud-aws]]**
+> **Managed Kubernetes** control plane + 사용자가 정한 data plane (EC2 / Fargate / Karpenter). vanilla K8s 와 100% API 호환.
+
+**[[../compute|↑ Compute]]** · **[[../../cloud-aws|↑↑ AWS]]**
 
 ---
 
-## 1. 무엇
+## 1. 한 줄
 
 ```
-AWS 가 관리하는 Kubernetes:
-  - control plane (apiserver / etcd / scheduler) 를 AWS 가 운영
-  - worker node 는 우리가 (EC2 / Fargate)
-  - vanilla k8s (CNCF certified)
-  - AWS service 와 깊이 통합 (IAM / VPC / ELB / EBS)
+EKS Control Plane (Managed, multi-AZ, AWS 운영)
+   ├─ etcd / kube-apiserver / scheduler / controller-manager
+   └─ AWS 가 패치 / 백업 / 가용성 99.95% SLA
 
-비용:
-  - control plane: $0.10/h = $73/mo per cluster
-  - worker = EC2 또는 Fargate (별도)
+Data Plane (사용자가 정함)
+   ├─ Managed Node Group (EC2)
+   ├─ Self-managed Node (EC2 직접)
+   ├─ Fargate (serverless pod)
+   └─ Karpenter (just-in-time provisioning)
 ```
 
-→ "k8s 운영 부담 ↓, AWS 통합 강력" 의 선택지.
+## 2. 학습 roadmap
 
----
+```mermaid
+flowchart TB
+  subgraph F["01 fundamentals — 어떻게 동작"]
+    F1[architecture]
+    F2[cluster + versioning]
+    F3[node types]
+    F4[EKS vs ECS vs vanilla]
+  end
+  subgraph W["02 workload — pod 운영"]
+    W1[Deployment/StatefulSet/DaemonSet]
+    W2[Service/Ingress/Gateway]
+    W3[CSI storage]
+  end
+  subgraph N["03 networking — pod network"]
+    N1[VPC CNI / IP per pod]
+    N2[SG per pod]
+    N3[Network Policy]
+  end
+  subgraph O["04 operations"]
+    O1[CAS / Karpenter]
+    O2[Observability]
+    O3[troubleshooting]
+  end
+  subgraph S["05 security"]
+    S1[IRSA / Pod Identity]
+    S2[RBAC / aws-auth]
+    S3[image / runtime]
+  end
+  subgraph P["practice"]
+    P1[cluster + Fargate]
+    P2[Karpenter + ALB]
+    P3[IRSA E2E]
+  end
+  F --> W --> N --> O --> S --> P
+```
 
-## 2. 대안
+## 3. Sub-directory index
 
-| | 무엇 |
+### [[01-fundamentals/01-architecture]] — Control plane + Data plane + 통신
+Managed control plane (multi-AZ etcd / api server), VPC ENI 로 cluster 와 통신.
+
+### [[01-fundamentals/02-cluster-and-versioning]] — Version skew / Upgrade / Add-ons
+K8s release cycle / EKS 14개월 지원 / version skew 정책 / EKS managed add-on.
+
+### [[01-fundamentals/03-node-types]] — Managed Node Group / Self / Fargate / Karpenter
+4 옵션 비교 + 권장 (Karpenter + Fargate 혼합).
+
+### [[01-fundamentals/04-eks-vs-ecs-vs-vanilla-k8s]] — 결정 기준
+ecosystem / cost / 운영 부담 / multi-cloud 관점.
+
+### [[02-workload/01-pod-deployment]] — Deployment / StatefulSet / DaemonSet / Job
+workload type + replica / rolling / canary (Argo Rollouts / Flagger).
+
+### [[02-workload/02-service-and-ingress]] — Service / AWS Load Balancer Controller / Gateway API
+ClusterIP / NodePort / LoadBalancer + Ingress (ALB controller) + Gateway API.
+
+### [[02-workload/03-storage-csi]] — EBS CSI / EFS CSI / S3 CSI / FSx CSI
+PersistentVolume / StorageClass / dynamic provisioning.
+
+### [[03-networking/01-vpc-cni-and-pod-network]] — VPC CNI / ENI Trunking / Prefix Delegation
+pod 가 VPC IP 직접 (no overlay), Trunking 으로 dense placement.
+
+### [[03-networking/02-security-group-per-pod]] — SecurityGroupPolicy CRD
+pod 마다 SG 분리 (sensitive workload).
+
+### [[03-networking/03-network-policy]] — Calico / Cilium
+namespace / label 기반 east-west 차단.
+
+### [[04-operations/01-autoscaling-cas-karpenter]] — Cluster Autoscaler vs Karpenter
+ASG-based CAS (legacy) vs Karpenter (just-in-time, 권장).
+
+### [[04-operations/02-observability-cloudwatch-prom]] — Container Insights / ADOT / Prometheus
+metric / log / trace 통합.
+
+### [[04-operations/03-troubleshooting]] — Pod / Node / Network 문제
+kubectl describe + Events + node logs + VPC CNI debug.
+
+### [[05-security/01-irsa-pod-identity]] — IRSA (OIDC) vs Pod Identity (2023)
+service account → IAM role mapping 2 방식.
+
+### [[05-security/02-rbac-and-aws-auth]] — K8s RBAC + EKS Access Entries
+aws-auth ConfigMap (legacy) → Access Entries (2023+).
+
+### [[05-security/03-image-and-runtime]] — ECR + admission control + runtime
+sig verify / Kyverno / Gatekeeper / Falco.
+
+### [[practice/01-cluster-with-fargate]] — eksctl + Fargate Profile (30분)
+첫 cluster, Fargate Profile, kubectl get pods.
+
+### [[practice/02-karpenter-and-alb-ingress]] — Karpenter + ALB Ingress (60분)
+Karpenter 설치 + NodePool + 부하 → just-in-time provisioning + ALB Ingress.
+
+### [[practice/03-irsa-app-end-to-end]] — Spring Boot + IRSA + RDS (90분)
+OIDC provider + ServiceAccount + S3/RDS 통합.
+
+## 4. 핵심 개념
+
+| 개념 | 1줄 |
 | --- | --- |
-| **EKS** | 표준 / 풍부 |
-| **ECS** | AWS 전용 / 단순 |
-| **Fargate** | serverless container (ECS/EKS 위) |
-| **App Runner** | 단순 web service |
-| **self-managed k8s** (EC2) | full control / 운영 부담 |
-| **k3s on EC2** | 가벼움 |
+| Control Plane | Managed (etcd / api server / scheduler / controller) |
+| Data Plane | EC2 / Fargate / Karpenter 선택 |
+| Cluster | 1 EKS cluster = 1 K8s 환경 (control + data) |
+| Pod | 1+ container, 같은 IP / volume 공유 |
+| Node | Pod 가 실행되는 EC2 (또는 Fargate microVM) |
+| Service | Pod 묶음의 가상 IP (ClusterIP / NodePort / LB) |
+| Ingress | HTTP layer 7 → ALB Controller 로 ALB 자동 생성 |
+| Namespace | 리소스 격리 (RBAC quota network policy) |
+| Add-on | AWS managed VPC CNI / CoreDNS / kube-proxy / EBS CSI |
+| IRSA | ServiceAccount ↔ IAM Role OIDC mapping |
+| Pod Identity | IRSA 의 후속 (2023, agent 기반) |
 
-→ 대규모 / multi-cloud = EKS. AWS only + 단순 = ECS.
+## 5. EKS 의 책임 분담
 
----
-
-## 3. 구조 (★)
-
-```
-[Control Plane]               ← AWS 가 관리 (multi-AZ 자동)
-   - apiserver, etcd, scheduler
-   - VPC 안 (cross-account ENI)
-
-[Worker Node]                 ← 사용자 관리
-   - EC2 (Managed / Self-managed Node Group)
-   - 또는 Fargate (serverless)
-   - kubelet, kube-proxy, CNI (AWS VPC CNI)
-
-[Add-ons]
-   - VPC CNI (네트워크)
-   - CoreDNS (DNS)
-   - kube-proxy (service)
-   - EBS CSI Driver (storage)
-   - EFS CSI Driver
-   - Karpenter (autoscale)
+```mermaid
+flowchart LR
+  subgraph AWS["AWS 책임"]
+    CP[Control Plane<br/>etcd / api server / scheduler]
+    UPG[Control Plane 패치]
+    HA[99.95% SLA multi-AZ]
+  end
+  subgraph YOU["사용자 책임"]
+    DP[Data Plane<br/>Managed NG / Fargate / Karpenter]
+    NODE[Node OS / kubelet 버전 / 패치]
+    APP[Workload manifest]
+    ADD[일부 Add-on 설치]
+    SEC[RBAC / IRSA / network policy]
+  end
 ```
 
----
+> Managed Node Group 으로 일부 책임 위임. Fargate 가 가장 많이 위임.
 
-## 4. cluster 생성 (eksctl)
+## 6. EKS vs ECS
+
+| | EKS | ECS |
+| --- | --- | --- |
+| 표준 | Kubernetes | AWS 독자 |
+| 학습 곡선 | 가파름 | 완만 |
+| Multi-cloud | ✓ | ✗ |
+| Ecosystem | 거대 (Helm / Argo / Istio) | AWS 한정 |
+| 비용 | $0.10/cluster·h + node | cluster free + node |
+| 운영 부담 | ↑↑ | ↓ |
+| 권장 | scale 이 큼 / multi-cloud / 표준화 | 작음~중간 / AWS 만 |
+
+자세히 → [[01-fundamentals/04-eks-vs-ecs-vs-vanilla-k8s]] / [[../ecs/01-fundamentals/04-ecs-vs-eks-vs-lambda]]
+
+## 7. 비용 구조
+
+| 항목 | 가격 |
+| --- | --- |
+| Control Plane | $0.10/cluster/h ($73/월) |
+| Node (EC2) | EC2 가격 + EBS |
+| Fargate Pod | vCPU + RAM 시간 ([[../ecs/01-fundamentals/03-fargate-deep]]) |
+| Extended Support (구버전) | $0.50/h 추가 ($365/월) |
+| NAT / ALB / Logs | 각각 |
+
+> 24x7 production = control plane만 $73/월 부담. dev/staging share 권장.
+
+## 8. EKS Auto Mode (2024+)
+
+**Karpenter + Pod Identity + managed add-on 통합 모드** — AWS 가 node lifecycle 까지 관리.
 
 ```bash
-brew install eksctl
-
-# 빠른 cluster (수십 분 소요)
-eksctl create cluster \
-    --name prod \
-    --region ap-northeast-2 \
-    --version 1.30 \
-    --nodegroup-name workers \
-    --node-type t3.medium \
-    --nodes 3 \
-    --nodes-min 1 \
-    --nodes-max 10 \
-    --managed
+eksctl create cluster --name auto-cluster --enable-auto-mode
 ```
 
-→ 더 권장: ClusterConfig YAML 으로 declarative.
+장점: 운영 부담 ↓↓. 단점: 일부 customization 제한.
 
-```yaml
-# cluster.yaml
-apiVersion: eksctl.io/v1alpha5
-kind: ClusterConfig
-metadata:
-  name: prod
-  region: ap-northeast-2
-  version: "1.30"
+## 9. bkurs-be 의 EKS 선택?
 
-iam:
-  withOIDC: true        # ★ IRSA 활성
-
-vpc:
-  cidr: 10.30.0.0/16
-  nat: {gateway: HighlyAvailable}    # AZ 별 NAT (★ HA)
-
-managedNodeGroups:
-  - name: workers-on-demand
-    instanceType: m6i.large
-    desiredCapacity: 3
-    minSize: 1
-    maxSize: 10
-    privateNetworking: true
-    iam:
-      withAddonPolicies:
-        autoScaler: true
-        ebs: true
-        efs: true
-        cloudWatch: true
-
-  - name: workers-spot
-    instanceTypes: [m6i.large, m5.large, m5a.large]
-    spot: true
-    desiredCapacity: 5
-    minSize: 0
-    maxSize: 50
-    labels: {capacity-type: spot}
-    taints:
-      - key: spot
-        value: "true"
-        effect: NoSchedule
-
-addons:
-  - name: vpc-cni
-  - name: coredns
-  - name: kube-proxy
-  - name: aws-ebs-csi-driver
-
-cloudWatch:
-  clusterLogging:
-    enableTypes: ["audit", "authenticator", "controllerManager", "scheduler"]
+```mermaid
+flowchart TD
+  Q1{Multi-cloud 또는<br/>K8s ecosystem 활용 필요?}
+  Q1 -->|Yes| EKS
+  Q1 -->|No| Q2{scale 이 큼<br/>또는 표준화 필요?}
+  Q2 -->|Yes| EKS
+  Q2 -->|No| ECS[ECS 권장]
 ```
 
-```bash
-eksctl create cluster -f cluster.yaml
-```
-
----
-
-## 5. kubeconfig 설정
-
-```bash
-# kubeconfig 자동 update
-aws eks update-kubeconfig \
-    --region ap-northeast-2 \
-    --name prod \
-    --alias prod-eks
-
-kubectl get nodes
-kubectl get pods -A
-```
-
----
-
-## 6. node 종류 (★)
-
-### A. Managed Node Group (★ 권장)
-
-```
-EC2 Auto Scaling Group:
-  - AWS 가 AMI / patch / update
-  - eksctl / Terraform 으로 관리
-  - graceful drain 자동
-
-설정:
-  - instance type
-  - capacity (min/max/desired)
-  - Spot 가능
-  - labels / taints
-  - subnet / SG
-```
-
-### B. Self-managed Node Group
-
-```
-직접 EC2 띄움:
-  - 더 control (custom AMI, ulimit 등)
-  - 운영 부담 ↑
-  - Karpenter / Bottlerocket 사용 시
-```
-
-### C. Fargate (★ serverless)
-
-```
-node 없음, pod 만:
-  - per-pod 과금
-  - 빠른 시작
-  - cold start 약간
-  - DaemonSet 제약
-  - GPU / privileged 안 됨
-
-용도:
-  - 작은 / sporadic workload
-  - dev / staging
-  - CI / batch
-```
-
-```yaml
-# FargateProfile
-apiVersion: eksctl.io/v1alpha5
-fargateProfiles:
-  - name: dev
-    selectors:
-      - namespace: dev
-      - namespace: kube-system
-        labels: {k8s-app: kube-dns}     # CoreDNS 도 Fargate 가능
-```
-
----
-
-## 7. IRSA (★ IAM Roles for Service Accounts)
-
-```
-일반 EC2:
-  Pod → instance profile → IAM Role (전체 node)
-  → 한 node 의 모든 pod 가 같은 권한 (위험)
-
-IRSA:
-  Pod 의 ServiceAccount 별 IAM Role
-  → least privilege
-  → AWS SDK 가 자동 인식
-
-구조:
-  Pod → ServiceAccount (annotation: eks.amazonaws.com/role-arn)
-        → OIDC token → STS AssumeRoleWithWebIdentity
-        → IAM Role의 temporary credential
-```
-
-```yaml
-# 1. OIDC provider (cluster 별 1번)
-eksctl utils associate-iam-oidc-provider --cluster prod --approve
-
-# 2. ServiceAccount + IAM Role (eksctl 자동 양쪽 생성)
-eksctl create iamserviceaccount \
-    --cluster prod \
-    --namespace app \
-    --name s3-reader \
-    --attach-policy-arn arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess \
-    --approve
-
-# 3. Pod 의 ServiceAccount 지정
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: s3-reader
-  namespace: app
-  annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::123:role/eksctl-prod-addon-iamserviceaccount-app-s3-reader-Role1-XXX
-
----
-apiVersion: v1
-kind: Pod
-spec:
-  serviceAccountName: s3-reader
-  containers:
-    - name: app
-      # SDK 가 자동 IAM Role 의 credential 사용
-```
-
-→ access key 코드에 hardcode 절대 X.
-
----
-
-## 8. EKS Pod Identity (★ 2023+ 새 방식)
-
-```
-IRSA 의 더 단순한 대안:
-  - OIDC provider 설정 안 필요
-  - Pod Identity Agent (DaemonSet)
-  - 더 빠른 token refresh
-
-사용:
-  aws eks create-pod-identity-association \
-      --cluster-name prod \
-      --namespace app \
-      --service-account s3-reader \
-      --role-arn arn:aws:iam::123:role/S3ReaderRole
-```
-
-→ AWS 권장 (IRSA 보다).
-
----
-
-## 9. VPC CNI (★)
-
-```
-AWS native CNI:
-  - pod IP = VPC subnet 의 IP (★ flat)
-  - 외부 network 에서 직접 도달
-  - SG per pod 가능
-  
-한계:
-  - pod 수 = ENI 의 IP 수 (instance type 별)
-    예: m5.large = 30 pod max
-  - subnet IP 부족 가능
-
-해결:
-  - prefix delegation (★ /28 prefix 할당)
-    예: m5.large = 110 pod
-  - custom networking (secondary CIDR)
-  - 작은 instance type 더 많이
-```
-
-```bash
-# prefix delegation 활성
-kubectl set env daemonset aws-node \
-    -n kube-system \
-    ENABLE_PREFIX_DELEGATION=true \
-    WARM_PREFIX_TARGET=1
-```
-
----
-
-## 10. cluster autoscaling
-
-### A. Cluster Autoscaler (전통)
-
-```yaml
-# IAM role
-eksctl create iamserviceaccount \
-    --cluster=prod \
-    --namespace=kube-system \
-    --name=cluster-autoscaler \
-    --attach-policy-arn=... \
-    --approve
-
-# helm install
-helm install cluster-autoscaler autoscaler/cluster-autoscaler \
-    --namespace kube-system \
-    --set autoDiscovery.clusterName=prod \
-    --set awsRegion=ap-northeast-2
-```
-
-→ ASG 기반. 단순하지만 느림.
-
-### B. Karpenter (★ 권장)
-
-```bash
-# Karpenter 설치
-helm install karpenter oci://public.ecr.aws/karpenter/karpenter \
-    --namespace kube-system \
-    --set settings.clusterName=prod \
-    --set settings.interruptionQueue=karpenter-prod-queue
-```
-
-```yaml
-apiVersion: karpenter.sh/v1beta1
-kind: NodePool
-metadata: {name: default}
-spec:
-  template:
-    spec:
-      requirements:
-        - {key: karpenter.k8s.aws/instance-family, operator: In, values: [m, c, r]}
-        - {key: karpenter.k8s.aws/instance-size, operator: NotIn, values: [nano, micro, small]}
-        - {key: karpenter.sh/capacity-type, operator: In, values: [spot, on-demand]}
-        - {key: kubernetes.io/arch, operator: In, values: [amd64, arm64]}
-      nodeClassRef: {name: default}
-  disruption:
-    consolidationPolicy: WhenUnderutilized
-    consolidateAfter: 30s
-    expireAfter: 720h
-  limits:
-    cpu: 1000
-```
-
-→ ASG 안 거치고 직접 EC2. 30s 단위 scale. Spot 우수.
-
----
-
-## 11. ALB / NLB 통합
-
-```bash
-# AWS Load Balancer Controller 설치
-eksctl create iamserviceaccount \
-    --cluster=prod \
-    --namespace=kube-system \
-    --name=aws-load-balancer-controller \
-    --attach-policy-arn=arn:aws:iam::123:policy/AWSLoadBalancerControllerIAMPolicy \
-    --approve
-
-helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
-    -n kube-system \
-    --set clusterName=prod \
-    --set serviceAccount.create=false \
-    --set serviceAccount.name=aws-load-balancer-controller
-```
-
-```yaml
-# Ingress (ALB)
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: api
-  annotations:
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/target-type: ip          # ★ pod 직접
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443},{"HTTP":80}]'
-    alb.ingress.kubernetes.io/ssl-redirect: "443"
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:...
-    alb.ingress.kubernetes.io/healthcheck-path: /actuator/health
-    alb.ingress.kubernetes.io/group.name: shared-alb    # 여러 Ingress 가 같은 ALB
-spec:
-  ingressClassName: alb
-  rules:
-    - host: api.example.com
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service: {name: api, port: {number: 80}}
-```
-
-```yaml
-# Service (NLB)
-apiVersion: v1
-kind: Service
-metadata:
-  name: tcp-service
-  annotations:
-    service.beta.kubernetes.io/aws-load-balancer-type: external
-    service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
-    service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
-spec:
-  type: LoadBalancer
-  selector: {app: tcp-app}
-  ports:
-    - {port: 5432, targetPort: 5432, protocol: TCP}
-```
-
----
-
-## 12. EBS / EFS storage
-
-```yaml
-# EBS gp3 StorageClass
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-  name: gp3
-  annotations: {storageclass.kubernetes.io/is-default-class: "true"}
-provisioner: ebs.csi.aws.com
-parameters:
-  type: gp3
-  iops: "3000"
-  throughput: "125"
-  encrypted: "true"
-volumeBindingMode: WaitForFirstConsumer
-allowVolumeExpansion: true
-reclaimPolicy: Delete
-
----
-# EFS (RWX 가능)
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata: {name: efs-sc}
-provisioner: efs.csi.aws.com
-parameters:
-  provisioningMode: efs-ap
-  fileSystemId: fs-0abc123
-  directoryPerms: "700"
-```
-
----
-
-## 13. observability
-
-```bash
-# Container Insights (CloudWatch)
-helm install aws-cloudwatch-metrics aws-cloudwatch-metrics/aws-cloudwatch-metrics \
-    -n amazon-cloudwatch --create-namespace
-
-# Fluent Bit (log → CloudWatch)
-kubectl apply -f https://raw.githubusercontent.com/aws-samples/amazon-cloudwatch-container-insights/...
-
-# Prometheus / Grafana (self-host)
-helm install kps prometheus-community/kube-prometheus-stack -n monitoring --create-namespace
-
-# 또는 AMP (managed Prometheus) + AMG (Grafana)
-aws amp create-workspace --alias prod
-```
-
----
-
-## 14. upgrade
-
-```bash
-# 1. control plane
-eksctl upgrade cluster --name prod --version 1.31 --approve
-
-# 2. add-on
-eksctl update addon --name vpc-cni --cluster prod
-eksctl update addon --name coredns --cluster prod
-
-# 3. managed node group (rolling)
-eksctl upgrade nodegroup --cluster prod --name workers
-
-# 4. self-managed = manual
-
-# 순서: control plane → add-on → worker
-# minor 하나씩 (1.29 → 1.30 → 1.31)
-```
-
----
-
-## 15. cost 절감 (★)
-
-```
-1. Karpenter + Spot
-   → 50-70% node cost ↓
-
-2. Graviton (ARM64)
-   → 20% 더 저렴
-
-3. right-size
-   → VPA recommendation
-   → Goldilocks
-
-4. Fargate for batch / sporadic
-   → idle cost 0
-
-5. cluster autoscaler / Karpenter consolidation
-   → underutilization 회수
-
-6. EBS gp3 (gp2 보다 cheaper / 더 빠름)
-
-7. dev / staging 끄기 (CronJob scale 0)
-
-8. observability cost
-   → AMP + AMG (self-host 보다 운영 X)
-   → log = Loki
-
-9. control plane $73/mo 의 부담
-   → 작은 환경 = ECS Fargate 또는 App Runner
-```
-
----
-
-## 16. 보안 best practice
-
-```
-☐ IRSA / Pod Identity (★ 필수)
-☐ private endpoint (control plane 의 public access off)
-☐ Network Policy (Calico / Cilium)
-☐ Pod Security Admission (restricted profile)
-☐ image scan (ECR + Trivy)
-☐ cosign signed image only
-☐ secrets external (Secrets Manager + ESO)
-☐ encryption at rest (EBS / S3 / EFS)
-☐ etcd encryption (KMS)
-☐ audit log → CloudWatch + Athena
-☐ GuardDuty for EKS
-☐ Kyverno / Gatekeeper
-```
-
----
-
-## 17. troubleshoot
-
-```bash
-# cluster health
-aws eks describe-cluster --name prod
-
-# add-on health
-aws eks describe-addon --cluster-name prod --addon-name vpc-cni
-
-# node 의 IAM role
-kubectl get node -o yaml | grep -i iam
-
-# pod 의 IRSA
-kubectl describe pod <name> | grep -A5 "ServiceAccount"
-kubectl exec <pod> -- aws sts get-caller-identity
-
-# control plane log (CloudWatch)
-aws logs filter-log-events \
-    --log-group-name /aws/eks/prod/cluster \
-    --filter-pattern "ERROR"
-
-# VPC CNI debug
-kubectl logs -n kube-system -l k8s-app=aws-node
-```
-
----
-
-## 18. 함정
-
-1. **control plane public + IP 제한 없음** — internet 노출.
-2. **NAT GW 1 AZ** — AZ fail 시 outbound 끊김. HA NAT.
-3. **VPC CNI IP 부족** — prefix delegation 켜기.
-4. **Spot + critical workload** — capacity fail 시 영향.
-5. **IRSA vs Pod Identity 혼용** — 한쪽으로.
-6. **kubectl alias 잘못 (다른 cluster)** — `kubectx` 사용.
-7. **add-on 자동 update 안 함** — 정기 update.
-8. **single node group / single AZ** — HA 부재.
-9. **control plane log off** — incident 추적 불가.
-10. **Karpenter 미설정 limits** — 무한 node 폭주.
-
----
-
-## 19. 관련
-
-- [[cloud-aws|↑ cloud-aws]]
-- [[compute]]
-- [[kubernetes|↗ k8s]]
-- [[migration|↗ k3s ↔ EKS]]
+bkurs-be 현재: **ECS Fargate 권장** (작은 팀, AWS 한정, ecosystem 불필요).
+
+> EKS 가 의미 있는 시점: 다른 cluster (GKE / on-prem) 가 있거나, Argo / Istio / KEDA 같은 K8s 전용 도구가 필요할 때.
+
+## 10. 영상 / 자료
+
+| 자료 |
+| --- |
+| [EKS Deep Dive — re:Invent](https://www.youtube.com/watch?v=2nMhd6JJG2A) |
+| [EKS Auto Mode 발표](https://aws.amazon.com/blogs/aws/streamline-kubernetes-cluster-management-with-new-amazon-eks-auto-mode/) |
+| [Kubernetes 공식 documentation](https://kubernetes.io/docs/) |
+| [EKS Workshop](https://www.eksworkshop.com/) |
+
+## 11. 관련 hub
+
+- [[../compute]]
+- [[../ecs/ecs]] — 대안
+- [[../lambda/lambda]] — 대안
+- [[../ec2/ec2]] — node 토대
+- [[../ecr/ecr]] — image
+- [[../../network/vpc/vpc]]
+- [[../../iam/iam]]

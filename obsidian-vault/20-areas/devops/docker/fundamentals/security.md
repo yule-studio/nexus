@@ -131,9 +131,59 @@ cosign verify --key cosign.pub ghcr.io/USER/myapp:1.0
 
 ---
 
-## 8. 관련
+## 8. supply chain 위협 — 시각화
 
-- [[docker|↑ docker]]
-- [[dockerfile-best-practices]]
-- [[registry]]
-- [[../security-ops/security-ops|↗ security-ops]]
+```mermaid
+flowchart LR
+    A[base image 침해<br/>Log4Shell 형] --> B[빌드 단계 secret leak]
+    B --> C[registry 침투<br/>tag 교체]
+    C --> D[runtime 침해<br/>privilege escalation]
+
+    A -.방어.-> A1[image scan + pinning]
+    B -.방어.-> B1[BuildKit secret mount]
+    C -.방어.-> C1[Cosign signing + policy]
+    D -.방어.-> D1[non-root + read-only + seccomp]
+```
+
+각 단계 모두 방어 — **단일 도구가 아닌 다층 방어**.
+
+## 9. 보안 도구 매트릭스
+
+| 단계 | 도구 |
+| --- | --- |
+| **base image 선택** | distroless / alpine / chainguard, Docker Scout recommendations |
+| **빌드 시 secret** | BuildKit `--mount=type=secret` ([[../practice/05-buildkit-cache-and-secret]]) |
+| **scan (CVE)** | Docker Scout / Trivy / Grype / Snyk ([[../practice/13-image-scan-scout-and-trivy]]) |
+| **SBOM** | Syft / Trivy / Docker Scout (CycloneDX / SPDX) |
+| **signing** | Cosign + Sigstore ([[../practice/14-sign-and-verify-cosign]]) |
+| **runtime** | non-root USER, `--read-only`, `--cap-drop ALL`, `--security-opt seccomp=...` |
+| **K8s policy** | Kyverno / Sigstore policy-controller / OPA Gatekeeper |
+| **audit** | Falco (runtime threat detection) |
+
+## 10. 학습 영상
+
+| 영상 | 길이 |
+| --- | --- |
+| [Container Security 101 — Anchore](https://www.youtube.com/watch?v=KINjI1tlo2w) | 25분 ★ |
+| [Sigstore + Cosign — CNCF](https://www.youtube.com/watch?v=KIjL3xRYNgQ) | 30분 |
+| [Liz Rice: Container Security book](https://www.oreilly.com/library/view/container-security/9781492056690/) | 책 |
+| [Falco runtime security — Sysdig](https://www.youtube.com/watch?v=Tau6vRPiZyU) | 25분 |
+| [Distroless deep — Google](https://www.youtube.com/watch?v=lviLZFciDv4) | 30분 |
+
+## 11. 실습 매핑
+
+| 주제 | 실습 |
+| --- | --- |
+| BuildKit secret mount | [[../practice/05-buildkit-cache-and-secret]] |
+| CVE scan + SBOM | [[../practice/13-image-scan-scout-and-trivy]] |
+| Cosign signing + policy | [[../practice/14-sign-and-verify-cosign]] |
+| multi-stage + non-root | [[../practice/04-multi-stage-build]] |
+
+## 12. 관련
+
+- [[fundamentals]] — fundamentals hub
+- [[mental-models]] — process / namespace / capability
+- [[../dockerfile/best-practices]] — Dockerfile 보안
+- [[registry]] — push/pull 흐름
+- [[../desktop/scout]] (예정) — Desktop Scout 통합
+- [[../../security-ops/security-ops|↗ security-ops]]

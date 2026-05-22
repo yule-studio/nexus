@@ -348,18 +348,35 @@ Linux kernel (namespace / cgroup / capability)
 
 ---
 
-## 10. 참고
+## 10. 학습 영상
 
-- [[docker|↑ docker]]
-- [[concepts]]
-- [[dockerfile-best-practices]]
-- [[buildkit-deep]]
-- [[production-patterns]]
-- [[runtime-comparison]]
-- [[security]]
-- [[pitfalls]]
-- [[../linux/linux-mental-models-for-devops]]
-- [[../../computer-science/network/topics/container-networking|↗ CS — container networking (veth / bridge / VXLAN)]] — Docker bridge 의 실제 구성
-- [[../../computer-science/network/tools/iptables-netfilter|↗ CS — iptables / netfilter]] — Docker 의 NAT / DOCKER chain
-- OCI Image Spec v1.1 — https://github.com/opencontainers/image-spec
-- OCI Runtime Spec v1.1 — https://github.com/opencontainers/runtime-spec
+| 영상 | 길이 | 추천 |
+| --- | --- | --- |
+| [Container = Process — Liz Rice (KubeCon)](https://www.youtube.com/watch?v=8fi7uSYlOdc) | 45분 | namespace/cgroup deep ★★ |
+| [BuildKit Deep Dive — Tonis Tiigi](https://www.youtube.com/watch?v=kkpQ_UZn2bo) | 50분 | BuildKit graph |
+| [OCI Runtime — Matthias Bertschy](https://www.youtube.com/watch?v=oqOWNbqJgQI) | 30분 | OCI spec |
+| [How Docker works — Fireship](https://www.youtube.com/watch?v=Gjnup-PuquQ) | 8분 | 빠른 정리 |
+
+## 11. 실습 매핑
+
+| 주제 | 실습 |
+| --- | --- |
+| OCI image manifest / digest / layer | [[../practice/10-image-tags-and-layers]] |
+| BuildKit (cache / secret / DAG) | [[../practice/05-buildkit-cache-and-secret]] |
+| multi-platform manifest list | [[../practice/06-multi-platform-build]] |
+| signing + SBOM | [[../practice/14-sign-and-verify-cosign]] |
+
+## 12. 참고
+
+- [[fundamentals]] — fundamentals hub
+- [[concepts]] — 5 핵심 어휘
+- [[../dockerfile/best-practices]] — Dockerfile 적용
+- [[../dockerfile/buildkit-deep]] — BuildKit graph
+- [[../production/patterns]] — runtime invariant 실전
+- [[runtime-comparison]] — runc / containerd / gVisor / kata
+- [[security]] — capability / seccomp
+- [[../production/pitfalls]] — PID 1 / signal
+- [[../../linux/linux-mental-models-for-devops]] — namespace / cgroup 호스트 측
+- [[../../computer-science/network/topics/container-networking|↗ CS — container networking]] — veth / bridge / VXLAN
+- [[../../computer-science/network/tools/iptables-netfilter|↗ CS — iptables / netfilter]] — Docker NAT chain
+- **OCI specs**: [image-spec](https://github.com/opencontainers/image-spec) · [runtime-spec](https://github.com/opencontainers/runtime-spec) · [distribution-spec](https://github.com/opencontainers/distribution-spec)

@@ -101,9 +101,64 @@ docker run --tmpfs /tmp ...              # tmpfs
 
 ---
 
-## 7. 관련
+## 7. 5 개념 관계도
 
-- [[docker|↑ docker]]
-- [[dockerfile-best-practices]]
-- [[volume]]
-- [[networking]]
+```mermaid
+flowchart TD
+  REG[(Container Registry<br/>Docker Hub / GHCR / ECR)]
+  IMG[Image<br/>+ layers + metadata]
+  REG -->|pull| IMG
+  REG <--|push| IMG
+
+  IMG -->|docker run| C1[Container 1]
+  IMG -->|docker run| C2[Container 2]
+
+  V1[(Volume<br/>named)]
+  V2[(Bind mount<br/>host path)]
+  C1 -->|mount /var/lib/...| V1
+  C2 -->|mount /app/src| V2
+
+  NET[Network bridge<br/>app-net]
+  C1 --- NET
+  C2 --- NET
+
+  HOST[(Host kernel + filesystem)]
+  C1 -.->|namespace / cgroup| HOST
+  C2 -.->|namespace / cgroup| HOST
+```
+
+> container 는 **host 의 process** — kernel 공유. VM 아님. image 는 filesystem 의 immutable
+> snapshot. 같은 image 가 N container 로 spawn.
+
+## 8. 더 깊이 → [[mental-models]]
+
+- 컨테이너 = process (PID 1 / signal / OOM)
+- layer = content-addressable (sha256)
+- OCI image-spec / runtime-spec / distribution-spec
+- BuildKit DAG / cache backend
+
+## 9. 학습 영상
+
+| 영상 | 길이 | 추천 |
+| --- | --- | --- |
+| [Docker explained — Fireship](https://www.youtube.com/watch?v=Gjnup-PuquQ) | 8분 | 가장 빠른 입문 |
+| [What is a container? — Liz Rice](https://www.youtube.com/watch?v=8fi7uSYlOdc) | 45분 | namespace/cgroup deep |
+| [Docker Tutorial — TechWorld with Nana](https://www.youtube.com/watch?v=3c-iBn73dDE) | 2h | 종합 입문 ★ |
+
+## 10. 실습 매핑
+
+| 개념 | 실습 |
+| --- | --- |
+| image / container 기본 | [[../practice/01-hello-world]] |
+| Dockerfile / layer | [[../practice/04-multi-stage-build]] |
+| network DNS-by-name | [[../practice/07-networks-and-dns]] |
+| volume / bind / tmpfs | [[../practice/08-volumes-and-bind-mounts]] |
+| compose 다중 컨테이너 | [[../practice/03-compose-full-stack]] |
+
+## 11. 관련
+
+- [[fundamentals]] — fundamentals hub
+- [[mental-models]] — 깊이 노트 (process / layer / OCI)
+- [[networking]] / [[volume]] / [[registry]] / [[security]] / [[runtime-comparison]]
+- [[../dockerfile/best-practices]] — Dockerfile 작성
+- [[../docker]] — root hub

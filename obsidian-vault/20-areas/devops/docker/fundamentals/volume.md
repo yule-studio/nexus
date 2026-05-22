@@ -97,8 +97,66 @@ docker run --rm -v pg-data:/target -v $(pwd):/backup alpine \
 
 ---
 
-## 7. 관련
+## 7. mount 타입 시각화
 
-- [[docker|↑ docker]]
-- [[compose]]
+```mermaid
+flowchart LR
+  subgraph host[Host filesystem]
+    HFS["/Users/me/code/myapp"]
+    DOCKER["/var/lib/docker/volumes/db-data/_data"]
+  end
+
+  subgraph c1[Container]
+    M1["/app  ← bind mount"]
+    M2["/var/lib/postgresql/data  ← named volume"]
+    M3["/tmp  ← tmpfs (RAM)"]
+  end
+
+  HFS -.->|VirtioFS / FUSE| M1
+  DOCKER -.->|Docker managed| M2
+  RAM[(RAM)] -.->|in-memory| M3
+
+  style M3 stroke-dasharray: 3 3
+```
+
+| Type | 영구성 | 위치 | 권장 |
+| --- | --- | --- | --- |
+| **named volume** | ✓ | Docker managed | DB / 영구 데이터 |
+| **bind mount** | ✓ | host 임의 경로 | dev (소스 sync) / config |
+| **tmpfs** | ✗ | RAM | secret / 임시 / 빠른 IO |
+
+## 8. 백업 / 복원
+
+```bash
+# tar 방식
+docker run --rm -v db-data:/data -v $PWD:/backup \
+  alpine tar czf /backup/db-$(date +%F).tar.gz -C /data .
+
+# DB dump 방식 (안전)
+docker exec db pg_dump -U postgres mydb | gzip > backup.sql.gz
+```
+
+자세히 → [[../practice/08-volumes-and-bind-mounts]]
+
+## 9. 학습 영상
+
+| 영상 | 길이 |
+| --- | --- |
+| [Docker Volume vs Bind Mount — TechWorld with Nana](https://www.youtube.com/watch?v=p2PH_YPCsis) | 10분 ★ |
+| [Persistent Storage — Bret Fisher](https://www.youtube.com/watch?v=z0Vfomd_OUE) | 25분 |
+
+## 10. 실습 매핑
+
+| 주제 | 실습 |
+| --- | --- |
+| named/bind/tmpfs + 백업 + 권한 | [[../practice/08-volumes-and-bind-mounts]] |
+| compose volume | [[../practice/03-compose-full-stack]] |
+| Spring Boot bind mount dev | [[../practice/02-dockerfile-spring-boot]] |
+
+## 11. 관련
+
+- [[fundamentals]] — fundamentals hub
 - [[concepts]]
+- [[../compose/getting-started]] — compose volume syntax
+- [[../desktop/dashboard#3]] — Desktop GUI volume export/import
+- [[../orbstack/linux-machines]] — OrbStack Finder sync

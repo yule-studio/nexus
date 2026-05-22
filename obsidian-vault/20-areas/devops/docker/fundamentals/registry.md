@@ -119,8 +119,60 @@ trivy image myapp:1.0
 
 ---
 
-## 8. 관련
+## 8. push / pull 흐름
 
-- [[docker|↑ docker]]
-- [[security]]
-- [[../cicd/cicd|↗ cicd (build → push)]]
+```mermaid
+sequenceDiagram
+    participant Dev as Developer
+    participant Daemon as docker daemon
+    participant Reg as Registry
+
+    Dev->>Daemon: docker login
+    Daemon->>Reg: auth /v2/
+    Reg-->>Daemon: 200 Token
+    Daemon-->>Dev: stored ~/.docker/config.json
+
+    Dev->>Daemon: docker push myuser/myapp:v1
+    Daemon->>Reg: HEAD /v2/.../blobs/<digest>
+    alt blob 존재 (layer 공유)
+        Reg-->>Daemon: 200 OK (skip)
+    else 신규
+        Daemon->>Reg: PUT layer chunks
+        Daemon->>Reg: PUT manifest
+    end
+    Reg-->>Daemon: 201 Created
+
+    Dev->>Daemon: docker pull myuser/myapp:v1
+    Daemon->>Reg: GET manifest
+    Reg-->>Daemon: layer digest 목록
+    Daemon->>Reg: GET layer × N
+    Daemon-->>Dev: image 준비
+```
+
+핵심: layer 는 **content-addressable** — 같은 layer 가 여러 image 에 있으면 한 번만 push/pull.
+
+## 9. 학습 영상
+
+| 영상 | 길이 |
+| --- | --- |
+| [Docker Registry — TechWorld with Nana](https://www.youtube.com/watch?v=apdT0xKOZQ4) | 12분 ★ |
+| [GitHub Container Registry Tutorial](https://www.youtube.com/watch?v=hLPyW0OdGJI) | 15분 |
+| [Self-Hosted Registry — DevOps Toolkit](https://www.youtube.com/watch?v=jhwK8ASYWqg) | 30분 |
+| [Harbor walkthrough — CNCF](https://www.youtube.com/watch?v=BJDMRTNAYAY) | 30분 |
+
+## 10. 실습 매핑
+
+| 주제 | 실습 |
+| --- | --- |
+| Docker Hub / GHCR / ECR push | [[../practice/11-registry-docker-hub-and-ghcr]] |
+| 자체 registry + Harbor | [[../practice/12-self-hosted-registry]] |
+| image tag / digest / layer | [[../practice/10-image-tags-and-layers]] |
+| scan + sign | [[../practice/13-image-scan-scout-and-trivy]] / [[../practice/14-sign-and-verify-cosign]] |
+
+## 11. 관련
+
+- [[fundamentals]] — fundamentals hub
+- [[security]] — scan + sign + SBOM
+- [[mental-models]] — content-addressable layer
+- [[../desktop/secrets-and-credentials]] (예정) — credential helper
+- [[../../cicd/cicd|↗ cicd (build → push)]]

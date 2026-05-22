@@ -323,9 +323,27 @@ k8s 통합:
 
 ---
 
-## 16. 관련
+## 16. 학습 영상
 
-- [[docker|↑ docker]]
-- [[security]]
-- [[../kubernetes/concepts|↑ k8s]]
-- [[../security-ops/supply-chain-security|↗ supply chain]]
+| 영상 | 길이 |
+| --- | --- |
+| [Container Runtimes Deep Dive — CNCF](https://www.youtube.com/watch?v=8jSU93s1KbU) | 35분 |
+| [runc, containerd, CRI — Phil Estes](https://www.youtube.com/watch?v=oWQ8gMQRGqU) | 40분 |
+| [gVisor — Google](https://www.youtube.com/watch?v=z61V25oI7t0) | 25분 |
+| [Kata Containers — Intel](https://www.youtube.com/watch?v=jbiVnOSnzaU) | 30분 |
+| [Podman vs Docker — Red Hat](https://www.youtube.com/watch?v=N1OFRryX2bQ) | 20분 |
+
+## 17. 실습 매핑
+
+| 주제 | 실습 |
+| --- | --- |
+| OCI image (multi-arch / manifest) | [[../practice/06-multi-platform-build]] |
+| containerd in K3s (OrbStack) | [[../orbstack/k8s]] |
+
+## 18. 관련
+
+- [[fundamentals]] — fundamentals hub
+- [[mental-models]] — process / namespace / cgroup
+- [[security]] — capability / seccomp / runtime 격리
+- [[../../kubernetes/concepts|↑ k8s]] — CRI / containerd
+- [[../../security-ops/supply-chain-security|↗ supply chain]]

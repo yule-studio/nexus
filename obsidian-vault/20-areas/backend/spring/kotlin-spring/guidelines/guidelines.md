@@ -26,7 +26,7 @@ tags:
 
 ---
 
-## 0. 학습 순서
+## 0. 학습 순서 (입문 — 메모 API 완성)
 
 | 단계 | 노트 | 무엇을 배우나 |
 | --- | --- | --- |
@@ -35,6 +35,18 @@ tags:
 | 3 | [[03-domain-and-jpa]] | User / Memo entity (open class) + Repository + Flyway |
 | 4 | [[04-controller-and-validation]] | @RestController + DTO + Bean Validation + 예외 처리 |
 | 5 | [[05-security-and-deployment]] | Spring Security + JWT + Docker + 운영 체크리스트 |
+
+## 0.1 기본 세팅 — 매 프로젝트마다 적용
+
+01-05 따라 만든 뒤, 운영 가능한 수준으로 끌어올리는 세팅들.
+
+| 단계 | 노트 | 무엇을 배우나 |
+| --- | --- | --- |
+| 6 | [[06-swagger-openapi]] | Swagger UI / springdoc-openapi 통합 — API 문서 자동 |
+| 7 | [[07-controller-patterns]] | request / response / status / @PathVariable 등 패턴 정리 |
+| 8 | [[08-actuator-monitoring]] | Spring Boot Actuator — health / metrics / Prometheus |
+| 9 | [[09-logging-mdc]] | Logback / MDC / X-Request-Id 추적 / JSON log |
+| 10 | [[10-devtools-hotreload]] | Spring DevTools / hot reload / Gradle continuous build |
 
 ---
 

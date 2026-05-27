@@ -1,306 +1,205 @@
 ---
-title: "AWS Lambda — Serverless Function"
+title: "AWS Lambda — Serverless Function (hub)"
 kind: knowledge
-project: devops
-agent: engineering-agent/tech-lead
 status: current
-created_at: 2026-05-14T21:25:00+09:00
-tags:
-  - aws
-  - compute
-  - lambda
-  - serverless
+created_at: 2026-05-14T21:20:00+09:00
+updated_at: 2026-05-22T16:50:00+09:00
+tags: [aws, compute, lambda, serverless, hub]
+home_hub: cloud-aws
 ---
 
-# AWS Lambda
+# AWS Lambda — Serverless Function
 
-| 문서 버전 | 작성일 | 작성자 | 주요 변경 사항 |
-| --- | --- | --- | --- |
-| v.1.0.0 | 2026-05-14 | engineering-agent/tech-lead | Lambda 개념 + 사용 |
+> **이벤트 트리거 + 함수 실행 + 자동 scaling + 사용량 기반 과금**. Firecracker microVM 위에 함수가 빠르게 시작/종료.
 
-**[[compute|↑ Compute]]** · **[[cloud-aws|↑↑ AWS]]**
+**[[../compute|↑ Compute]]** · **[[../../cloud-aws|↑↑ AWS]]**
 
 ---
 
 ## 1. 한 줄
 
-이벤트가 오면 **함수를 띄워 실행**, 끝나면 종료. 서버 관리 0. 실행 시간만 과금.
+```
+Trigger (S3 / SNS / SQS / API GW / EventBridge / ALB / Stream / Cron)
+   ↓
+Lambda Function (Firecracker microVM)
+   ↓
+~15분 실행 → 자동 종료, 사용한 ms 만 과금
+```
 
----
+> Container 대비: long-running process 운영 부담 없음. Container 만 한 자유는 없음 (15분 한도 / payload 6 MB / etc).
 
-## 2. 왜
+## 2. 학습 roadmap
 
-- **서버 띄울 일 X** — 사용 시간만
-- **자동 확장** — 1 → 수천 invocation 동시
-- **event-driven 자연스러움** — S3 upload → Lambda 등 통합
-- 작은 작업 / 가끔 호출 = EC2/ECS 보다 저렴
+```mermaid
+flowchart TB
+  subgraph F["01 fundamentals"]
+    F1[execution model]
+    F2[runtime + deployment]
+    F3[pricing + limits]
+    F4[Lambda vs ECS vs Step Functions]
+  end
+  subgraph T["02 triggers"]
+    T1[async S3/SNS/EventBridge]
+    T2[sync ALB/API GW/Function URL]
+    T3[stream SQS/Kinesis/DDB]
+  end
+  subgraph R["03 runtime"]
+    R1[concurrency + scaling]
+    R2[env + Layers + Extension]
+    R3[VPC + networking]
+  end
+  subgraph O["04 operations"]
+    O1[observability]
+    O2[troubleshooting]
+  end
+  subgraph S["05 security"]
+    S1[execution role]
+    S2[code signing + secrets]
+  end
+  subgraph P["practice"]
+    P1[first zip]
+    P2[container image]
+    P3[event-driven pipeline]
+  end
+  F --> T --> R --> O --> S --> P
+```
 
-한계:
-- **15 분 실행 한계**
-- **cold start** (수백 ms 첫 호출)
-- **stateless** (in-memory 보존 X)
-- **256 MB ~ 10 GB RAM** (가격 비례)
+## 3. Sub-directory index
 
-대안:
-- **ECS / EKS** — 긴 / 큰 작업
-- **Step Functions** — 여러 Lambda chain
-- **App Runner / EC2** — 일반 응용
+### [[01-fundamentals/01-execution-model]] — Cold start / Warm / Firecracker
+microVM lifecycle, cold vs warm, SnapStart, Init phase.
 
----
+### [[01-fundamentals/02-runtime-and-deployment]] — Managed runtime / Custom / Container / zip
+Node/Python/Java/.NET/Ruby/Go + AL2/AL2023 OS + Lambda Layers + container image (up to 10GB).
 
-## 3. 핵심 개념
+### [[01-fundamentals/03-pricing-and-limits]] — Invocation / GB-s / payload / timeout
+무료 1M req/월 + $0.20/1M req + $0.0000166667/GB-s. hard limit 표.
+
+### [[01-fundamentals/04-lambda-vs-ecs-vs-stepfn]] — 결정 기준
+짧은 / 단순 / 이벤트 → Lambda. 긴 / 복잡 / 다중 → ECS or Step Functions.
+
+### [[02-triggers/01-async-trigger]] — S3 / SNS / EventBridge
+비동기 — Lambda 가 retry 2회 + DLQ + Destination.
+
+### [[02-triggers/02-sync-trigger]] — ALB / API Gateway / Function URL
+HTTPS endpoint 3 방식 비교.
+
+### [[02-triggers/03-stream-poller]] — SQS / Kinesis / DDB Streams / Kafka
+Lambda 가 poll → batch invoke. parallelization factor / Tumbling window.
+
+### [[03-runtime/01-concurrency-and-scaling]] — Reserved / Provisioned / Burst
+account 한도 1000, regional burst, cold start 방지.
+
+### [[03-runtime/02-environment-and-layers]] — Env / Layers / Extension
+env var 4KB + Layers (재사용 dep) + Extension (sidecar like).
+
+### [[03-runtime/03-vpc-and-networking]] — VPC ENI / NAT / Hyperplane
+VPC mode 의 cost / cold start / Hyperplane 개선.
+
+### [[04-operations/01-observability]] — CloudWatch / X-Ray / Powertools
+log / metric / trace + AWS Lambda Powertools.
+
+### [[04-operations/02-troubleshooting]] — Throttle / Timeout / OOM / 502
+common error + 해결.
+
+### [[05-security/01-execution-role]] — Role + Resource Policy + Tag
+Execution Role vs Resource-based Policy.
+
+### [[05-security/02-code-signing-and-secrets]] — Signer / Secrets / KMS
+Lambda Code Signing (SHA256 + KMS) + Secrets Manager / Parameter Store.
+
+### [[practice/01-first-lambda-zip]] — Python zip + S3 trigger (20분)
+
+### [[practice/02-container-image-lambda]] — Spring Boot native + container (40분)
+
+### [[practice/03-event-driven-pipeline]] — S3 → Lambda → DynamoDB + Step Functions (60분)
+
+## 4. 핵심 개념 1줄
 
 | 개념 | 의미 |
 | --- | --- |
-| **Function** | 코드 + 설정 + role |
-| **Runtime** | Python / Node / Java / Go / Ruby / .NET / custom |
-| **Handler** | entry point (`handler.lambda_handler`) |
-| **Trigger** | S3 / API Gateway / EventBridge / SQS / DynamoDB Stream / ... |
-| **Layer** | 공유 라이브러리 |
-| **Provisioned Concurrency** | cold start 회피 (warm pool) |
-| **Reserved Concurrency** | 최대 동시 실행 한정 |
-| **VPC Lambda** | VPC 안 자원 (RDS 등) 접근 |
+| Function | 1 deployable (handler + runtime) |
+| Trigger | 함수를 호출하는 source |
+| Invocation | 1회 호출 |
+| Cold Start | microVM 부팅 + init code 첫 실행 (~100ms-3s) |
+| Warm Invocation | 재사용된 microVM 호출 (~ms) |
+| Provisioned Concurrency | 미리 warm 보장 (cold start 없음) |
+| Reserved Concurrency | account 한도 내 일부 예약 (throttle 격리) |
+| Layer | 공통 dependency / runtime 추가 zip |
+| Extension | sidecar like (monitoring / log forward) |
+| Destination | success/failure 시 다음 service (SNS/SQS/EventBridge/Lambda) |
 
----
+## 5. Lambda 가 적합한 곳
 
-## 4. 설치 / 첫 함수
+✓ **시나리오**
+- API Gateway / ALB 의 backend (HTTP)
+- S3 이벤트 처리 (image resize, log parse)
+- SQS / Kinesis / DDB Streams worker
+- EventBridge scheduled / cron
+- 사이드 작업 (notification, audit, webhook)
+- AWS service 자동화 (IAM 변경 알림 등)
 
-### 4.1 Console
+✗ **부적합**
+- 15분 이상 작업
+- 거대 dependency (zip > 250MB / container 가능 but cold start ↑)
+- WebSocket 직접 (API Gateway WebSocket 우회)
+- 강력한 GPU
+- DB long-lived connection (pool 어려움)
 
-```python
-# handler.py
-def lambda_handler(event, context):
-    return {"statusCode": 200, "body": "hello"}
+## 6. ECS / EKS / Lambda 비교
+
+```mermaid
+flowchart TD
+  Q1{요청 형태}
+  Q1 -->|이벤트 발생 시점만| LAMBDA
+  Q1 -->|24x7 HTTP API| Q2{Container 표준?}
+  Q2 -->|간단| ECS[ECS Fargate]
+  Q2 -->|K8s 필요| EKS
+  Q1 -->|복잡한 workflow| STEP[Step Functions + Lambda]
 ```
 
-Console → Create function → Author from scratch → Python 3.12.
+자세히 → [[01-fundamentals/04-lambda-vs-ecs-vs-stepfn]]
 
-### 4.2 CLI / zip
-
-```bash
-# 작성
-mkdir myfn && cd myfn
-echo 'def lambda_handler(event, context): return "hi"' > handler.py
-
-zip -r ../myfn.zip .
-
-aws lambda create-function \
-  --function-name myfn \
-  --runtime python3.12 \
-  --role arn:aws:iam::111222333444:role/lambda-basic-role \
-  --handler handler.lambda_handler \
-  --zip-file fileb://../myfn.zip
-```
-
-업데이트:
-```bash
-aws lambda update-function-code --function-name myfn --zip-file fileb://myfn.zip
-```
-
-### 4.3 SAM / CDK / Serverless Framework
-
-```yaml
-# template.yaml (SAM)
-Resources:
-  MyFn:
-    Type: AWS::Serverless::Function
-    Properties:
-      CodeUri: ./
-      Handler: handler.lambda_handler
-      Runtime: python3.12
-      Events:
-        Api:
-          Type: Api
-          Properties:
-            Path: /hello
-            Method: get
-```
-
-```bash
-sam build && sam deploy --guided
-```
-
-### 4.4 Container Image (10 GB 까지)
-
-```dockerfile
-FROM public.ecr.aws/lambda/python:3.12
-COPY handler.py ${LAMBDA_TASK_ROOT}
-CMD ["handler.lambda_handler"]
-```
-
-```bash
-docker build -t myfn .
-aws ecr ... # tag + push
-aws lambda create-function --package-type Image --code ImageUri=...
-```
-
----
-
-## 5. Trigger 예
-
-### 5.1 API Gateway (HTTP)
-
-```yaml
-Events:
-  Api:
-    Type: HttpApi
-    Properties:
-      Path: /
-      Method: POST
-```
-
-→ POST https://abc.execute-api... → Lambda 실행.
-
-### 5.2 S3 (object created)
-
-```python
-def lambda_handler(event, context):
-    for r in event["Records"]:
-        bucket = r["s3"]["bucket"]["name"]
-        key    = r["s3"]["object"]["key"]
-        # 이미지 thumbnail 생성 등
-```
-
-### 5.3 SQS
-
-```python
-def lambda_handler(event, context):
-    for r in event["Records"]:
-        body = r["body"]
-        # 처리
-```
-
-Lambda 가 자동 polling. 동시 배치 size 설정.
-
-### 5.4 EventBridge cron
-
-```yaml
-Events:
-  Schedule:
-    Type: Schedule
-    Properties:
-      Schedule: rate(5 minutes)
-      # 또는 cron(0 8 * * ? *)
-```
-
-### 5.5 DynamoDB Stream
-
-테이블 변경 → Lambda (CDC).
-
-### 5.6 CloudWatch Logs / Kinesis / SNS / Cognito / ...
-모두 지원.
-
----
-
-## 6. Cold Start
+## 7. 비용 직관 (Lambda vs ECS)
 
 ```
-첫 호출 (또는 idle 후):
-  download → init → handler 실행
-  Python / Node: 200-500 ms
-  Java / .NET:   1-3 초
-  GraalVM native: 100 ms
+Lambda: 1M req × 100ms × 256MB
+     = 100,000 GB-s × $0.0000166667
+     = $1.67 + invocation $0.20 = $1.87/월
+
+같은 작업을 ECS Fargate 1 task 24x7:
+     = 1 vCPU + 2 GB × 730h
+     = $36/월
 ```
 
-해결:
-- **Provisioned Concurrency** — warm pool 유지 (추가 비용)
-- **SnapStart** (Java 11/17/21) — 90% 절감
-- 작은 deployment package
-- VPC 안 = ENI 생성 ~ 옛 10s+ (현재 < 1s 으로 개선)
+→ 트래픽이 sparse 하면 Lambda 가 10~100배 싸다. 24x7 부하 → ECS 가 싸다.
 
----
-
-## 7. Memory / CPU
+## 8. bkurs-be 활용 시나리오
 
 ```
-Memory 128 MB ~ 10 GB
-CPU = memory 비례 (1769 MB 부터 1 vCPU)
+일반 API request    → ECS Fargate (24x7, low latency)
+주간 통계 batch     → Lambda + EventBridge cron
+S3 image resize    → Lambda (S3 trigger)
+notification (SNS) → Lambda
+admin webhook      → Lambda + API Gateway
+audit log archive  → Lambda + S3 + DDB
 ```
 
-→ memory 늘리면 CPU도 ↑ → 더 빠름 + 비싸지 않을 수도 (실행 시간 ↓).
-**Power Tuning** 도구로 최적 memory 찾기.
+## 9. 영상 / 자료
 
----
+| 자료 |
+| --- |
+| [Lambda Internals — re:Invent](https://www.youtube.com/watch?v=0_jfH6qijVY) |
+| [AWS Lambda 공식](https://docs.aws.amazon.com/lambda/) |
+| [AWS Serverless Land](https://serverlessland.com) |
+| [Lambda Powertools](https://docs.powertools.aws.dev) |
 
-## 8. Concurrency
+## 10. 관련 hub
 
-- **Account limit**: 1000 (기본, 증가 요청 가능)
-- **Reserved**: 함수별 최대 (다른 함수 보호)
-- **Provisioned**: warm
-- 한 함수 burst = ~ 500-3000 (region 별)
-
----
-
-## 9. 비용
-
-```
-$0.0000166667 / GB·s + $0.20 / 1M 요청
-```
-
-예 — 512 MB 함수, 200 ms, 월 1M 호출:
-```
-GB·s = 0.5 × 0.2 × 1M = 100,000
-$ = 100K × $0.0000166667 + 1M × $0.20/1M = $1.67 + $0.20 = ~$1.87
-```
-
-매우 저렴. but 항상 켜둘 = ECS 더 저렴할 수도.
-
----
-
-## 10. 사용 시나리오
-
-- API backend (작은 / 가끔)
-- 파일 처리 (S3 upload → thumbnail)
-- ETL / data pipeline
-- cron job
-- ChatBot / Webhook
-- IoT
-- Cognito trigger (사용자 가입 후 처리)
-
-부적합:
-- 15 분 초과
-- WebSocket persistent connection (API Gateway WebSocket 별도)
-- 매우 큰 RAM / GPU
-- 매우 sustained 트래픽 (ECS 가 더 쌈)
-
----
-
-## 11. 함정
-
-### 11.1 timeout / memory 부족
-default 3 초 / 128 MB. 늘리기.
-
-### 11.2 cold start 의 latency
-P99 latency 폭증. Provisioned / SnapStart / smaller package.
-
-### 11.3 VPC Lambda 의 ENI
-옛 — 큰 cold start. 새 — Hyperplane 으로 해결. 단, IP 소모 ↑.
-
-### 11.4 packaging 의 크기
-unzipped 250 MB / zipped 50 MB 한계. Layer 또는 container image (10 GB).
-
-### 11.5 logging — CloudWatch Logs 만
-log 폭증 → 비용. log retention 설정.
-
-### 11.6 retry — async 호출
-S3 / SNS 등 async = 자동 재시도. DLQ (Dead-Letter Queue) 설정 필수.
-
-### 11.7 idempotency
-재시도 시 중복 처리 위험. event ID + dedup.
-
----
-
-## 12. 학습 자료
-
-- AWS Lambda docs
-- **Serverless Patterns** — serverlessland.com
-- **Lambda Power Tuning** — github.com/alexcasalboni
-
----
-
-## 13. 관련
-
-- [[compute]] — Compute hub
-- [[ec2]] / [[ecs]] — 대안
-- [[sqs]] — 자주 함께
-- [[cloudwatch]] — 로그
+- [[../compute]]
+- [[../ecs/ecs]] — long-running 대안
+- [[../eks/eks]] — K8s 대안
+- [[../../messaging/sqs/sqs]] — trigger
+- [[../../messaging/sns/sns]] — trigger
+- [[../../messaging/eventbridge/eventbridge]]
+- [[../../iam/iam]]

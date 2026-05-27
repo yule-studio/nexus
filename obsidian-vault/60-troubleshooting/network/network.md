@@ -17,23 +17,23 @@ home_hub: "60-troubleshooting"
 
 ## 카탈로그
 
-| #  | 증상 / 에러                                                                  | 한 줄 원인                              | 핵심 해결                                                                  |
-| -- | ------------------------------------------------------------------------ | ---------------------------------- | ---------------------------------------------------------------------- |
-| 1  | **TLS handshake fail — `unable to verify the first certificate`**        | intermediate cert 누락 / chain 불완전   | 서버가 full chain 제공 (fullchain.pem) / `openssl s_client -showcerts`     |
-| 2  | **TLS — `certificate signed by unknown authority`**                      | client trust store 에 root CA 없음    | root CA 추가 / corporate CA bundle (`SSL_CERT_FILE`) / `update-ca-certificates` |
-| 3  | **TLS SNI mismatch — `Hostname/IP does not match certificate's altnames`** | TLS SNI 미설정 / 다른 hostname 의 cert 받음 | curl `--resolve` / nginx `server_name` / SAN 에 도메인 등록                  |
-| 4  | **CORS preflight 차단**                                                    | 서버가 OPTIONS 안 받거나 헤더 누락             | server CORS middleware: `Access-Control-Allow-Origin/Methods/Headers` + credentials 옵션 |
-| 5  | **DNS resolve fail — `getaddrinfo ENOTFOUND`**                           | local DNS / TTL / DNS 서버 down      | `dig +trace <host>` / `nslookup` / `/etc/resolv.conf` / `dscacheutil -flushcache` (macOS) |
-| 6  | **DNS 가 옛 IP 캐시 — deploy 후 옛 서버로 traffic**                                | TTL 길게 설정 / negative cache         | TTL 짧게 (60-300s) / blue-green 시 DNS 가 아닌 LB 라우팅                       |
-| 7  | **Corporate proxy 차단 — `npm install ECONNREFUSED`**                      | corporate firewall                 | `HTTP_PROXY` / `HTTPS_PROXY` env / `npm config set proxy`              |
-| 8  | **IPv6 vs IPv4 — connect timeout on IPv6 only**                          | host 가 AAAA 만 응답 / client IPv4 only | `--ipv4` 강제 / `node --dns-result-order=ipv4first`                     |
-| 9  | **TCP keepalive timeout — long-lived connection 끊김**                     | NAT / LB idle timeout              | application keepalive ping (간격 < idle timeout) / `tcp_keepalive_*` sysctl |
-| 10 | **WebSocket 연결 실패 — `Sec-WebSocket-Protocol mismatch`**                  | client subprotocol vs server 불일치   | 양쪽 subprotocol 일치 / proxy (nginx) `proxy_set_header Upgrade`           |
-| 11 | **HTTP/2 — `RST_STREAM` 연속 발생**                                          | server side abort / client cancel / max_concurrent_streams 초과 | `nghttp -v` 디버그 / `http2_max_concurrent_streams` 조정                  |
-| 12 | **`Connection refused`**                                                 | 서비스 down / 잘못된 port / firewall    | `nc -zv host port` / `lsof -i :port` / SG inbound 확인                  |
-| 13 | **AWS VPC — task 가 public internet 못 나감**                                | private subnet without NAT / route table 잘못 | NAT Gateway 추가 / VPC Endpoint (Interface — ECR/Secrets/SSM/Logs)     |
-| 14 | **iptables / nftables 가 traffic drop**                                   | DOCKER chain 우선순위 / FORWARD policy DROP | `iptables -L -v -n` / Docker 가 자동 관리 (수동 변경 금지)                       |
-| 15 | **Claude Code sandbox block — `python -m yule_orchestrator` 거부**         | auto-mode classifier 가 외부 영향 의심한 명령 차단 | scope 분리 / explicit prompt clarification — [[../ai-agent/ai-agent\|ai-agent 트러블]] |
+| #  | 증상 / 에러                                                                  | 한 줄 원인                              | 핵심 해결                                                       | 깊이 노트                                |
+| -- | ------------------------------------------------------------------------ | ---------------------------------- | ----------------------------------------------------------- | ------------------------------------ |
+| 1  | **TLS — unable to verify first certificate**                             | intermediate cert 누락 / chain 불완전   | fullchain.pem 제공 / ACM / cert-manager                       | [[tls-handshake-fail]]               |
+| 2  | **TLS — certificate signed by unknown authority**                        | trust store 에 root CA 없음           | update-ca-certificates / corporate CA bundle               | [[tls-unknown-authority]]            |
+| 3  | **TLS SNI mismatch**                                                     | nginx server_name / SAN 불일치        | server_name 정확 / SAN 에 hostname / default_server          | [[tls-sni-mismatch]]                 |
+| 4  | **CORS preflight 차단**                                                    | server OPTIONS 안 받음 / 헤더 누락      | Spring/Express CORS middleware / OPTIONS permitAll          | [[../frontend/cors-preflight-blocked]] |
+| 5  | **DNS resolve fail / stale cache**                                       | DNS down / TTL 길음 / JVM cache      | dig +trace / flush / TTL 60-300s / JVM ttl                  | [[dns-resolve-fail]]                 |
+| 6  | **Corporate proxy 차단**                                                   | corporate firewall                 | HTTP_PROXY / TLS interception 대응 / corporate CA           | [[corporate-proxy]]                  |
+| 7  | **IPv6 vs IPv4 connect timeout**                                         | host AAAA 만 / client IPv4 only     | `--ipv4` / `--dns-result-order=ipv4first`                  | [[ipv6-vs-ipv4]]                     |
+| 8  | **TCP keepalive timeout — connection 끊김**                                | NAT / LB idle timeout              | application keepalive ping / LB idle_timeout / tcp_keepalive | [[tcp-keepalive]]                    |
+| 9  | **WebSocket subprotocol / proxy upgrade**                                | client/server subprotocol / Upgrade header | server subprotocol / nginx Upgrade+Connection / ALB        | [[websocket-subprotocol-mismatch]]   |
+| 10 | **HTTP/2 RST_STREAM**                                                    | max_concurrent_streams / cancel    | max_streams 조정 / CVE-2023-44487 patch / error code 8 정상 | [[http2-rst-stream]]                 |
+| 11 | **Connection refused**                                                   | service down / port / SG block     | listen 확인 / bind 0.0.0.0 / SG inbound / K8s endpoints     | [[connection-refused]]               |
+| 12 | **AWS VPC — task 가 public internet 못 감**                                  | NAT / VPC Endpoint 없음            | NAT Gateway / VPC Endpoint (ECR/S3/Secrets/Logs)            | [[vpc-public-internet]]              |
+| 13 | **iptables / Docker traffic drop**                                       | DOCKER chain / FORWARD DROP        | DOCKER-USER chain / ufw + after.rules / backup/restore     | [[iptables-docker-block]]            |
+| 14 | **Claude Code sandbox block**                                            | auto-mode classifier 가 외부 영향 의심   | scope 분리 / explicit prompt / `--dangerously-skip-permissions` | [[claude-sandbox-block]]             |
+| 15 | **DNS 가 옛 IP 캐시 — deploy 후**                                              | TTL 길게 / JVM 영구 cache            | TTL 60-300s / LB-based routing / JVM ttl=60                | [[dns-resolve-fail]] (통합)            |
 
 ## 자주 쓰는 진단 명령
 

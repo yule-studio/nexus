@@ -17,23 +17,23 @@ home_hub: "60-troubleshooting"
 
 ## 카탈로그
 
-| #  | 증상 / 에러                                                                  | 한 줄 원인                              | 핵심 해결                                                                  |
-| -- | ------------------------------------------------------------------------ | ---------------------------------- | ---------------------------------------------------------------------- |
-| 1  | **Docker build cache miss — 매번 전체 layer 재빌드**                            | COPY 순서가 자주 바뀌는 파일 먼저              | dependency 파일 (`package.json` / `pom.xml`) 먼저 COPY + install, 그 다음 source |
-| 2  | **`docker buildx build` exec format error**                              | host (amd64) 와 target (arm64) arch 불일치 | `--platform linux/arm64` 명시 / multi-arch manifest                     |
-| 3  | **ECR push 권한 — `denied: User is not authorized`**                       | IAM 가 `ecr:BatchCheckLayerAvailability` 등 부재 | `AmazonEC2ContainerRegistryPowerUser` policy / `aws ecr get-login-password` |
-| 4  | **ECS Task — `TaskFailedToStart` / `CannotPullContainerError`**           | VPC 가 ECR 도달 못함 (private subnet without NAT/VPC Endpoint) | ECR VPC Endpoint (Interface) + S3 Gateway / NAT Gateway              |
-| 5  | **K8s `CrashLoopBackOff`**                                               | 컨테이너 시작 실패 + 재시작 반복                 | `kubectl logs --previous` / liveness probe initial delay / startup probe |
-| 6  | **K8s `OOMKilled`** (exit code 137)                                      | 컨테이너 memory limit 초과               | `kubectl top pod` / limits/requests 조정 / heap 비율 조정 (`-XX:MaxRAMPercentage`) |
-| 7  | **K8s `ImagePullBackOff`**                                               | private registry 인증 부재 / image tag 없음 | `imagePullSecrets` 설정 / `kubectl describe pod`                         |
-| 8  | **CodeDeploy rollback — Blue/Green deployment failed**                   | Target Group health check 실패        | health check path/port 검증 / grace period 확대 / 새 task definition 로그 확인 |
-| 9  | **Terraform state lock — `Error acquiring the state lock`**              | 이전 plan/apply 가 비정상 종료              | `terraform force-unlock <lock-id>` (확인 후) / S3+DynamoDB backend 권장    |
-| 10 | **GitHub Actions secret undefined** — `${{ secrets.X }}` 가 빈 문자열         | fork PR / environment 차이 / secret 이름 오타 | repo settings → Secrets / pull_request 대신 pull_request_target (주의) / environment 분리 |
-| 11 | **Disk full — `no space left on device`**                                | log / Docker overlay / journald 누적 | `docker system prune -af` / `journalctl --vacuum-time=7d` / log rotation |
-| 12 | **TLS cert renewal 실패 — Let's Encrypt rate limit**                       | 5/주 같은 도메인 발급 한도                   | staging endpoint 로 테스트 / wildcard / certbot --dry-run                  |
-| 13 | **cron / EventBridge — TZ 불일치로 실행 안 됨**                                  | container TZ = UTC, cron 은 local 기준 작성 | `TZ=Asia/Seoul` env / cron 을 UTC 로 통일 / EventBridge `cron(0 0 * * ? *)` 검증 |
-| 14 | **SSH — `Permissions 0644 for 'id_rsa' are too open`**                   | private key permission 너무 열림        | `chmod 600 ~/.ssh/id_rsa`                                              |
-| 15 | **GitHub Actions cache miss — 매 빌드 의존성 재다운**                             | cache key 가 매번 다름 / hashFiles 순서   | `key: ${{ runner.os }}-deps-${{ hashFiles('**/lockfile') }}` + `restore-keys` |
+| #  | 증상 / 에러                                                                  | 한 줄 원인                              | 핵심 해결                                                                  | 깊이 노트                                |
+| -- | ------------------------------------------------------------------------ | ---------------------------------- | ---------------------------------------------------------------------- | ------------------------------------ |
+| 1  | **Docker build cache miss**                                              | COPY 순서가 자주 바뀌는 파일 먼저              | deps 먼저 COPY / BuildKit cache mount / CI cache-from                  | [[docker-build-cache-miss]]          |
+| 2  | **docker buildx exec format error**                                      | host arch ↔ target arch 불일치        | `--platform` 명시 / multi-arch buildx / runtimePlatform                 | [[docker-arch-mismatch]]             |
+| 3  | **ECR push denied**                                                      | IAM 권한 / login token 만료            | ecr get-login-password / IAM policy / OIDC                            | [[ecr-push-denied]]                  |
+| 4  | **ECS TaskFailedToStart / CannotPullContainerError**                     | private subnet without VPC Endpoint | VPC Endpoint (ECR/S3/Secrets) / execution role / runtimePlatform     | [[ecs-task-failed-to-start]]         |
+| 5  | **K8s CrashLoopBackOff**                                                 | 컨테이너 시작 실패 + 재시작 반복                 | logs --previous / startup probe / init container                      | [[k8s-crashloopbackoff]]             |
+| 6  | **K8s OOMKilled** (exit 137)                                             | memory limits 초과                    | limits 확대 / MaxRAMPercentage / VPA                                   | [[k8s-oomkilled]]                    |
+| 7  | **K8s ImagePullBackOff**                                                 | private registry 인증 / network       | imagePullSecrets / IRSA / VPC Endpoint                                | [[k8s-imagepullbackoff]]             |
+| 8  | **CodeDeploy Blue-Green rollback**                                       | Target Group health check 실패        | liveness/readiness 분리 / grace period / alarm 기반 rollback           | [[codedeploy-rollback]]              |
+| 9  | **Terraform state lock**                                                 | 이전 plan/apply 가 비정상 종료              | force-unlock / DynamoDB delete / S3 versioning 복구                    | [[terraform-state-lock]]             |
+| 10 | **GitHub Actions secret undefined**                                      | fork PR / environment 차이 / 오타     | env / OIDC 우선 / fork PR 은 secret 차단                                 | [[github-actions-secret-undefined]]  |
+| 11 | **Disk full — no space left on device**                                  | log / Docker overlay / journald 누적 | docker prune / journald vacuum / logrotate / Docker log driver limit  | [[disk-full]]                        |
+| 12 | **TLS cert renewal — Let's Encrypt rate limit**                          | 5/주 같은 도메인 발급 한도                   | certbot renew (재발급 X) / wildcard / cert-manager / ACM             | [[tls-cert-renewal]]                 |
+| 13 | **cron / EventBridge TZ 불일치**                                            | container TZ = UTC, cron 한국 기준 작성 | container TZ 명시 / CRON_TZ / EventBridge UTC 변환 표                  | [[cron-timezone]]                    |
+| 14 | **SSH permission too open**                                              | private key 권한 너무 열림              | chmod 600 / ssh-agent / SSM Session Manager (대체)                      | [[ssh-key-permission]]               |
+| 15 | **GitHub Actions cache miss**                                            | cache key / hashFiles 잘못           | setup-* cache / restore-keys / hashFiles glob 정확                     | [[github-actions-cache-miss]]        |
 
 ## 자주 쓰는 진단 명령
 

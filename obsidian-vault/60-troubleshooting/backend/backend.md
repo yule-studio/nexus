@@ -36,6 +36,24 @@ home_hub: "60-troubleshooting"
 | 14 | **File descriptor leak — `Too many open files`**                           | InputStream / Socket close 누락       | try-with-resources / HttpClient connection pool / Stream close | [[file-descriptor-leak]]                         |
 | 15 | **Spring Security 401 — `Full authentication is required`**                | SecurityFilterChain default deny    | 새 SecurityFilterChain bean / OPTIONS permitAll / JWT issuer 검증 | [[spring-security-401]]                          |
 
+## 결제 (Payment) 도메인
+
+결제 도메인은 **돈이 움직이는 외부 부수 효과** 라 일반적인 트랜잭션 모델로는 부족. 동시성 / 재시도 / 부분 실패 / 변조 모두 따로 방어.
+
+| #  | 증상 / 에러                                                                   | 한 줄 원인                              | 핵심 해결                                                       | 깊이 노트                                |
+| -- | ------------------------------------------------------------------------- | ---------------------------------- | ----------------------------------------------------------- | ------------------------------------ |
+| 16 | **Double charge** — 동시 요청으로 같은 주문 2회 결제                                  | client retry / 더블 클릭 / LB race      | `Idempotency-Key` 헤더 + DB unique constraint + PG idempotency-key 3중 방어 | [[payment-double-charge]]            |
+| 17 | **PG webhook 재전송 → 중복 처리** (포인트 2배 / 배송 2건)                              | webhook 은 at-least-once delivery   | `webhook_event(provider, event_id)` unique + state machine 전이 guard + 후처리 unique key | [[payment-webhook-idempotency]]      |
+| 18 | **PG 응답 timeout — 결제됐는지 모름**                                              | partial failure (response 손실)      | PENDING 상태 유지 (FAIL 단정 X) + reconciler scheduler + PG status query | [[payment-pg-timeout-uncertainty]]   |
+| 19 | **결제 금액 위변조** (50,000원 상품을 100원에)                                         | client 가 보낸 amount 그대로 신뢰          | server-side 가격 재계산 + Toss 의 paymentKey/amount 2단계 확인 + DECIMAL 사용 | [[payment-amount-tampering]]         |
+| 20 | **동시 구매 race** — 재고 -95 / 잔액 마이너스                                         | check-then-act 가 atomic 아님         | Atomic UPDATE (`SET stock=stock-? WHERE stock>=?`) + DB CHECK constraint + pessimistic lock | [[payment-race-stock-balance]]       |
+
+## API 계약 / 설계
+
+| #  | 증상 / 에러                                                                   | 한 줄 원인                              | 핵심 해결                                                       | 깊이 노트                                |
+| -- | ------------------------------------------------------------------------- | ---------------------------------- | ----------------------------------------------------------- | ------------------------------------ |
+| 21 | **PATCH 의 null 처리** — 삭제 의도인지 무변경 의도인지 구분 불가                              | JSON `null` 과 missing field 가 Java 둘 다 null 매핑 | `JsonNullable<T>` (openapi-tools) — 3-state (undefined / present(null) / present(value)) | [[patch-null-semantics]]             |
+
 ## 자주 쓰는 진단 명령
 
 ```bash

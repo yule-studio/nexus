@@ -37,24 +37,37 @@ bkurs-be 전체 endpoint (~153) 를 `ApiEnvelope<T> {success, data, error, meta}
 | **2-4B** | search | [#133](https://github.com/seum-running/bkurs-be/pull/133) | **DONE** |
 | **2-4C** | announcement | [#135](https://github.com/seum-running/bkurs-be/pull/135) | **DONE** |
 | **2-4D** | discussion | [#137](https://github.com/seum-running/bkurs-be/pull/137) | **DONE** |
+| **final** | concept (Student + Teacher) | [#144](https://github.com/seum-running/bkurs-be/pull/144) | **DONE** |
 
 ## 마이그레이션 종료 (2026-05-21)
 
-phase 1 + phase 2 + 잔여 누락 도메인 (stats/academy) 전체 envelope 마이그레이션 완료.
-모든 도메인 controller / handler 가 ApiEnvelope 표준. 신규 endpoint 는 처음부터 envelope.
+phase 1 + phase 2 + 잔여 누락 도메인 전체 envelope 마이그레이션 완료. 모든 도메인
+controller / handler 가 ApiEnvelope 표준. 신규 endpoint 는 처음부터 envelope.
 
 - 총 도메인 **19개** (auth, student-profile, dashboard, suhaeng, saenggibu, reading,
   homework, course, question, interview, simulation, record, performance, statement,
-  plan, search, announcement, discussion, stats, academy)
+  plan, search, announcement, discussion, stats, academy, concept)
   · file: 이미 envelope 설계 / pdf: 의도적 raw byte stream (envelope 제외)
-- 총 PR **21개** (phase 1 × 3 + Cycle 3 신규 × 2 + phase 2 × 12 + Cycle helper-fix × 1 +
-  stats × 1 + academy × 1 + cleanup)
-- ErrorCode prefix **19개** — AUTH/STU/SUH/SGB/READ/HW/CRS/Q/IVW/SIM/REC/PE/STM/PAY/SRC/ANN/DSC/STT/ACA
+- 총 PR **22개** (phase 1 × 3 + Cycle 3 신규 × 2 + phase 2 × 12 + Cycle helper-fix × 1 +
+  stats × 1 + academy × 1 + concept × 1 + cleanup)
+- ErrorCode prefix **20개** — AUTH/STU/SUH/SGB/READ/HW/CRS/Q/IVW/SIM/REC/PE/STM/PAY/SRC/ANN/DSC/STT/ACA/CON
 - 회귀 0. 통합 test 모두 PASS (1 fail = actuator RabbitMQ DOWN, envelope 무관).
 
+### Controller 단위 전수 점검 (PR #144 후)
+- 총 controller 67개 → **65개 envelope 적용** (97%)
+- 의도적 예외 2개:
+  - `StudentRecordPdfController` — PDF byte stream (`Content-Type: application/pdf`)
+  - `HealthController` — `/api/v1/health` 단순 ping (gateway/CDN 컨벤션상 raw)
+- 모든 `*ExceptionHandler` envelope 사용
+- 모든 controller 메서드 시그니처: `ResponseEntity<ApiEnvelope<...>>` 또는 raw stream / void
+
 ## 사용자 지적 (2026-05-21)
-초기 phase 2 종료 시점에 stats / academy / file / pdf 누락 발견. 본 노트의 PR #139 (test
-helper 회귀 fix) + #141 (stats) + #143 (academy) 로 완전 마감.
+1차 phase 2 종료 후 stats / academy 누락 — PR #139 (test helper fix) + #141 (stats) + #143
+(academy) 로 1차 보정. 2차 점검에서 **concept 누락** 발견 (FE concept.ts 는 envelope.unwrap
+호출했지만 BE 가 raw 반환 → 호출 broken 상태) → PR #144 로 최종 보정.
+
+> 교훈: "phase 2 끝" 시점에 "전수 controller grep" 점검을 한 번 더 했어야 함. 점검 표 (3.4)
+> 추가.
 
 (아래 옛 phase 2-4/2-5 행은 위 세부 행으로 대체됨)
 | **2-4** | plan / payment / search / announcement / discussion | — | (위로 분할) |
@@ -118,6 +131,24 @@ DB_PASSWORD='<로컬 mysql 비번>' ./gradlew test --tests "com.bkurs.<domain>.*
 
 `application-local.yml` 의 `password: ${DB_PASSWORD:?DB_PASSWORD env required ...}`
 plac eholder 가 환경변수 없을 때 fail-fast.
+
+### 3.4. 전수 점검 명령 (한 도메인 끝낼 때마다)
+```bash
+# 1) envelope import 없는 controller (handler + 의도적 raw 제외)
+grep -rln "@PostMapping\|@GetMapping\|@PatchMapping\|@DeleteMapping\|@PutMapping" \
+  src/main/java/com/bkurs --include="*Controller.java" \
+  | xargs grep -L "ApiEnvelope"
+
+# 2) ResponseEntity<Map> 반환하는 handler (envelope 우회)
+grep -rln "ResponseEntity<Map\b" src/main/java/com/bkurs/
+
+# 3) 컨트롤러 public 메서드 중 ResponseEntity 가 아닌 반환형
+grep -rn "public [A-Za-z].* [a-z][A-Za-z]*(" src/main/java/com/bkurs \
+  --include="*Controller.java" \
+  | grep -v "ResponseEntity\|public void\|public class\|public enum\|public static\|public final"
+```
+허용되는 결과: `HealthController.health()` (raw Map), `StudentRecordPdfController`
+(byte stream). 그 외는 모두 envelope 으로 마이그레이션.
 
 ### 3.3. 회귀 방지
 

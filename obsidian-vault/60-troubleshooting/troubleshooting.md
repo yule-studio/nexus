@@ -7,14 +7,14 @@
 
 ## 영역
 
-| 영역 | 진입점 | 예시 에러 |
-| --- | --- | --- |
-| ai-agent | [[ai-agent/]] | LLM context overflow / tool call 실패 / hallucination |
-| backend | [[backend/]] | NPE / 트랜잭션 / 메모리 누수 / GC |
-| database | [[database/]] | 인덱스 미사용 / deadlock / connection pool |
-| devops | [[devops/]] | 빌드 실패 / 배포 롤백 / secret 누락 |
-| frontend | [[frontend/]] | 렌더 / 상태 동기화 / hydration mismatch |
-| network | [[network/]] | TLS / CORS / DNS / proxy / sandbox 차단 |
+| 영역       | 진입점                              | 예시 에러                                              |
+| -------- | -------------------------------- | -------------------------------------------------- |
+| ai-agent | [[ai-agent/ai-agent\|ai-agent/]] | LLM context overflow / tool call 실패 / hallucination |
+| backend  | [[backend/backend\|backend/]]    | N+1 / NPE / 트랜잭션 / 메모리 누수 / GC                     |
+| database | [[database/database\|database/]] | 인덱스 미사용 / deadlock / connection pool               |
+| devops   | [[devops/devops\|devops/]]       | 빌드 실패 / 배포 롤백 / secret 누락                          |
+| frontend | [[frontend/frontend\|frontend/]] | hydration / re-render / CORS / event leak          |
+| network  | [[network/network\|network/]]    | TLS / CORS / DNS / proxy / sandbox 차단              |
 
 ## 파일명 컨벤션
 

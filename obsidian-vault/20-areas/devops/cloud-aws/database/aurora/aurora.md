@@ -1,293 +1,223 @@
 ---
-title: "AWS Aurora — Cloud-native RDB"
+title: "AWS Aurora — Cloud-native RDB (hub)"
 kind: knowledge
-project: devops
-agent: engineering-agent/tech-lead
 status: current
-created_at: 2026-05-14T21:45:00+09:00
-tags:
-  - aws
-  - database
-  - aurora
+created_at: 2026-05-14T21:29:00+09:00
+updated_at: 2026-05-22T20:20:00+09:00
+tags: [aws, database, aurora, postgres, mysql, serverless, hub]
+home_hub: cloud-aws
 ---
 
-# AWS Aurora
+# AWS Aurora — Cloud-native RDB
 
-| 문서 버전 | 작성일 | 작성자 | 주요 변경 사항 |
-| --- | --- | --- | --- |
-| v.1.0.0 | 2026-05-14 | engineering-agent/tech-lead | Aurora 개념 + 사용 |
+> AWS 의 RDB engine — Postgres / MySQL 호환 + cloud-native (shared storage, 분산 SSD cluster). RDS 보다 3-5x 성능, Serverless v2, Global Database.
 
-**[[database|↑ Database]]** · **[[cloud-aws|↑↑ AWS]]**
+**[[../database|↑ Database]]** · **[[../../cloud-aws|↑↑ AWS]]**
 
 ---
 
 ## 1. 한 줄
 
-AWS 자체 설계의 **cloud-native RDB**. PostgreSQL / MySQL **wire-compatible** + 분산 storage (6 copy across 3 AZ) + 빠른 failover + read scale.
-
----
-
-## 2. 왜
-
-- **RDS Postgres / MySQL** = 일반 OS 위의 single instance
-- Aurora = AWS 가 분산 storage 새로 설계 → **3-5x 빠름 (claims)**, 더 빠른 failover, online resize
-- BUT 더 비쌈 (~1.2-2x RDS)
-- vendor lock (Postgres wire compatible 이지만 일부 함정)
-
-대안:
-- **RDS Postgres / MySQL** — 단순 / 이식성
-- **DynamoDB** — NoSQL
-- **CockroachDB / YugabyteDB** — multi-cloud 분산 RDB
-
----
-
-## 3. 아키텍처
-
 ```
-응용
-  ↓
-Aurora Writer (1 인스턴스)
-  ↓ via storage protocol (not WAL replication)
-[Distributed Storage]
-  ↓ ↓ ↓ ↓ ↓ ↓
-6 copies × 3 AZ
-  ↑
-Aurora Readers (최대 15)
+Aurora = Cloud-native RDBMS
+├─ Storage layer: 분산 SSD (6 copy across 3 AZ, 자동 scale 10 GB→128 TB)
+├─ Compute layer: Writer (1) + Readers (15 max)
+├─ Engine: Postgres-compatible / MySQL-compatible
+├─ Modes: Provisioned / Serverless v2 (0.5 ACU-128 ACU)
+├─ HA: Failover ~30초
+└─ Global Database: < 1초 cross-region replication
 ```
 
-특징:
-- storage 가 자동 6-way replicate
-- writer 죽으면 reader 1 명 promote (수십 초)
-- storage auto-scale (10 GB → 128 TB)
-- crash recovery 매우 빠름 (storage 가 일관성 보장)
+## 2. 학습 roadmap
 
----
+```mermaid
+flowchart TB
+  subgraph F["01 fundamentals"]
+    F1[architecture deep]
+    F2[engines + versions]
+    F3[serverless v2]
+  end
+  subgraph O["02 operations"]
+    O1[cluster + endpoint]
+    O2[global database + DR]
+    O3[backup + Blue-Green]
+  end
+  subgraph P["practice"]
+    P1[serverless v2 cluster]
+    P2[global database]
+  end
+  F --> O --> P
+```
 
-## 4. Aurora vs RDS
+## 3. Sub-directory index
 
-| | RDS | Aurora |
+### [[01-fundamentals/01-architecture-deep]] — Shared Storage / 6-way replication / Replica
+Storage 가 compute 와 분리. 분산 + 자동 scale.
+
+### [[01-fundamentals/02-engines-and-versions]] — Aurora Postgres / MySQL / Babelfish
+호환성 + version + Limitless Database (2024+).
+
+### [[01-fundamentals/03-serverless-v2]] — Serverless v2 (0.5-128 ACU)
+fine-grained scale + ACU = 2 GB RAM + proportional CPU.
+
+### [[02-operations/01-cluster-and-endpoint]] — Cluster + Writer/Reader Endpoint
+4 endpoint type + Reader load balance + Custom Endpoint.
+
+### [[02-operations/02-global-database-and-dr]] — Global Database / Backtrack / Backup
+Cross-region < 1초 + Backtrack (MySQL) + AWS Backup.
+
+### [[02-operations/03-backup-and-blue-green]] — Snapshot + PITR + Blue-Green
+Aurora 의 backup 도 cluster level.
+
+### [[practice/01-serverless-v2-cluster]] — Aurora Serverless v2 + RDS Proxy + scaling (60분)
+
+### [[practice/02-global-database]] — Cross-region Global DB + failover 시뮬 (60분)
+
+## 4. RDS vs Aurora
+
+| | RDS Postgres | Aurora Postgres |
 | --- | --- | --- |
-| 엔진 | 표준 PG/MySQL/... | PG/MySQL 호환 (자체) |
-| 가격 | 기본 | ~1.2-2x |
-| Replica | 5 (lag 있음) | 15 (저 lag) |
-| Failover | 1-2분 | < 30초 |
-| Storage | 미리 할당 | 사용한 만큼 자동 |
-| Backup | snapshot | continuous |
-| Multi-master | X (multi-AZ standby) | 있음 (옛) |
-| Global database | X | 가능 (cross-region) |
+| Storage | EBS (gp3/io2) | 분산 SSD (Aurora storage) |
+| Storage scaling | manual (Storage Auto Scaling) | 자동 (10 GB → 128 TB) |
+| Read Replica | 5 max, async | 15 max, < 100ms |
+| Failover | 1-2 분 | ~30초 |
+| Backup | EBS snapshot | 분산 continuous |
+| PITR granularity | 1분 | 1초 |
+| Throughput | baseline | 3x (Postgres) / 5x (MySQL) |
+| Serverless | ✗ | ✓ (v2) |
+| Global DB | manual replica | < 1초 cross-region |
+| Backtrack | ✗ | MySQL only |
+| Cost | baseline | premium (~20% ↑) |
 
----
+## 5. Aurora 의 storage 혁신
 
-## 5. 설치 / 첫 cluster
-
-### 5.1 Console
-RDS → Create database → Aurora (PostgreSQL Compatible).
-
-### 5.2 CLI
-
-```bash
-# cluster
-aws rds create-db-cluster \
-  --db-cluster-identifier myapp-aurora \
-  --engine aurora-postgresql \
-  --engine-version 16.3 \
-  --master-username postgres \
-  --master-user-password '...' \
-  --db-subnet-group-name my-subnet-group \
-  --vpc-security-group-ids sg-xxx \
-  --backup-retention-period 7 \
-  --storage-encrypted \
-  --kms-key-id alias/aws/rds
-
-# 인스턴스 (writer + readers)
-aws rds create-db-instance \
-  --db-instance-identifier myapp-aurora-writer \
-  --db-cluster-identifier myapp-aurora \
-  --engine aurora-postgresql \
-  --db-instance-class db.r6g.large
-
-aws rds create-db-instance \
-  --db-instance-identifier myapp-aurora-reader-1 \
-  --db-cluster-identifier myapp-aurora \
-  --engine aurora-postgresql \
-  --db-instance-class db.r6g.large
+```mermaid
+flowchart TB
+  WRITER[Writer Node]
+  READER1[Reader Node 1]
+  READER2[Reader Node 2]
+  STORAGE["Aurora Distributed Storage<br/>6 copies × 3 AZ"]
+  
+  WRITER --> STORAGE
+  READER1 --> STORAGE
+  READER2 --> STORAGE
 ```
 
-### 5.3 Terraform
+- Writer 와 Readers 가 **같은 storage 공유**
+- Storage 는 자동 scale (10 GB → 128 TB)
+- 6-way replication (3 AZ, 각 AZ 2 copy)
+- Self-healing (corruption 자동 repair)
+- Cluster 안 모든 node 의 storage 동일
 
-```hcl
-resource "aws_rds_cluster" "myapp" {
-  cluster_identifier   = "myapp-aurora"
-  engine               = "aurora-postgresql"
-  engine_version       = "16.3"
-  database_name        = "app"
-  master_username      = "postgres"
-  master_password      = var.password
-  backup_retention_period = 7
-  storage_encrypted    = true
+## 6. Endpoint 4 종
 
-  vpc_security_group_ids = [aws_security_group.rds.id]
-  db_subnet_group_name   = aws_db_subnet_group.private.name
+| Endpoint | 의미 |
+| --- | --- |
+| **Cluster (Writer)** | 항상 writer 가리킴 (failover 자동) |
+| **Reader** | reader pool 의 random load balance |
+| **Instance** | 특정 instance 직접 |
+| **Custom** | 사용자 정의 subset (e.g. analytics reader) |
 
-  serverlessv2_scaling_configuration {
-    min_capacity = 0.5
-    max_capacity = 4.0
-  }
-}
+## 7. Provisioned vs Serverless v2
 
-resource "aws_rds_cluster_instance" "writer" {
-  cluster_identifier = aws_rds_cluster.myapp.id
-  instance_class     = "db.serverless"
-  engine             = aws_rds_cluster.myapp.engine
-}
+```mermaid
+flowchart TD
+  Q1{워크로드?}
+  Q1 -->|일정 baseline| PROV[Provisioned db.r6g.large 등]
+  Q1 -->|변동 큰 sporadic| AS2[Serverless v2]
+  Q1 -->|dev / staging| AS2
+  Q1 -->|production high RPS| BOTH[Writer Provisioned + Reader Serverless]
 ```
 
----
-
-## 6. Endpoint
-
+### Serverless v2 의 ACU
 ```
-Writer endpoint: myapp-aurora.cluster-xxx.ap-northeast-2.rds.amazonaws.com
-Reader endpoint: myapp-aurora.cluster-ro-xxx....                            (자동 LB)
-Custom endpoint: myapp-aurora.cluster-custom-...                            (subset)
-Instance endpoint: 각 인스턴스 직접
+1 ACU = 2 GB RAM + 비례 CPU + 비례 network
+0.5 ACU min → 128 ACU max
+초 단위 scale
+$0.12/ACU·hour
 ```
-
-→ 응용:
-- write = writer endpoint
-- read = reader endpoint (자동 round-robin)
-
----
-
-## 7. Aurora Serverless v2
-
-```
-용량 = Aurora Capacity Unit (ACU) — 0.5 ~ 256
-자동 scale up/down (초 단위)
-사용한 ACU·시간만 과금
-```
-
-```hcl
-serverlessv2_scaling_configuration {
-  min_capacity = 0.5
-  max_capacity = 16.0
-}
-```
-
-→ 변동 부하 / dev / 가끔 사용. 항상 부하면 provisioned 가 더 쌈.
-
----
 
 ## 8. Global Database
 
-```
-Primary region (write + read)
-  ↓ < 1초 lag, dedicated infrastructure
-Secondary region (read-only, optional write promote)
-```
-
-- DR (region 전체 장애)
-- low-latency global read
-- < 1분 promote
-
----
-
-## 9. 비용 (Seoul)
-
-| 항목 | $ |
-| --- | --- |
-| db.r6g.large pg | ~ $370/월 |
-| db.r6g.xlarge | ~ $740/월 |
-| Serverless v2 ACU·시간 | $0.16 |
-| Storage | $0.10/GB·월 (사용한 만큼) |
-| I/O | $0.20/M (Standard) |
-| Backup | $0.021/GB·월 (over 100%) |
-| Global Database — secondary region | + |
-
-Aurora I/O-Optimized — I/O 무료 + storage 더 비쌈. 큰 IOPS 워크로드 = optimized.
-
----
-
-## 10. 사용 시나리오
-
-- 운영 OLTP — RDS 보다 빠른 / 큰 규모
-- read-heavy + 많은 replica
-- global multi-region
-- variable / spiky (Serverless v2)
-
-부적합:
-- 작은 / 단순 (RDS 가 충분)
-- 옛 Postgres / MySQL feature 의존
-- multi-cloud 이식
-
----
-
-## 11. PostgreSQL / MySQL 호환의 함정
-
-- 일부 extension 미지원 / 옛 버전
-- `pg_dump` / `mysqldump` 는 호환
-- 일부 system catalog 다름
-- Aurora-specific 기능 (faster index, parallel query) 활용 시 lock-in
-
-→ Postgres-on-RDS 와 호환되도록 작성하면 마이그 자유.
-
----
-
-## 12. Aurora Cloning
-
-```bash
-# 즉시 clone (copy-on-write, 거의 비용 0)
-aws rds restore-db-cluster-to-point-in-time \
-  --source-db-cluster-identifier myapp-aurora \
-  --db-cluster-identifier myapp-clone \
-  --restore-type copy-on-write \
-  --use-latest-restorable-time
+```mermaid
+flowchart LR
+  subgraph PRI["Primary Region (Seoul)"]
+    P_WRITER[Writer]
+    P_READER[Reader 1]
+  end
+  subgraph SEC["Secondary Region (Tokyo)"]
+    S_READER[Reader 1 read-only]
+    S_READER2[Reader 2 read-only]
+  end
+  P_WRITER -->|< 1초 replication| S_READER
+  S_READER --- S_READER2
 ```
 
-→ staging 환경 production 데이터 즉시 복제. 변경만 storage 추가.
+- Cross-region replication < 1초
+- 5 secondary regions max
+- Failover Promote ~1분 (RTO < 1분, RPO < 5초)
+- Headless (secondary 의 writer 없음 → primary 만 write)
 
----
-
-## 13. Backtrack (MySQL 만)
+## 9. bkurs-be 활용
 
 ```
-실수 후 N 시간 전으로 즉시 되감기 (storage 가 versioned)
+Aurora Serverless v2 권장:
+- min 0.5 ACU / max 4 ACU (production)
+- min 0.5 ACU / max 1 ACU (dev/staging)
+- RDS Proxy (Lambda + Aurora)
+- Writer + Reader Endpoint 분리
+- Multi-AZ 자동 (Aurora default)
+- Backup retention 35d
+- Secrets Manager managed password + 30d rotation
 ```
 
-`backtrack-window` 활성 후. PostgreSQL 은 X.
+## 10. 가격 시뮬레이션
 
----
+```
+Aurora Postgres + db.r6g.large:
+  $0.30/h × 730 = $219/월 (instance)
++ 100 GB storage × $0.116/GB = $11.6/월
++ IO request × $0.22/M = ($X depending on workload)
+= ~$230-260/월
 
-## 14. 함정
+Aurora Serverless v2 1 ACU baseline:
+  1 ACU × $0.12 × 730 = $87/월 (idle)
+  + spike (2-4 ACU) = $50-100 추가
++ Storage = $11.6
+= ~$150-250/월
 
-### 14.1 Aurora I/O 비용 폭증
-I/O-heavy 워크로드 → optimized 또는 캐시.
+→ Variable workload 시 Serverless 가 적합. Steady high RPS 는 Provisioned.
+```
 
-### 14.2 Serverless v2 의 cold start
-0 ACU 까진 안 됨 (최소 0.5). 진짜 0 → idle pause (v2 옵션).
+## 11. Aurora 권장 use cases
 
-### 14.3 Multi-master (옛 MySQL)
-deprecated. 일반 multi-AZ + reader.
+✓ **시나리오**
+- High RPS web/API
+- Read-heavy (Reader 15)
+- Multi-region (Global Database)
+- Variable workload (Serverless v2)
+- Microservices share DB
+- Analytical workload + OLTP (Aurora Optimized Reads)
+- Lambda + DB (RDS Proxy)
 
-### 14.4 Global Database 의 secondary
-write 비싸고 데이터 잃을 수 있음 (promotion).
+✗ **부적합**
+- SQL Server / Oracle (RDS 만)
+- 작은 < $50/월 (RDS Postgres 가 더 적합)
+- 매우 cost-sensitive (Aurora ~20% premium)
 
-### 14.5 Aurora 의 fast clone
-같은 region 만. 빠르지만 cross-region 은 snapshot 으로.
+## 12. 영상 / 자료
 
----
+| 자료 |
+| --- |
+| [Aurora Architecture](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Overview.html) |
+| [Aurora 5x faster](https://www.youtube.com/watch?v=HrqIPGE_iwo) |
+| [Serverless v2 발표](https://aws.amazon.com/blogs/aws/amazon-aurora-serverless-v2-is-generally-available-instant-scaling-for-demanding-workloads/) |
+| [Global Database](https://aws.amazon.com/rds/aurora/global-database/) |
 
-## 15. 학습 자료
+## 13. 관련 hub
 
-- AWS Aurora docs
-- **Aurora 백서** — DSDB Paper (Verbitski et al., 2017)
-- **AWS re:Invent** Aurora deep dive
-
----
-
-## 16. 관련
-
-- [[database]] — DB hub
-- [[rds]] — 일반 RDS
-- [[dynamodb]] — NoSQL
-- [[postgresql|↗ Postgres 자체]]
+- [[../database]]
+- [[../rds/rds]] — 전통 RDS
+- [[../dynamodb/dynamodb]] — NoSQL
+- [[../../security/kms/kms]]
+- [[../../security/secrets-manager/secrets-manager]]

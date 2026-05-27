@@ -1,474 +1,172 @@
 ---
-title: "EFS — Elastic File System (NFS)"
+title: "AWS EFS — Elastic File System (NFS / hub)"
 kind: knowledge
-project: devops
-agent: engineering-agent/tech-lead
 status: current
-created_at: 2026-05-15T13:10:00+09:00
-tags: [devops, cloud-aws, efs, nfs]
+created_at: 2026-05-14T21:27:00+09:00
+updated_at: 2026-05-22T19:30:00+09:00
+tags: [aws, storage, efs, nfs, hub]
+home_hub: cloud-aws
 ---
 
-# EFS — Elastic File System (NFS)
+# AWS EFS — Elastic File System (NFS)
 
-**[[cloud-aws|↑ cloud-aws]]**
+> **Shared NFS file system** — multi-AZ, thousands concurrent client, POSIX. EBS (block) / S3 (object) 과 함께 storage 3 종.
 
----
-
-## 1. 무엇
-
-```
-AWS managed NFSv4:
-  - 여러 EC2 / ECS / EKS / Lambda 가 동시 mount
-  - 자동 확장 (PB+)
-  - multi-AZ 자동 replication
-  - encryption at rest + in transit
-  
-vs EBS:
-  EBS: 한 EC2 에 attach (block)
-  EFS: 여러 EC2 가 동시 mount (file, NFS)
-  
-vs S3:
-  S3: object (HTTP API)
-  EFS: file (NFS, POSIX)
-```
+**[[../storage|↑ Storage]]** · **[[../../cloud-aws|↑↑ AWS]]**
 
 ---
 
-## 2. 비용
+## 1. 한 줄
 
 ```
-Standard:           $0.30/GB-mo
-Infrequent Access:  $0.025/GB-mo (★)
-One Zone:           $0.16/GB-mo (★ single AZ)
-One Zone-IA:        $0.0133/GB-mo
-
-Throughput:
-  Bursting (default): 자동, baseline / burst credit
-  Provisioned: 명시 MB/s 보장 ($)
-  Elastic: 자동 scale (★ 권장)
-
-vs S3:           $0.023/GB-mo
-vs EBS gp3:      $0.08/GB-mo
+NFS v4 (POSIX) shared filesystem
+├─ Region scope (multi-AZ — Standard mode)
+├─ Thousands concurrent clients (EC2 / ECS / EKS / Lambda)
+├─ Storage Class — Standard / Infrequent Access / Archive
+├─ Auto-scaling (no provisioning)
+└─ Access Point + IAM + Lifecycle + Backup + Replication
 ```
 
-→ EFS 가 EBS 보다 비쌈. 단 multi-mount + 자동 scale.
+## 2. 학습 roadmap
 
----
-
-## 3. 사용 사례
-
-```
-✓ 적합:
-  - WordPress / CMS (여러 web server 가 공유 file)
-  - 개발 share (homedir, build cache)
-  - container 의 RWX volume
-  - SageMaker training data
-  - Lambda 의 large dependency (NodeJS modules)
-  - 일반 NFS replace
-
-✗ 부적합:
-  - 매우 작은 file 많음 (latency)
-  - 매우 빠른 IO (DB)
-  - 1 server 만 사용 (EBS)
-  - object storage 가 더 cheap (S3)
-```
-
----
-
-## 4. 생성 (Terraform)
-
-```hcl
-resource "aws_efs_file_system" "main" {
-  creation_token = "main-efs"
-  
-  performance_mode = "generalPurpose"     # 또는 maxIO (high IO)
-  throughput_mode  = "elastic"             # ★ 권장
-  
-  encrypted      = true
-  kms_key_id     = aws_kms_key.efs.arn
-  
-  lifecycle_policy {
-    transition_to_ia                    = "AFTER_30_DAYS"
-    transition_to_primary_storage_class = "AFTER_1_ACCESS"
-  }
-  
-  tags = {Name = "main-efs"}
-}
-
-# multi-AZ mount target
-resource "aws_efs_mount_target" "main" {
-  count           = length(var.private_subnet_ids)
-  file_system_id  = aws_efs_file_system.main.id
-  subnet_id       = var.private_subnet_ids[count.index]
-  security_groups = [aws_security_group.efs.id]
-}
-
-resource "aws_security_group" "efs" {
-  vpc_id = var.vpc_id
-  
-  ingress {
-    from_port       = 2049         # NFS port
-    to_port         = 2049
-    protocol        = "tcp"
-    security_groups = [var.app_sg_id]
-  }
-}
+```mermaid
+flowchart TB
+  subgraph F["01 fundamentals"]
+    F1[architecture + modes]
+    F2[storage classes + lifecycle]
+    F3[pricing + performance]
+  end
+  subgraph O["02 operations"]
+    O1[Access Points + IAM]
+    O2[Backup + Replication]
+    O3[Mount + CSI]
+  end
+  subgraph P["practice"]
+    P1[mount EC2/EKS]
+    P2[lifecycle + replication]
+  end
+  F --> O --> P
 ```
 
----
+## 3. Sub-directory index
 
-## 5. EC2 mount
+### [[01-fundamentals/01-architecture-and-modes]] — Standard vs One Zone / Performance / Throughput mode
+multi-AZ vs single-AZ + Bursting vs Provisioned / Elastic Throughput.
 
-```bash
-# package
-sudo yum install -y amazon-efs-utils    # Amazon Linux
-sudo apt install -y nfs-common stunnel4 # Ubuntu
+### [[01-fundamentals/02-storage-classes-and-lifecycle]] — Standard / IA / Archive + Lifecycle
+3 class + IA 자동 이동 + Archive (2024+).
 
-# mount (EFS helper, TLS)
-sudo mkdir -p /mnt/efs
-sudo mount -t efs -o tls fs-0abc123:/ /mnt/efs
+### [[01-fundamentals/03-pricing-and-performance]] — GB·월 + Throughput + IOPS
+가격 + Latency / IOPS / Throughput / 한도.
 
-# /etc/fstab 영구
-fs-0abc123:/    /mnt/efs    efs    defaults,_netdev,tls,iam    0 0
-```
+### [[02-operations/01-access-points-and-iam]] — Access Point CRD + IAM authorization
+sub-directory + uid/gid + POSIX 강제 + IAM.
 
-→ `tls` = encryption in transit. `iam` = IAM authentication.
+### [[02-operations/02-backup-and-replication]] — AWS Backup + Cross-region Replication
+자동 backup + DR mirror.
 
----
+### [[02-operations/03-mount-and-csi]] — Mount helper / NFS client / EKS CSI / Lambda EFS
+다양한 client + EKS PV / Lambda 의 file system.
 
-## 6. IAM authentication (★)
+### [[practice/01-mount-ec2-eks]] — EFS + EC2 + EKS Pod 동시 mount (45분)
 
-```hcl
-# Identity-based policy on IAM role
-resource "aws_iam_policy" "efs_access" {
-  policy = jsonencode({
-    Statement = [{
-      Effect = "Allow"
-      Action = [
-        "elasticfilesystem:ClientMount",
-        "elasticfilesystem:ClientWrite",
-        "elasticfilesystem:ClientRootAccess"
-      ]
-      Resource = aws_efs_file_system.main.arn
-      Condition = {
-        Bool = {"elasticfilesystem:AccessedViaMountTarget" = "true"}
-      }
-    }]
-  })
-}
-```
+### [[practice/02-lifecycle-and-replication]] — Lifecycle IA/Archive + Cross-region replica (45분)
 
-→ EBS / S3 처럼 IAM 의 access. 없이 mount 시 fail.
+## 4. EFS vs alternatives
 
----
+| | S3 | EBS | EFS | FSx |
+| --- | --- | --- | --- | --- |
+| Protocol | REST | block | **NFS v4 (POSIX)** | NFS / SMB / Lustre |
+| Multi-AZ | ✓ | ✗ | ✓ (Standard) | ✓ (옵션) |
+| Concurrent | unlimited | 1 (RWO) | **thousands** | thousands |
+| Latency | 100ms+ | sub-ms | ms | sub-ms |
+| Max size | unlimited | 64 TB | unlimited | 64 TB |
+| $/GB·월 | $0.025 | $0.10 (gp3) | $0.30 (Standard) | varies |
+| Throughput | 5500/s prefix | volume | 1-100 GB/s elastic | 100 GB/s+ |
+| 권장 | object / asset | DB / OS | **shared file** | HPC Lustre / Windows |
 
-## 7. Access Point (★ 권장)
+## 5. EFS 가 적합한 곳
 
-```hcl
-# 사용자 별 / app 별 가상 root
-resource "aws_efs_access_point" "app" {
-  file_system_id = aws_efs_file_system.main.id
-  
-  root_directory {
-    path = "/app-data"
-    creation_info {
-      owner_uid   = 1000
-      owner_gid   = 1000
-      permissions = "755"
-    }
-  }
-  
-  posix_user {
-    uid = 1000
-    gid = 1000
-  }
-  
-  tags = {Name = "app-ap"}
-}
-```
+✓ **시나리오**
+- ECS / EKS multi-task shared file
+- Lambda 의 large model / dependency (/mnt/efs)
+- WordPress / Drupal multi-server
+- Web build artifact
+- Home directory (multi-user)
+- Container 의 stateful storage (EBS 보다 simple)
+- Machine learning shared dataset
+- Media editing (Premiere Pro, etc)
 
-```bash
-# mount via access point
-sudo mount -t efs -o tls,accesspoint=fsap-0abc fs-0abc:/ /mnt/efs
+✗ **부적합**
+- DB (RDS / Aurora)
+- Object storage (S3)
+- 단일 instance (EBS 가 더 빠름 + 싸다)
+- Low-latency (HPC, Lustre 권장)
 
-# → /app-data 만 보임 (root 권한 X)
-# → 모든 file 의 uid = 1000 (강제)
-```
+## 6. EFS 의 특징
 
-→ multi-tenant 환경에서 격리.
+| 특징 | 설명 |
+| --- | --- |
+| Provisioning 없음 | auto-scale storage |
+| Multi-AZ (Standard) | AZ 3개 redundancy |
+| POSIX | uid/gid / permission |
+| NFS v4.1 | encryption in transit + at rest |
+| Mount Target | per-AZ ENI (subnet 안) |
+| Access Point | sub-directory + uid/gid 강제 |
+| IAM authorization | POSIX 외 IAM |
+| Lifecycle | IA / Archive 자동 |
+| Replication | 1-click cross-region |
 
----
-
-## 8. EKS 통합 (CSI driver)
-
-```bash
-# EFS CSI driver 설치 (★)
-helm install aws-efs-csi-driver aws-efs-csi-driver/aws-efs-csi-driver \
-    -n kube-system \
-    --set controller.serviceAccount.create=false \
-    --set controller.serviceAccount.name=efs-csi-controller-sa
-```
-
-```yaml
-# StorageClass (dynamic provisioning)
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata: {name: efs-sc}
-provisioner: efs.csi.aws.com
-parameters:
-  provisioningMode: efs-ap
-  fileSystemId: fs-0abc123
-  directoryPerms: "700"
-  uid: "1000"
-  gid: "1000"
-  basePath: "/dynamic_provisioning"
-
----
-# PVC
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata: {name: shared-data, namespace: app}
-spec:
-  accessModes: [ReadWriteMany]      # ★ RWX
-  storageClassName: efs-sc
-  resources: {requests: {storage: 5Gi}}    # EFS = 무시되지만 명시
-
----
-# Pod 사용
-apiVersion: apps/v1
-kind: Deployment
-metadata: {name: web}
-spec:
-  replicas: 3
-  template:
-    spec:
-      containers:
-        - name: web
-          image: nginx:alpine
-          volumeMounts:
-            - {mountPath: /usr/share/nginx/html, name: data}
-      volumes:
-        - name: data
-          persistentVolumeClaim: {claimName: shared-data}
-```
-
-→ 3 pod 가 같은 EFS 공유. EBS 는 RWO 만.
-
----
-
-## 9. Lambda 통합
-
-```bash
-# Lambda 가 EFS mount → 큰 dependency / large file 처리
-aws lambda create-function \
-    --function-name large-app \
-    --runtime nodejs20.x \
-    --vpc-config SubnetIds=...,SecurityGroupIds=... \
-    --file-system-configs Arn=arn:aws:elasticfilesystem:...,LocalMountPath=/mnt/efs
-```
-
-```javascript
-// Lambda 코드
-const fs = require('fs');
-const data = fs.readFileSync('/mnt/efs/model.bin');
-// ...
-```
-
-→ Lambda 의 250MB deployment limit 회피.
-
-→ ML model / large dataset / shared cache.
-
----
-
-## 10. performance mode
+## 7. bkurs-be 활용
 
 ```
-generalPurpose (default):
-  - 7,000 ops/s max
-  - 낮은 latency
-  - 대부분 workload
-
-maxIO:
-  - 더 높은 throughput
-  - 더 큰 latency (각 op 의)
-  - 큰 batch / 분석 workload
+ECS Fargate (shared content):    EFS (read-only mount, multi-task)
+EKS Pod (StatefulSet 옵션):       EFS CSI (RWX)
+Lambda (큰 ML model):             EFS mount /mnt/models
+WordPress / CMS:                  EFS shared /var/www/html
+Build artifact share:             EFS (CI/CD workers)
+Bastion home directory:           EFS (multi-bastion)
 ```
 
-```
-throughput mode:
-  Bursting (default):
-    - baseline: 50 KB/s per GB
-    - burst: credit 따라 spike 가능
-    - 작은 EFS = burst 제한
-    
-  Provisioned:
-    - 명시 MB/s (예: 100 MB/s)
-    - 비쌈
-    
-  Elastic (★ 권장):
-    - 자동 scale
-    - usage 만큼 과금
-    - 대부분 OK
-```
-
----
-
-## 11. lifecycle (IA)
-
-```hcl
-lifecycle_policy {
-    transition_to_ia                    = "AFTER_30_DAYS"
-    transition_to_primary_storage_class = "AFTER_1_ACCESS"
-}
-```
+## 8. 가격 직관
 
 ```
-30일 안 쓰면 → IA storage class
-access 시 → 다시 Standard
-
-비용 절감 큼:
-  $0.30/GB → $0.025/GB (90% saving)
-
-단:
-  - first access 시 latency 약간 ↑
-  - 자주 access 면 transition cost ↑
+Standard:        $0.30/GB·월   (3 AZ)
+One Zone:        $0.20/GB·월   (1 AZ, -33%)
+Infrequent Access:  $0.0125/GB·월 (Standard 의 25배 저렴, lifecycle)
+Standard-Archive:   $0.005/GB·월  (Standard 의 60배 저렴)
+One Zone-IA:        $0.008/GB·월
+Provisioned Throughput:  $6.00/MB/s·월
+Elastic Throughput:      $0.03/GB read + $0.06/GB write
 ```
 
----
+> 비싸 보이지만 = 운영 자동화 ($0 management).
 
-## 12. backup
+## 9. EFS 의 한도
 
-```
-AWS Backup 통합:
-  - 자동 daily / weekly snapshot
-  - cross-region copy
-  - point-in-time restore
-```
+| | |
+| --- | --- |
+| Storage size | unlimited |
+| Concurrent connections | 25K-50K per Mount Target |
+| Throughput | up to 10+ GiB/s (Elastic) |
+| File size | 47.9 TiB |
+| Filesystems / region / account | 1000 (soft) |
+| Mount Targets / filesystem | 1 per AZ |
 
-```hcl
-resource "aws_backup_plan" "efs" {
-  name = "efs-backup-plan"
-  
-  rule {
-    rule_name         = "daily-backup"
-    target_vault_name = aws_backup_vault.main.name
-    schedule          = "cron(0 5 * * ? *)"        # 매일 5시
-    
-    lifecycle {
-      cold_storage_after = 30
-      delete_after        = 365
-    }
-    
-    copy_action {
-      destination_vault_arn = aws_backup_vault.dr.arn   # cross-region
-    }
-  }
-}
-```
+## 10. 영상 / 자료
 
----
+| 자료 |
+| --- |
+| [EFS 공식](https://docs.aws.amazon.com/efs/latest/ug/) |
+| [EFS Deep Dive](https://www.youtube.com/watch?v=4NEdiUUepvw) |
+| [EFS CSI](https://github.com/kubernetes-sigs/aws-efs-csi-driver) |
 
-## 13. monitoring
+## 11. 관련 hub
 
-```
-CloudWatch metric:
-  - PercentIOLimit (peak 사용률)
-  - PermittedThroughput (capacity)
-  - MeteredIOBytes
-  - StorageBytes (size)
-  - BurstCreditBalance (★ 0 임박 = warning)
-  - ClientConnections
-
-alert:
-  - BurstCreditBalance < 50% → throughput mode 변경 검토
-  - StorageBytes 폭증
-```
-
----
-
-## 14. troubleshoot
-
-```bash
-# mount 실패
-mount -v -t efs -o tls fs-xxx:/ /mnt/efs
-# verbose 로 원인 확인
-
-# 흔한 원인:
-# 1. SG: NFS port 2049 안 열림
-# 2. mount target 없음 (해당 AZ)
-# 3. DNS resolution (private DNS hostname 활성)
-# 4. IAM 권한 없음 (iam mount option 시)
-
-# performance issue
-aws cloudwatch get-metric-data \
-    --metric-data-queries '[{
-        "Id": "burst",
-        "MetricStat": {
-            "Metric": {
-                "Namespace": "AWS/EFS",
-                "MetricName": "BurstCreditBalance",
-                "Dimensions": [{"Name": "FileSystemId", "Value": "fs-xxx"}]
-            },
-            "Period": 60,
-            "Stat": "Average"
-        }
-    }]'
-
-# CloudWatch logs (EFS audit)
-aws efs put-account-preferences --resource-id-type LONG_ID
-```
-
----
-
-## 15. EFS vs FSx vs S3
-
-```
-EFS:
-  Linux NFS
-  POSIX
-  multi-mount
-  
-FSx for Windows:
-  SMB / Active Directory
-  Windows 만
-  
-FSx for Lustre:
-  high-performance (HPC, ML)
-  S3 통합 (data repository)
-  
-FSx for NetApp ONTAP:
-  enterprise (snapshot / dedup / FlexClone)
-  
-FSx for OpenZFS:
-  ZFS
-  
-S3:
-  object (HTTP API)
-  더 cheap
-  POSIX 아님
-```
-
-→ general NFS = EFS. ML / HPC = FSx Lustre. Windows = FSx Windows.
-
----
-
-## 16. 함정
-
-1. **single AZ 사용** — One Zone 의 cheaper 지만 AZ fail 시 unavailable.
-2. **SG 2049 port** — 안 열려서 mount fail.
-3. **Bursting mode + 큰 throughput** — credit 0 → 느림.
-4. **모든 namespace 의 RWX** — 격리 X. Access Point + uid.
-5. **lifecycle 30일 IA + 자주 access** — transition cost ↑.
-6. **DNS resolution** — VPC 의 `enableDnsHostnames` 필요.
-7. **backup 없음** — 실수로 file 삭제.
-8. **encryption 안 함** — at rest / in transit 둘 다.
-
----
-
-## 17. 관련
-
-- [[cloud-aws|↑ cloud-aws]]
-- [[s3]]
-- [[ebs]]
-- [[eks|↗ EKS]]
-- [[lambda|↗ Lambda]]
+- [[../storage]]
+- [[../s3/s3]]
+- [[../ebs/ebs]]
+- [[../../compute/eks/02-workload/03-storage-csi]] — EFS CSI
+- [[../../compute/lambda/03-runtime/02-environment-and-layers]] — Lambda + EFS
+- [[../../network/vpc/vpc]]
+- [[../../security/kms/kms]]

@@ -1,458 +1,191 @@
 ---
-title: "Auto Scaling — ASG / Launch Template / Predictive"
+title: "AWS Auto Scaling (hub)"
 kind: knowledge
-project: devops
-agent: engineering-agent/tech-lead
 status: current
-created_at: 2026-05-15T13:05:00+09:00
-tags: [devops, cloud-aws, auto-scaling, asg]
+created_at: 2026-05-14T21:24:00+09:00
+updated_at: 2026-05-22T18:00:00+09:00
+tags: [aws, compute, auto-scaling, asg, application-auto-scaling, hub]
+home_hub: cloud-aws
 ---
 
-# Auto Scaling — ASG / Launch Template / Predictive
+# AWS Auto Scaling
 
-**[[cloud-aws|↑ cloud-aws]]**
+> **EC2 Auto Scaling (ASG)** + **Application Auto Scaling** (ECS / Lambda / DDB / Aurora / SageMaker / Spot Fleet 등). 4 정책 (Target Tracking / Step / Simple / Scheduled) + Predictive.
 
----
-
-## 1. 무엇
-
-```
-Auto Scaling Group (ASG):
-  - EC2 instance 의 desired / min / max 관리
-  - health check fail → 자동 교체
-  - traffic 변동 → scale-out / scale-in
-  - multi-AZ 자동 분배
-
-구성요소:
-  - Launch Template (★ Launch Configuration 의 후속)
-  - Scaling Policy
-  - CloudWatch metric / alarm
-```
+**[[../compute|↑ Compute]]** · **[[../../cloud-aws|↑↑ AWS]]**
 
 ---
 
-## 2. Launch Template (★)
-
-```bash
-aws ec2 create-launch-template \
-    --launch-template-name web-template \
-    --version-description "v1" \
-    --launch-template-data '{
-        "ImageId": "ami-0abc123",
-        "InstanceType": "m6i.large",
-        "KeyName": "prod-key",
-        "SecurityGroupIds": ["sg-xxx"],
-        "IamInstanceProfile": {"Name": "EC2WebRole"},
-        "UserData": "BASE64_ENCODED_SCRIPT",
-        "Monitoring": {"Enabled": true},
-        "TagSpecifications": [{
-            "ResourceType": "instance",
-            "Tags": [
-                {"Key": "Name", "Value": "web-prod"},
-                {"Key": "Environment", "Value": "prod"}
-            ]
-        }],
-        "BlockDeviceMappings": [{
-            "DeviceName": "/dev/xvda",
-            "Ebs": {
-                "VolumeSize": 30,
-                "VolumeType": "gp3",
-                "Encrypted": true,
-                "DeleteOnTermination": true
-            }
-        }],
-        "MetadataOptions": {
-            "HttpTokens": "required",         # IMDSv2 강제 ★
-            "HttpPutResponseHopLimit": 1
-        }
-    }'
-```
-
-→ Launch Configuration (legacy) X. Launch Template (★) 권장.
-
----
-
-## 3. ASG 생성
-
-```bash
-aws autoscaling create-auto-scaling-group \
-    --auto-scaling-group-name web-asg \
-    --launch-template "LaunchTemplateName=web-template,Version=1" \
-    --min-size 2 \
-    --max-size 20 \
-    --desired-capacity 4 \
-    --vpc-zone-identifier "subnet-aaa,subnet-bbb,subnet-ccc" \
-    --target-group-arns "arn:aws:elasticloadbalancing:..." \
-    --health-check-type ELB \
-    --health-check-grace-period 300
-```
-
-→ `health-check-type ELB` = ELB health check 사용 (★ 권장). `EC2` 만 = ELB health 모름.
-
----
-
-## 4. Mixed Instance Policy (★ Spot + On-Demand)
-
-```bash
-aws autoscaling create-auto-scaling-group \
-    --auto-scaling-group-name web-mixed \
-    --mixed-instances-policy '{
-        "LaunchTemplate": {
-            "LaunchTemplateSpecification": {
-                "LaunchTemplateName": "web-template",
-                "Version": "1"
-            },
-            "Overrides": [
-                {"InstanceType": "m6i.large"},
-                {"InstanceType": "m5.large"},
-                {"InstanceType": "m5a.large"},
-                {"InstanceType": "m6a.large"},
-                {"InstanceType": "m6i.xlarge"}
-            ]
-        },
-        "InstancesDistribution": {
-            "OnDemandPercentageAboveBaseCapacity": 30,
-            "OnDemandBaseCapacity": 2,
-            "SpotAllocationStrategy": "capacity-optimized",
-            "SpotInstancePools": 5
-        }
-    }' \
-    --min-size 2 --max-size 20 --desired-capacity 5
-```
-
-→ 2 on-demand base + 30% on-demand + 70% spot.
-
-→ Spot 가용성 ↑ (여러 instance type / pool).
-
----
-
-## 5. Scaling Policy 종류
-
-### A. Target Tracking (★ 권장)
-
-```bash
-aws autoscaling put-scaling-policy \
-    --auto-scaling-group-name web-asg \
-    --policy-name target-tracking-cpu \
-    --policy-type TargetTrackingScaling \
-    --target-tracking-configuration '{
-        "TargetValue": 60.0,
-        "PredefinedMetricSpecification": {
-            "PredefinedMetricType": "ASGAverageCPUUtilization"
-        }
-    }'
-```
-
-→ 가장 단순. "CPU 60% 유지" → 자동 scale.
-
-### B. Step Scaling
-
-```bash
-# CPU 80% over: +2 instance, 90% over: +5
-aws autoscaling put-scaling-policy \
-    --auto-scaling-group-name web-asg \
-    --policy-name step-scale-up \
-    --policy-type StepScaling \
-    --adjustment-type ChangeInCapacity \
-    --step-adjustments '[
-        {"MetricIntervalLowerBound": 0, "MetricIntervalUpperBound": 10, "ScalingAdjustment": 2},
-        {"MetricIntervalLowerBound": 10, "ScalingAdjustment": 5}
-    ]'
-```
-
-→ 세밀 control. CloudWatch alarm 과 연결 필요.
-
-### C. Predictive Scaling (★ ML)
-
-```bash
-aws autoscaling put-scaling-policy \
-    --auto-scaling-group-name web-asg \
-    --policy-name predictive-cpu \
-    --policy-type PredictiveScaling \
-    --predictive-scaling-configuration '{
-        "MetricSpecifications": [{
-            "TargetValue": 60.0,
-            "PredefinedMetricPairSpecification": {
-                "PredefinedMetricType": "ASGCPUUtilization"
-            }
-        }],
-        "Mode": "ForecastAndScale",
-        "SchedulingBufferTime": 300
-    }'
-```
-
-→ AWS 가 24시간 trend 학습 → 미리 scale. 일정 pattern 의 traffic.
-
-### D. Scheduled
-
-```bash
-aws autoscaling put-scheduled-update-group-action \
-    --auto-scaling-group-name web-asg \
-    --scheduled-action-name peak-hour-up \
-    --start-time "2026-05-15T08:00:00Z" \
-    --recurrence "0 8 * * 1-5" \
-    --min-size 5 --max-size 30 --desired-capacity 10
-```
-
-→ 평일 8시 = 10 instance, 19시 = 2 instance.
-
----
-
-## 6. health check
+## 1. 한 줄
 
 ```
-2 가지 type:
-  EC2 (default): instance 의 status check
-                 stopped / impaired = unhealthy
-
-  ELB: ELB target group 의 health check
-       application 응답 검증 (★ 권장)
-
-grace period (★):
-  새 instance 시작 후 N 초 = health check 무시
-  → JVM cold start 등 고려
-  → default 300s
+Target metric (CPU 50%, RPS 1000, ...) 또는 Schedule 또는 ML 예측
+   ↓
+desired capacity 자동 조정 (EC2 / ECS task / Lambda PC / DDB throughput / Aurora reader)
 ```
 
-```yaml
-# Launch Template 의 user-data 가 끝날 때까지 충분히
-HealthCheckGracePeriod: 600        # 10 min
+## 2. 학습 roadmap
+
+```mermaid
+flowchart TB
+  subgraph F["01 fundamentals"]
+    F1[EC2 ASG deep]
+    F2[Application Auto Scaling]
+    F3[Predictive + Target Tracking]
+  end
+  subgraph P["02 policies"]
+    P1[Target Tracking]
+    P2[Step + Simple]
+    P3[Scheduled]
+  end
+  subgraph O["03 operations"]
+    O1[Lifecycle hook + warm pool]
+    O2[troubleshooting]
+  end
+  subgraph PR["practice"]
+    PR1[ASG mixed instances]
+    PR2[App AS for ECS]
+  end
+  F --> P --> O --> PR
 ```
 
----
+## 3. Sub-directory index
 
-## 7. termination policy
+### [[01-fundamentals/01-ec2-asg-deep]] — EC2 ASG (Launch Template / Mixed Instance / Health Check)
+ASG 의 desired/min/max + Launch Template + Mixed Instances Policy + Spot allocation.
 
-```
-ASG scale-in 시 어느 instance 가 죽을지:
+### [[01-fundamentals/02-application-auto-scaling]] — ECS / Lambda / DDB / Aurora / SageMaker
+Application Auto Scaling Service — 같은 정책 type 으로 11+ resource 의 scaling.
 
-OldestInstance       — 가장 오래된
-NewestInstance       — 가장 최근
-OldestLaunchTemplate — 옛 Launch Template version
-ClosestToNextInstanceHour — 청구 시간 가까운 (legacy)
-AllocationStrategy   — Spot allocation 따라
+### [[01-fundamentals/03-predictive-and-target-tracking]] — Predictive (ML) + Target Tracking 깊이
+Predictive forecast + Target Tracking 의 disable scale-in / cooldown / multi-metric.
 
-default: AllocationStrategy → OldestLaunchConfiguration → ClosestToNextInstanceHour → Default
-```
+### [[02-policies/01-target-tracking]] — Target Tracking 표준 패턴
+CPU 50% / ALB RPS / 사용자 정의 metric.
 
-```bash
-aws autoscaling update-auto-scaling-group \
-    --auto-scaling-group-name web-asg \
-    --termination-policies "OldestLaunchTemplate"
-```
+### [[02-policies/02-step-and-simple]] — Step Scaling (대형 step) / Simple Scaling (legacy)
+CloudWatch Alarm trigger + step adjustment.
 
-→ 새 Launch Template version 으로 rolling update 시 OldestLaunchTemplate.
+### [[02-policies/03-scheduled]] — Cron / 시간대별 capacity
+peak hour 미리 늘리기 / 야간 줄이기.
 
----
+### [[03-operations/01-lifecycle-hooks-and-warm-pool]] — Lifecycle Hook + Warm Pool
+launch / terminate 시 custom 작업 + 미리 instance 준비.
 
-## 8. instance refresh (★ rolling update)
+### [[03-operations/02-troubleshooting]] — 안 늘어남 / 너무 자주 / cool down 등
+metric delay / cooldown / health check 실패.
 
-```bash
-# Launch Template 변경 후 rolling replace
-aws autoscaling start-instance-refresh \
-    --auto-scaling-group-name web-asg \
-    --preferences '{
-        "MinHealthyPercentage": 80,
-        "InstanceWarmup": 300,
-        "CheckpointPercentages": [50, 100],
-        "CheckpointDelay": 600
-    }' \
-    --strategy Rolling
-```
+### [[practice/01-asg-with-mixed-instances]] — ALB + Mixed (Spot+OnDemand) + Target Tracking (60분)
 
-→ AMI / instance type 변경 시 사용.
+### [[practice/02-application-auto-scaling-ecs]] — ECS Service + CPU+RPS + Scheduled (45분)
 
-→ Blue-Green vs Rolling 선택.
+## 4. 핵심 개념
 
----
+| 개념 | 의미 |
+| --- | --- |
+| ASG | EC2 instance set (min/desired/max) |
+| Launch Template | instance 생성 spec (AMI, type, SG, user-data) |
+| Capacity Provider (ECS) | Auto Scaling Group + Managed Scaling |
+| Application Auto Scaling | EC2 외 resource (ECS / Lambda / DDB / Aurora ...) |
+| Target Tracking | metric 목표값으로 자동 조정 |
+| Step Scaling | alarm 의 step 별 adjustment |
+| Scheduled | cron 또는 일회성 |
+| Predictive | ML 기반 forecast |
+| Lifecycle Hook | launch / terminate 시 callback |
+| Warm Pool | 미리 stopped 상태 instance (빠른 startup) |
 
-## 9. lifecycle hook (★)
+## 5. 어떤 Service 가 Application Auto Scaling 인가?
 
-```
-instance 시작 / 종료 시 잠시 stop:
-  - 시작: load test 시 잠시 hold
-  - 종료: graceful shutdown 시간 확보 (DB drain, cache flush)
-```
+| Resource | Scaling 종류 |
+| --- | --- |
+| ECS Service | DesiredCount |
+| Spot Fleet | TargetCapacity |
+| EMR Cluster | InstanceFleetCapacity |
+| AppStream Fleet | DesiredCapacity |
+| DynamoDB Table / GSI | ReadCapacity / WriteCapacity |
+| Aurora Cluster | Read Replica 수 |
+| Lambda Provisioned Concurrency | concurrent |
+| Comprehend / SageMaker / Cassandra / Neptune / ElastiCache for Redis | 각자 |
 
-```bash
-aws autoscaling put-lifecycle-hook \
-    --auto-scaling-group-name web-asg \
-    --lifecycle-hook-name web-terminate-hook \
-    --lifecycle-transition autoscaling:EC2_INSTANCE_TERMINATING \
-    --heartbeat-timeout 300 \
-    --notification-target-arn arn:aws:sqs:... \
-    --role-arn arn:aws:iam::...
-```
+→ 모두 같은 API (`application-autoscaling`).
 
-```bash
-# instance 안에서 (graceful shutdown)
-# 1. lifecycle hook event 받음 (SNS / SQS / EventBridge)
-# 2. graceful shutdown 시작 (DB connection close, ALB deregister)
-# 3. complete signal
-aws autoscaling complete-lifecycle-action \
-    --lifecycle-action-result CONTINUE \
-    --instance-id i-xxx \
-    --lifecycle-hook-name web-terminate-hook \
-    --auto-scaling-group-name web-asg
+## 6. EC2 Auto Scaling 의 출발
+
+```mermaid
+flowchart LR
+  TPL[Launch Template] --> ASG[Auto Scaling Group]
+  ASG -->|min/desired/max| EC2[EC2 instances]
+  TG[ALB Target Group] -->|target tracking| ASG
+  CW[CloudWatch metric] -->|alarm| ASG
+  SCH[Scheduled Action] --> ASG
+  PRED[Predictive] --> ASG
 ```
 
----
+## 7. 결정 트리
 
-## 10. warm pool (★ 빠른 scale-out)
-
-```bash
-aws autoscaling put-warm-pool \
-    --auto-scaling-group-name web-asg \
-    --max-group-prepared-capacity 20 \
-    --min-size 5 \
-    --pool-state Stopped
+```mermaid
+flowchart TD
+  Q1{무엇을<br/>scale?}
+  Q1 -->|EC2| EC2ASG[EC2 ASG]
+  Q1 -->|ECS Service| ECSAS[Application Auto Scaling]
+  Q1 -->|EKS Node| KP[Karpenter / Cluster Autoscaler]
+  Q1 -->|Lambda PC| LMDAS[Application Auto Scaling]
+  Q1 -->|DDB / Aurora| AAS[Application Auto Scaling]
+  Q1 -->|Custom metric| Q2{predictable<br/>pattern?}
+  Q2 -->|Yes 매일/주| SCH[Scheduled]
+  Q2 -->|No reactive| TT[Target Tracking]
+  Q2 -->|fine-grained| STEP[Step Scaling]
 ```
 
-→ stopped instance 미리 준비 → 필요 시 1분 안에 시작.
-
-→ JVM cold start 5-10분 → 1분.
-
-→ 비용: stopped instance 의 EBS 비용만.
-
----
-
-## 11. cooldown
+## 8. bkurs-be 활용
 
 ```
-scale 후 wait time:
-  - 너무 짧음 = flap (oscillation)
-  - 너무 김 = slow response
+ECS Service (api):
+- Application Auto Scaling
+- min 3 / max 20
+- Target Tracking (CPU 60%, RPS 500/target)
 
-target tracking: 자동 (default 300s)
-step scaling: manual
+ECS Capacity Provider (옵션 — EC2 launch type):
+- Managed Scaling (ASG-based)
 
-```bash
-aws autoscaling put-scaling-policy \
-    --auto-scaling-group-name web-asg \
-    --cooldown 300       # 5 min
+DDB Order Table:
+- Application Auto Scaling
+- Read/Write capacity Target 70%
+
+Aurora reader:
+- min 1 / max 5
+- Target Tracking (CPU 50%)
+
+Lambda PC (critical):
+- Schedule 09:00 → 10, 21:00 → 2
 ```
 
----
+## 9. 비용 영향
 
-## 12. ELB target group 통합
+| | |
+| --- | --- |
+| Auto Scaling Service 자체 | 무료 |
+| 늘어난 instance / task | 그 시간 만큼 |
+| CloudWatch alarm | $0.10/alarm/월 |
+| Predictive scaling | 무료 |
 
-```
-ALB / NLB 의 target group ↔ ASG:
-  - ASG 의 instance 가 자동 register
-  - 종료 시 deregister
-  - health check fail → 자동 교체
-  - deregistration delay (★ 600s 권장)
-```
+→ **Auto Scaling 자체는 무료** — under-provisioning 으로 안 됨, over-provisioning 비용 ↓.
 
-```yaml
-# Terraform
-resource "aws_autoscaling_attachment" "web" {
-  autoscaling_group_name = aws_autoscaling_group.web.name
-  lb_target_group_arn    = aws_lb_target_group.web.arn
-}
-```
+## 10. 영상 / 자료
 
----
+| 자료 |
+| --- |
+| [Auto Scaling 공식](https://docs.aws.amazon.com/autoscaling/) |
+| [Application Auto Scaling](https://docs.aws.amazon.com/autoscaling/application/userguide/what-is-application-auto-scaling.html) |
+| [Predictive Scaling](https://docs.aws.amazon.com/autoscaling/ec2/userguide/ec2-auto-scaling-predictive-scaling.html) |
 
-## 13. CloudWatch metric (필수)
+## 11. 관련 hub
 
-```
-metric:
-  - CPU / memory / network (instance 별)
-  - GroupDesiredCapacity
-  - GroupInServiceInstances
-  - GroupPendingInstances
-  - GroupTerminatingInstances
-  - ALB target 의 healthy host count
-  - request count per target
-
-alarm:
-  - CPU > 80% for 5 min → scale-out
-  - healthy host < 50% → page
-  - failed launch count
-```
-
----
-
-## 14. spot 안정 전략
-
-```
-spot 의 갑작스 종료:
-
-1. capacity-optimized strategy
-   → 여러 instance type / AZ 의 가용 spot pool 우선
-
-2. mixed instance policy
-   → 5+ instance type
-   → 2+ AZ
-
-3. spot interruption handler
-   → aws-node-termination-handler (k8s)
-   → 또는 SNS + Lambda + custom
-
-4. on-demand base capacity
-   → critical 일부는 on-demand
-
-5. graceful drain
-   → ASG lifecycle hook
-   → 2분 안에 정리
-```
-
----
-
-## 15. 활용 사례
-
-### A. Web tier (ALB + ASG)
-
-```
-ALB → Target Group → ASG (4-20 web instance)
-                       ↓
-                     RDS / Cache
-
-policy: target tracking CPU 60%
-schedule: 평일 8-19 desired 8, off 4
-```
-
-### B. Worker (배치 / Queue consumer)
-
-```
-SQS queue depth → CloudWatch metric → ASG scale
-
-policy: target tracking ApproximateNumberOfMessagesVisible 10
-        = 10 message 당 1 instance
-mixed: 90% Spot
-```
-
-### C. Bastion / Jump
-
-```
-ASG min=1 max=1
-desired=1, 24/7
-→ instance fail 시 자동 교체
-→ AMI baked (SSH key / fail2ban)
-```
-
----
-
-## 16. 함정
-
-1. **Launch Configuration 사용** — legacy. Launch Template 으로.
-2. **EC2 health check 만** — application fail 인지 X. ELB.
-3. **grace period 너무 짧음** — startup 중 healthy 판정 fail.
-4. **deregistration delay 너무 짧음** — in-flight request 끊김.
-5. **cooldown 너무 짧음** — flap.
-6. **Spot 단일 type** — capacity fail.
-7. **IMDSv1 default** — SSRF 공격 위험. v2 강제.
-8. **AMI 의 secret hard-code** — IAM Role + Secrets Manager 사용.
-9. **scaling metric 잘못** — CPU 만, 실제는 memory bound.
-10. **warm pool 의 EBS 비용 무지** — 큰 EBS = stopped 도 부담.
-
----
-
-## 17. 관련
-
-- [[cloud-aws|↑ cloud-aws]]
-- [[ec2]]
-- [[eks]]
-- [[alb|↗ ALB]]
-- [[right-sizing|↗ right-sizing]]
+- [[../compute]]
+- [[../ec2/ec2]]
+- [[../ecs/ecs]]
+- [[../eks/eks]] — Karpenter / CAS
+- [[../lambda/lambda]] — Provisioned Concurrency
+- [[../../database/dynamodb/dynamodb]]
+- [[../../database/rds/rds]]
+- [[../../observability/cloudwatch/cloudwatch]]

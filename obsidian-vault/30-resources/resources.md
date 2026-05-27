@@ -9,12 +9,12 @@
 
 | 카테고리          | 진입점                                                | 예시                                                        |
 | ------------- | -------------------------------------------------- | --------------------------------------------------------- |
-| books         | [[obsidian-vault/30-resources/books/books\|books]] | "Effective Java", "Designing Data-Intensive Applications" |
-| articles      | [[articles/]]                                      | 블로그 글 / 회사 엔지니어링 블로그                                      |
-| lectures      | [[lectures/]]                                      | 컨퍼런스 / 강의 영상                                              |
-| official-docs | [[official-docs/]]                                 | Spring / Discord / Anthropic 등 공식 docs                    |
-| papers        | [[papers/]]                                        | 논문                                                        |
-| examples      | [[examples/]]                                      | 참고할 만한 오픈소스 코드                                            |
+| books         | [[books/books\|books/]]                            | "Effective Java", "Designing Data-Intensive Applications" |
+| articles      | [[articles/articles\|articles/]]                   | 블로그 글 / 회사 엔지니어링 블로그                                      |
+| lectures      | [[lectures/lectures\|lectures/]]                   | 컨퍼런스 / 강의 영상                                              |
+| official-docs | [[official-docs/official-docs\|official-docs/]]    | Spring / Discord / Anthropic 등 공식 docs                    |
+| papers        | [[papers/papers\|papers/]]                         | 논문                                                        |
+| examples      | [[examples/examples\|examples/]]                   | 참고할 만한 오픈소스 코드                                            |
 
 ## 파일명 컨벤션
 

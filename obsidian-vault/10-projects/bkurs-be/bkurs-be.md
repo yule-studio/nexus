@@ -18,6 +18,16 @@ related:
 
 # bkurs-be — B-KURS 백엔드 프로젝트 hub
 
+> 🚀 **여기서 시작**: 본 hub 는 PR 히스토리 / 결정 누적이라 길다. **신규 합류자는 먼저
+> [[getting-started]]** 를 보고 본인 역할 (개발 / 배포 / 인프라) 별 read path 를 따라가는
+> 게 빠르다. 본 hub 는 그 다음에 "왜 그 결정을 했나" 컨텍스트로 본다.
+>
+> 핵심 가이드 4종:
+> - **[[getting-started]]** — 역할별 5분 진입 가이드 + 문서 지도
+> - **[[external-services-guide]]** — 외부 SaaS 7+ 종 발급/설정
+> - **[[env-deployment-guide]]** — env 표 + 배포 + company-infra 경계
+> - **[[../bkurs-fe/screen-logic-and-api-map]]** — 화면별 hook + endpoint 매핑
+
 | 문서 버전 | 작성일 | 작성자 | 주요 변경 사항 |
 | --- | --- | --- | --- |
 | v.1.0.0 | 2026-05-20 | engineering-agent/tech-lead | 최초 — 시작 컨텍스트 + 기술 결정 + PR 시리즈 계획 |

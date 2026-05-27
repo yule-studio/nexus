@@ -15,6 +15,14 @@ related:
 
 # bkurs-fe — B-KURS 프론트엔드 프로젝트 hub
 
+> 🚀 **여기서 시작**: bkurs 프로젝트 전체 진입점은 [[../bkurs-be/getting-started]] 에 있다
+> (BE + FE 공용). 화면 작업만 한다면:
+>
+> - **[[screen-logic-and-api-map]]** — 52 화면 × hook × endpoint 매핑 + 신규 화면 체크리스트
+> - **[[architecture-api-foundation]]** — ApiEnvelope 구조 / apiClient
+> - **[[fe-domain-clients-complete]]** — 18 도메인 client 목록
+> - **[[decisions/decision-hook-convention]]** — `lib/hooks/` 컨벤션 ADR
+
 | 문서 버전 | 작성일 | 작성자 | 주요 변경 사항 |
 | --- | --- | --- | --- |
 | v.1.0.0 | 2026-05-20 | engineering-agent/tech-lead | 사후 회고 hub — S2 시리즈 완성 후 시점에서 정리 |

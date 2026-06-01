@@ -37,6 +37,7 @@ related:
 | 인증 / Security | [[handover/auth-and-security]] |
 | 외부 SaaS plug-in | [[handover/external-gateways]] |
 | 새 PR 시작 | [[handover/stacked-pr]] |
+| Flyway 마이그레이션 정책 (SSoT) | [[policy/flyway-migration-policy]] |
 
 ---
 

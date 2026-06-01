@@ -38,6 +38,7 @@ related:
 | 외부 SaaS plug-in | [[handover/external-gateways]] |
 | 새 PR 시작 | [[handover/stacked-pr]] |
 | Flyway 마이그레이션 정책 (SSoT) | [[policy/flyway-migration-policy]] |
+| CI / 운영 troubleshooting | [[troubleshooting/ci-flyway-migration-policy-pr]] (PR #156 actuator/health) |
 
 ---
 

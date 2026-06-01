@@ -24,7 +24,7 @@ related:
 | 처음 합류 | [[getting-started]] (역할별 5분 read path) |
 | 도메인 코드 작업 | [[directory-structure]] + [[domains/]] 의 해당 도메인 |
 | 인증 / Security 관련 | [[auth-and-security]] |
-| DB / migration 작업 | [[database-and-migrations]] |
+| DB / migration 작업 | [[database-and-migrations]] · 정책 SSoT [[../policy/flyway-migration-policy]] |
 | 외부 SaaS plug-in | [[external-gateways]] |
 | 새 회귀 추가 | [[testing-guide]] |
 | 새 PR 시작 | [[stacked-pr]] |

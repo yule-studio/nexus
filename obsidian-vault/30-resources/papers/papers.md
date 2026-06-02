@@ -3,7 +3,7 @@ title: "Papers — 학술 논문 카탈로그 (hub)"
 kind: knowledge
 status: current
 created_at: 2026-05-27T11:40:00+09:00
-updated_at: 2026-05-27T11:40:00+09:00
+updated_at: 2026-06-02T10:00:00+09:00
 tags: [resources, papers, hub]
 home_hub: resources
 ---
@@ -18,10 +18,19 @@ home_hub: resources
 
 | 카테고리 | 진입점 |
 | --- | --- |
+| Foundations / CS 古典 | [[foundations-classics]] |
+| Theory / Algorithms / Complexity | [[theory-algorithms]] |
+| Programming Languages / Compilers | [[programming-languages]] |
+| Software Engineering / Formal Methods | [[software-engineering-formal]] |
+| Computer Architecture / Hardware | [[computer-architecture]] |
 | 분산 시스템 / DB | [[distributed-systems-db]] |
-| AI / ML / Deep Learning / LLM | [[ai-ml-papers]] |
 | Systems / OS / Network | [[systems-os-network]] |
+| AI / ML / Deep Learning / LLM | [[ai-ml-papers]] |
+| Information Retrieval / Web / Data Mining | [[information-retrieval-web]] |
+| Computer Graphics / Rendering | [[graphics-rendering]] |
+| HCI / Visualization | [[hci-visualization]] |
 | Security / Cryptography | [[security-crypto]] |
+| Quantum Computing | [[quantum-computing]] |
 | 학회 / 저널 / Archive | [[venues-archives]] |
 
 ## 2. 표준 노트 구조

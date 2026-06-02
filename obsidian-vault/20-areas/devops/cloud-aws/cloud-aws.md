@@ -16,30 +16,46 @@ tags:
 
 | 문서 버전 | 작성일 | 작성자 | 주요 변경 사항 |
 | --- | --- | --- | --- |
+| v.1.4.0 | 2026-06-01 | engineering-agent/tech-lead | ★☆☆ phase — 추가 카테고리 7개 (Migration / IoT / Media / Game / Business Apps / Specialty / Customer Enablement) — 총 22 카테고리 |
+| v.1.3.0 | 2026-06-01 | engineering-agent/tech-lead | 신규 카테고리 7개 추가 (Dev Tools / Application Integration / ML & AI / Cost / Management / Analytics / Frontend) + [[aws-services-overview]] 전체 인덱스 link |
 | v.1.2.0 | 2026-05-19 | engineering-agent/tech-lead | 서비스별 subfolder 구조로 재편 (compute/ec2/ec2.md 형식) + iam 을 별도 top-level 카테고리로 승격 |
 | v.1.1.0 | 2026-05-14 | engineering-agent/tech-lead | 카테고리별 서비스 분리 hub |
 | v.1.0.0 | 2026-05-13 | engineering-agent/tech-lead | 최초 placeholder |
 
 **[[../devops|↑ devops]]**
 
-> Amazon Web Services — 공공 클라우드 표준. 200+ 서비스 중 **핵심만** 카테고리로 분리.
+> Amazon Web Services — 공공 클라우드 표준. 200+ 서비스 중 **핵심만** 카테고리로 분리. 전체 서비스 인덱스 (★ 중요도 + 신규 카테고리) 는 [[aws-services-overview]].
 
 ---
 
 ## 1. 카테고리 분류
 
-| 카테고리 | 폴더 | 서비스 |
+| 카테고리 | 폴더 | 대표 서비스 |
 | --- | --- | --- |
 | Compute | [[compute/compute]] | EC2 / ECS / EKS / Lambda / ECR / Auto Scaling |
 | Storage | [[storage/storage]] | S3 / EBS / EFS |
-| Database | [[database/database]] | RDS / Aurora / DynamoDB |
-| Network | [[network/network]] | VPC / ALB / NLB / CloudFront / Route 53 |
-| Security | [[security/security]] | KMS / Secrets Manager |
-| IAM | [[iam/iam]] | IAM / (STS / Identity Center / Organizations 예정) |
-| Messaging | [[messaging/messaging]] | SQS / SNS |
+| Database | [[database/database]] | RDS / Aurora / DynamoDB / ElastiCache |
+| Network | [[network/network]] | VPC / ALB / NLB / CloudFront / Route 53 / API Gateway |
+| Security | [[security/security]] | KMS / Secrets Manager / Parameter Store / ACM |
+| IAM | [[iam/iam]] | IAM / IAM Identity Center |
+| Messaging | [[messaging/messaging]] | SQS / SNS / SES |
 | Observability | [[observability/observability]] | CloudWatch / CloudTrail |
+| **Management** | [[management/management]] | Organizations / Systems Manager / Config / Control Tower |
+| **Application Integration** | [[app-integration/app-integration]] | EventBridge / Step Functions / AppSync |
+| **Dev Tools** | [[dev-tools/dev-tools]] | CloudFormation / CDK / CodeBuild / CodeDeploy / X-Ray |
+| **Analytics** | [[analytics/analytics]] | Athena / Glue / Kinesis / OpenSearch / MSK / Redshift |
+| **ML & AI** | [[ml/ml]] | Bedrock / SageMaker / Textract |
+| **Frontend** | [[frontend/frontend]] | Amplify / Cognito (+ AppSync / Pinpoint) |
+| **Cost** | [[cost/cost]] | Billing / Cost Explorer / Budgets / Savings Plans |
+| **Migration** | [[migration/migration]] | Migration Hub / MGN / DMS / DataSync / Transfer Family / Snowball |
+| **IoT** | [[iot/iot]] | IoT Core / Greengrass / Device Management / SiteWise |
+| **Media** | [[media/media]] | MediaConvert / MediaLive / MediaPackage / IVS |
+| **Game** | [[game/game]] | GameLift / GameKit |
+| **Business Apps & EUC** | [[business-apps/business-apps]] | WorkSpaces / Chime / Connect / AppStream |
+| **Specialty** | [[specialty/specialty]] | RoboMaker / Ground Station / Braket |
+| **Customer Enablement** | [[customer-enablement/customer-enablement]] | Support / Marketplace / Activate |
 
-> 각 서비스는 서브폴더로 분리 (예: `compute/ecs/ecs.md`). 향후 서비스별 deep 노트 (운영 / 보안 / 비용 / 패턴) 누적.
+> 각 서비스는 서브폴더로 분리 (예: `compute/ecs/ecs.md`). 전체 서비스 빠른 인덱스는 [[aws-services-overview|AWS Services Overview]]. 총 **22 카테고리**.
 
 ---
 

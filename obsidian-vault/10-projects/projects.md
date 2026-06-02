@@ -7,15 +7,16 @@
 
 ## 현재 프로젝트
 
-| 프로젝트 | 진입점 | 상태 |
-| --- | --- | --- |
-| **yule-studio-agent** | [[yule-studio-agent/yule-studio-agent]] | active (자동화 에이전트 본체) |
-| **bkurs-fe** | [[bkurs-fe/bkurs-fe]] | in-progress (B-KURS 프론트 — S2 시리즈 28 PR 완료, mock 단계) |
-| **bkurs-be** | [[bkurs-be/bkurs-be]] | in-progress (B-KURS 백엔드 — Spring Boot 3.5 / Java 21, 부트스트랩 중) |
-| **hompage** | [[hompage/hompage]] | shipped (개인 홈페이지 — GitHub + Tistory 자동 동기화 / Vite + React + TS) |
-| homelab | [[homelab/]] | active |
-| spring-sandbox | [[spring-sandbox/]] | active (학습) |
-| yule-smoke-test | [[yule-smoke-test/]] | smoke 테스트 산출물 |
+| 프로젝트                  | 진입점                                     | 상태                                                                 |
+| --------------------- | --------------------------------------- | ------------------------------------------------------------------ |
+| **yule-studio-agent** | [[yule-studio-agent/yule-studio-agent]] | active (자동화 에이전트 본체)                                               |
+| **bkurs-fe**          | [[bkurs-fe/bkurs-fe]]                   | in-progress (B-KURS 프론트 — S2 시리즈 28 PR 완료, mock 단계)                |
+| **bkurs-be**          | [[bkurs-be/bkurs-be]]                   | in-progress (B-KURS 백엔드 — Spring Boot 3.5 / Java 21, 부트스트랩 중)      |
+| **b-kurs-home**       | [[b-kurs-home/b-kurs-home]]             | active (B-KURS 마케팅/홈 사이트 — camshf-crypto/b-kurs 이관/정리, Vite+React) |
+| **hompage**           | [[hompage/hompage]]                     | shipped (개인 홈페이지 — GitHub + Tistory 자동 동기화 / Vite + React + TS)    |
+| homelab               | [[homelab/]]                            | active                                                             |
+| spring-sandbox        | [[spring-sandbox/]]                     | active (학습)                                                        |
+| yule-smoke-test       | [[yule-smoke-test/]]                    | smoke 테스트 산출물                                                      |
 
 ## 프로젝트 폴더 표준 구조
 

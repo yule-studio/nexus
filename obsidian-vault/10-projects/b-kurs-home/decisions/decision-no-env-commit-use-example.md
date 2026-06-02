@@ -52,3 +52,8 @@ Accepted (2026-06-02)
 
 - 원본 public 레포에 노출된 anon key 는 Supabase 콘솔에서 회전 권장.
   publishable key 라 위험도는 낮으나, RLS 정책 점검과 함께 후속 작업으로 둔다.
+- **추적: Issue #11** (security) 로 승격. 조사 결과(노출 범위/회전 판단/RLS 목표
+  상태) → [[../research/research-anon-key-exposure-issue-11]],
+  작업 로그 → [[../task-logs/task-log-security-anon-key-rls-issue-11]].
+  결론: anon=공개 전제 키라 회전 우선순위 낮음, **RLS 점검 우선** (라이브 검증은
+  대시보드 접근 필요로 보류). service_role 등 고위험 비밀 노출은 없음(확인).

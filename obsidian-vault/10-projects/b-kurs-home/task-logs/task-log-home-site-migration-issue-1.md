@@ -17,7 +17,7 @@ related:
 - 작업 레포: `seum-running/b-kurs-home`
 - 원본 레포: `camshf-crypto/b-kurs`
 - GitHub Issue: #1 (https://github.com/seum-running/b-kurs-home/issues/1)
-- GitHub PR: #2 (draft, https://github.com/seum-running/b-kurs-home/pull/2)
+- GitHub PR: #2 (MERGED, merge commit cb7d03e, https://github.com/seum-running/b-kurs-home/pull/2)
 - Branch: `feature/migrate-home-site-issue-1`
 - 목표: 빈 stub 레포를 README 만으로 실행 가능한 유지보수 가능 레포로. 소스 이관 + config/문서/CI 정리.
 
@@ -66,3 +66,21 @@ related:
 ## 다음 작업
 
 - (후속 PR) 페이지 코드 품질 리뷰, SEO/OG 메타 정리, 테스트 도입
+
+## Merge 기록
+
+- Merge 여부: 완료 (자율 머지 — b-kurs-home 클론/이관 기간 인가 정책)
+- Merge 시각: 2026-06-02 03:05 UTC
+- Merge 방식: Merge Commit (squash 아님 — 4+1 commit 논리 분할 히스토리 보존, CLAUDE.md 정책: squash 는 docs-only 1-commit 만)
+- Merge commit: `cb7d03e` (PR #2)
+- CI 상태: success (마지막 commit `8b8f110` 기준 lint+typecheck+build)
+- 머지 후 확인: 원격/로컬 `main` = `cb7d03e` 동기화, 원격·로컬 작업 브랜치 삭제, Issue #1 CLOSED (PR "Closes #1")
+- 다음 작업:
+  - `refactor/eslint-baseline-restore` — 완화 규칙(set-state-in-effect/immutability/no-explicit-any) 정식 수정 후 error 복원
+  - `refactor/route-code-splitting` — 단일 ~1.1MB 청크 → React.lazy 라우트 분할
+  - `test/baseline` — vitest/Playwright + prettier 베이스라인
+  - 운영: 노출된 Supabase anon key 회전 + RLS 점검
+
+> 머지 방식 메모: 작성 당시 docs/BRANCH_STRATEGY §6 이 "기본 Squash" 로 잘못 적혀
+> 있어, 머지 전 마지막 commit(`8b8f110`)으로 조직 정책(merge commit 보존)과
+> 일치하도록 정정한 뒤 merge commit 으로 머지했다.

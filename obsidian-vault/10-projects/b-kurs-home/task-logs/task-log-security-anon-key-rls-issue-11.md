@@ -1,7 +1,7 @@
 ---
 project: b-kurs-home
 type: task-log
-status: in-progress
+status: done
 created_at: 2026-06-02
 updated: 2026-06-02
 tags: [project, b-kurs-home, task-log, security, supabase, rls]
@@ -17,8 +17,8 @@ related:
 - 작업 레포: `seum-running/b-kurs-home`
 - 원본 레포: `camshf-crypto/b-kurs` (PUBLIC)
 - GitHub Issue: #11 (security: Supabase anon key 회전 및 RLS 점검)
-- GitHub PR: (작성 후 갱신)
-- Branch: `chore/env-policy-security-issue-11`
+- GitHub PR: #12 (MERGED, merge commit 5d253e3)
+- Branch: `chore/env-policy-security-issue-11` (머지 후 삭제)
 - 목표: 노출 여부 확인 + 회전/ RLS 점검 판단을 vault 에 기록하고, 코드 레포에는 env 보안 정책 문서만 정리.
 
 ## 참고한 에이전트 규칙 문서
@@ -29,7 +29,12 @@ related:
 
 ## 변경 요약
 
-(작업 진행 중 — 커밋 후 갱신)
+코드 레포: env 보안 정책 문서만 정리 (3 commit, PR #12).
+- `🔧` `.env.example` 정책 주석 강화
+- `📝` README 보안 정책 섹션 + CHANGELOG
+- `📝` AGENTS/CLAUDE env 정책 명시
+
+라이브 변경(키 회전/RLS 토글)은 포함하지 않음 — 대시보드 접근 필요.
 
 ## 주요 결정 / 조사 결과
 
@@ -61,3 +66,13 @@ related:
 
 - operator: 대시보드 RLS 실측 → Issue #11 코멘트 + research 노트 §5 갱신.
 - 필요 시 anon key 회전 + Vercel/로컬 env 갱신.
+
+## Merge 기록
+
+- Merge 여부: 완료 (자율 머지 — 클론/이관 기간 인가 정책, 조건 전부 충족)
+- Merge 시각: 2026-06-02 03:16 UTC
+- Merge 방식: Merge Commit (3 commit 히스토리 보존 — squash 는 docs-only 1-commit 만)
+- Merge commit: `5d253e3` (PR #12)
+- CI 상태: success (HEAD `0f76f73` — lint+typecheck+build)
+- 머지 후 확인: 원격/로컬 `main` = `5d253e3` 동기화, 원격·로컬 브랜치 삭제, Issue #11 CLOSED (PR "Closes #11")
+- 다음 작업: operator 의 라이브 RLS 실측 / 필요 시 anon key 회전 (대시보드 접근 필요, Issue #11 추적 — 코드 레포 단독 검증 불가)

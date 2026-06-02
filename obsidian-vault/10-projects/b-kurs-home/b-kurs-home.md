@@ -50,8 +50,9 @@ guide(home·category·article) / service(case·effect·product) / terms(terms·p
 
 ## 4. 진행 현황
 
-- **2026-06-02** — Issue #1, 이관/정리 1차 PR 진행 ([[task-logs/task-log-home-site-migration-issue-1]]).
-  - 빈 stub 레포 → 소스 이관 + config 정리 + README/AGENTS/CLAUDE + docs + .github(CI/template/dependabot).
+- **2026-06-02** — Issue #1 → PR #2 **MERGED** (merge commit `cb7d03e`, Issue CLOSED) ([[task-logs/task-log-home-site-migration-issue-1]]).
+  - 빈 stub 레포 → 소스 이관 + config 정리 + README/AGENTS/CLAUDE + docs + .github(CI/template/dependabot). CI green, 자율 머지 정책 적용.
+  - 후속: eslint 완화규칙 복원 / 코드 스플리팅 / 테스트·prettier / anon key 회전.
 
 ## 5. 작업 규칙 (참조 — invent 금지)
 

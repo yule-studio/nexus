@@ -415,7 +415,7 @@ home_hub: resources
   - 읽기: [Honeycomb 무료 다운로드](https://www.honeycomb.io/observability-engineering-oreilly-book)
   - 라이선스: 무료 열람 only — 클론 X
 
-### Architecture / 엔지니어링 실무
+### Architecture — 소프트웨어 아키텍처 / 패턴
 - **The Architecture of Open Source Applications (AOSA)** (Brown, Wilson eds.) ⭐ 🆓 📖
   - 주제: 실제 오픈소스 앱들의 구조와 설계 결정 해설
   - 읽기: [aosabook.org/en](https://aosabook.org/en/)
@@ -427,17 +427,81 @@ home_hub: resources
   - 다운로드/소스: [GitHub](https://github.com/aosabook/500lines)
   - 라이선스: 본문 CC BY 3.0 / 코드 MIT — 클론 OK
 - **Software Architecture Patterns (2nd)** (Mark Richards, O'Reilly, 2022) 🆓 🆕
-  - 주제: 레이어드·이벤트드리븐·마이크로서비스 등 핵심 아키텍처 패턴
+  - 주제: 레이어드·이벤트드리븐·마이크로서비스 등 핵심 아키텍처 패턴 + 점수표
   - 읽기: [oreilly.com/content/software-architecture-patterns](https://www.oreilly.com/content/software-architecture-patterns/)
   - 라이선스: 무료 열람 only — 클론 X
+- **The C4 Model for Visualising Software Architecture** (Simon Brown) ⭐ 🆓 🆕
+  - 주제: Context/Container/Component/Code 4단계로 아키텍처를 시각화하는 경량 모델
+  - 읽기: [c4model.com](https://c4model.com/)
+  - 다운로드/소스: [GitHub](https://github.com/simonbrowndotje/c4model)
+  - 라이선스: CC BY 4.0 — 클론 OK
+- **The Twelve-Factor App** (Adam Wiggins 외) ⭐ 🆓
+  - 주제: 클라우드 네이티브 SaaS 를 위한 12 방법론 (config·dependencies·processes·disposability …)
+  - 읽기: [12factor.net](https://12factor.net/)
+  - 다운로드/소스: [GitHub](https://github.com/twelve-factor/twelve-factor)
+  - 라이선스: CC BY 4.0 — 클론 OK
+- **The Reactive Manifesto** (Jonas Bonér 외) 🆓
+  - 주제: 반응형 시스템 4특성 (Responsive·Resilient·Elastic·Message Driven) 선언
+  - 읽기: [reactivemanifesto.org](https://www.reactivemanifesto.org/)
+  - 다운로드/소스: [PDF](https://www.reactivemanifesto.org/pdf/the-reactive-manifesto-2.0.pdf) · [GitHub](https://github.com/reactivemanifesto/reactivemanifesto)
+  - 라이선스: CC0 / public domain — 클론 OK
+- **Catalog of Patterns of Enterprise Application Architecture (PoEAA)** (Martin Fowler) ⭐ 🆓
+  - 주제: PoEAA 패턴 요약 카탈로그 (도메인 로직·데이터 소스·ORM·웹 표현·동시성) + 아키텍처 가이드
+  - 읽기: [martinfowler.com/eaaCatalog](https://martinfowler.com/eaaCatalog/) · [Architecture Guide](https://martinfowler.com/architecture/)
+  - 라이선스: 무료 열람 only (요약), 책 본문 저작권 보유 — 클론 X
+- **Enterprise Integration Patterns (Catalog)** (Gregor Hohpe, Bobby Woolf) ⭐ 🆓
+  - 주제: 비동기 메시징 통합 65 패턴 카탈로그 (채널·라우팅·변환·엔드포인트) 공식 요약
+  - 읽기: [enterpriseintegrationpatterns.com](https://www.enterpriseintegrationpatterns.com/)
+  - 다운로드/소스: [요약 슬라이드 PDF](https://www.enterpriseintegrationpatterns.com/docs/EnterpriseIntegrationPatternsHalfDay.pdf)
+  - 라이선스: 카탈로그/스케치 무료(일부 CC), 책 본문 유료 — 본문 클론 X
+
+### Architecture — 마이크로서비스 / 분산
+- **Microservices: From Design to Deployment** (Chris Richardson, NGINX/F5) ⭐ 🆓
+  - 주제: 모놀리스→마이크로서비스 전환, API 게이트웨이·서비스 디스커버리·이벤트 기반 데이터 7장
+  - 읽기: [NGINX 리소스](https://www.nginx.com/resources/library/designing-deploying-microservices/)
+  - 다운로드/소스: [PDF](https://www.f5.com/content/dam/f5/corp/global/pdf/ebooks/Microservices_Designing_Deploying.pdf)
+  - 라이선스: 무료 다운로드 only, 저작권 보유 (F5/NGINX) — 클론 X
+- **.NET Microservices: Architecture for Containerized .NET Applications** (Microsoft) 🆓 📖
+  - 주제: 컨테이너/도커 기반 .NET 마이크로서비스 — DDD/CQRS·복원력·보안, eShop 레퍼런스 앱
+  - 읽기: [Microsoft Learn](https://learn.microsoft.com/en-us/dotnet/architecture/microservices/)
+  - 다운로드/소스: [PDF (dotnet-architecture/eBooks)](https://github.com/dotnet-architecture/eBooks/blob/main/current/microservices/NET-Microservices-Architecture-for-Containerized-NET-Applications.pdf)
+  - 라이선스: 무료 다운로드, repo 코드 MIT (본문 MS 저작권 — 재배포 시 출처)
+- **Microservice Architecture Pattern Catalog** (Chris Richardson, microservices.io) ⭐ 🆓
+  - 주제: 마이크로서비스 패턴 언어 — 분해·데이터(Saga/CQRS)·통신·배포·관측성 카탈로그
+  - 읽기: [microservices.io/patterns](https://microservices.io/patterns/)
+  - 다운로드/소스: [패턴 언어 PDF](https://microservices.io/i/MicroservicePatternLanguage.pdf)
+  - 라이선스: 무료 열람, 저작권 보유 (일부 premium 유료) — 클론 X
+- **Migrating to Microservice Databases** (Edson Yanaga, Red Hat) 🆓
+  - 주제: 관계형 모놀리스→분산 데이터 전환 9전략 (zero-downtime, CRUD/CQRS, 일관성)
+  - 읽기/다운로드: [Red Hat Developer e-book](https://developers.redhat.com/e-books/migrating-microservice-databases-relational-monolith-distributed-data) (PDF/ePub, 등록)
+  - 라이선스: 무료 다운로드 only, 저작권 보유 (Red Hat) — 클론 X
+- **Reactive Microservices Architecture** (Jonas Bonér, Lightbend) 🆓
+  - 주제: Reactive 원칙(격리·자율성·비동기 메시징) 기반 회복탄력 마이크로서비스 설계
+  - 읽기: [Lightbend ebook](https://www.lightbend.com/ebooks/reactive-microservices-architecture-design-principles-for-distributed-systems-oreilly)
+  - 다운로드/소스: [PDF](https://content.lightbend.com/hubfs/collateral/ebook/ebook-reactive-microservices-architecture.pdf)
+  - 라이선스: 무료 다운로드 only, 저작권 보유 (Lightbend/O'Reilly) — 클론 X
+- **Microservices AntiPatterns and Pitfalls** (Mark Richards) 🆓
+  - 주제: 마이크로서비스 안티패턴/함정(data-driven migration·timeout·jump 등)과 회피 전략
+  - 읽기/다운로드: [PDF](https://www.developertoarchitect.com/downloads/microservices-pitfalls.pdf)
+  - 라이선스: 무료 다운로드 only, 저작권 보유 — 클론 X
+- **Microservices vs. Service-Oriented Architecture** (Mark Richards) 🆓
+  - 주제: 마이크로서비스 vs SOA 를 서비스 계약·가용성·보안·트랜잭션 축으로 비교
+  - 읽기/다운로드: [PDF](https://www.developertoarchitect.com/downloads/microservices-vs-soa.pdf)
+  - 라이선스: 무료 다운로드 only, 저작권 보유 — 클론 X
 - **Patterns of Distributed Systems** (Unmesh Joshi, 2023) 🆓 🆕
   - 주제: 분산 시스템 구현에 반복되는 패턴 카탈로그
   - 읽기: [martinfowler.com/articles/patterns-of-distributed-systems](https://martinfowler.com/articles/patterns-of-distributed-systems/)
   - 라이선스: 무료 열람 only — 클론 X
-- **Designing Event-Driven Systems** (Ben Stopford, O'Reilly, 2018) 🆓 📖
-  - 주제: Kafka 기반 스트림 처리와 이벤트 드리븐 아키텍처
-  - 읽기: [Confluent 무료 다운로드](https://www.confluent.io/resources/ebook/designing-event-driven-systems/)
-  - 라이선스: 무료 열람 only — 클론 X
+- **Designing Event-Driven Systems** (Ben Stopford, Confluent, 2018) 🆓 📖
+  - 주제: Kafka 기반 이벤트 주도 아키텍처·스트림 처리 (Event Sourcing/CQRS)
+  - 읽기: [Confluent ebook](https://www.confluent.io/resources/ebook/designing-event-driven-systems/)
+  - 다운로드/소스: [PDF](https://www.confluent.io/wp-content/uploads/confluent-designing-event-driven-systems.pdf)
+  - 라이선스: 무료 다운로드 only, 저작권 보유 (Confluent) — 클론 X
+- **Distributed Systems for Fun and Profit** (Mikito Takada) 🆓
+  - 주제: CAP·복제·일관성(CRDT/CALM)·합의 등 분산 시스템 핵심을 짧게 훑는 입문
+  - 읽기: [book.mixu.net/distsys](https://book.mixu.net/distsys/)
+  - 다운로드/소스: [EPUB](https://book.mixu.net/distsys/mixu-distributed-systems-book.epub)
+  - 라이선스: 무료 열람/다운로드 only (라이선스 명시 없음) — 클론 X
 - **Domain-Driven Design Reference** (Eric Evans, 2015) ⭐ 🆓
   - 주제: DDD 모든 정의·패턴을 요약한 레퍼런스
   - 읽기: [domainlanguage.com/ddd/reference](https://www.domainlanguage.com/ddd/reference/)
@@ -448,6 +512,92 @@ home_hub: resources
   - 읽기: [cosmicpython.com](https://www.cosmicpython.com/book/preface.html)
   - 다운로드/소스: [GitHub](https://github.com/cosmicpython/book)
   - 라이선스: CC BY-NC-ND — 재배포 제한 — 클론 X
+
+### Architecture — 시스템 디자인
+- **The System Design Primer** (Donne Martin) ⭐ 🆓
+  - 주제: 대규모 시스템 설계 + 시스템 디자인 면접 준비를 한 곳에 정리 (Anki 카드 포함)
+  - 읽기/소스: [GitHub](https://github.com/donnemartin/system-design-primer)
+  - 라이선스: CC BY 4.0 — 클론 OK
+- **Awesome Scalability** (Binh Nguyen) 🆓
+  - 주제: 확장성·신뢰성·고성능 대규모 시스템 패턴 + 실무 엔지니어링 블로그 reading list
+  - 읽기: [웹 인덱스](https://binhnguyennus.github.io/awesome-scalability/) · [GitHub](https://github.com/binhnguyennus/awesome-scalability)
+  - 라이선스: MIT — 클론 OK
+- **Software Engineering at Google** (Winters, Manshreck, Wright) ⭐ 🆓 🆕 📖
+  - 주제: 구글의 코드베이스를 건강하게 유지하는 엔지니어링 실천 (조직·프로세스·시간 위의 프로그래밍)
+  - 읽기: [abseil.io/resources/swe-book](https://abseil.io/resources/swe-book)
+  - 라이선스: CC BY-NC-ND 4.0 — 재배포 제한 — 클론 X
+
+### Architecture — 클라우드 Well-Architected & 패턴 (다운로드)
+- **AWS Well-Architected Framework** (Amazon Web Services) ⭐ 🆓 🆕
+  - 주제: 6 pillar(운영·보안·안정성·성능·비용·지속가능성) 클라우드 설계 best practice
+  - 읽기: [aws.amazon.com/architecture/well-architected](https://aws.amazon.com/architecture/well-architected/)
+  - 다운로드/소스: [PDF](https://docs.aws.amazon.com/wellarchitected/latest/framework/wellarchitected-framework.pdf)
+  - 라이선스: 무료 다운로드 only, AWS 저작권 보유 — 클론 X
+- **Azure Well-Architected Framework** (Microsoft) ⭐ 🆓 🆕
+  - 주제: 5 pillar(안정성·보안·비용·운영 우수성·성능) Azure 워크로드 설계 원칙 + 리뷰 도구
+  - 읽기: [learn.microsoft.com/azure/well-architected](https://learn.microsoft.com/en-us/azure/well-architected/)
+  - 라이선스: 무료(온라인 문서), 저작권 보유 — 클론 X
+- **Google Cloud Well-Architected Framework** (Google) ⭐ 🆓 🆕
+  - 주제: 보안·안정성·성능·비용·운영·지속가능성 중심 GCP 설계·운영 가이드
+  - 읽기: [cloud.google.com/architecture/framework](https://cloud.google.com/architecture/framework)
+  - 라이선스: 무료(온라인 문서), 저작권 보유 — 클론 X
+- **Cloud Design Patterns** (Microsoft patterns & practices) ⭐ 🆓 📖
+  - 주제: 가용성·데이터 관리·메시징·복원력·보안 등 24 클라우드 디자인 패턴 (236p)
+  - 읽기: [learn.microsoft.com/azure/architecture/patterns](https://learn.microsoft.com/en-us/azure/architecture/patterns/)
+  - 다운로드/소스: [PDF](https://download.microsoft.com/download/b/b/6/bb69622c-ab5d-4d5f-9a12-b81b952c1169/clouddesignpatternsbook-pdf.pdf)
+  - 라이선스: 무료 다운로드 only, Microsoft 저작권 보유 — 클론 X
+- **Architecting Cloud Native .NET Applications for Azure** (Microsoft) 🆓 🆕
+  - 주제: Azure 위 클라우드 네이티브 .NET 앱 설계 — 마이크로서비스·컨테이너·탄력성·데이터 패턴
+  - 읽기: [Microsoft Learn](https://learn.microsoft.com/en-us/dotnet/architecture/cloud-native/)
+  - 다운로드/소스: [PDF (dotnet-architecture/eBooks)](https://github.com/dotnet-architecture/eBooks/blob/main/current/cloud-native/Architecting-Cloud-Native-NET-Apps-for-Azure.pdf)
+  - 라이선스: 무료 다운로드, repo 코드 MIT (본문 MS 저작권 — 재배포 시 출처)
+- **Implementing Microservices on AWS** (Amazon Web Services) 🆓
+  - 주제: Lambda·Fargate·API Gateway 기반 마이크로서비스 구현 아키텍처
+  - 읽기: [docs.aws.amazon.com whitepaper](https://docs.aws.amazon.com/whitepapers/latest/microservices-on-aws/microservices-on-aws.html)
+  - 다운로드/소스: [PDF](https://docs.aws.amazon.com/pdfs/whitepapers/latest/microservices-on-aws/microservices-on-aws.pdf)
+  - 라이선스: 무료 다운로드 only, AWS 저작권 보유 — 클론 X
+- **Serverless Architectures with AWS Lambda** (Amazon Web Services) 🆓
+  - 주제: AWS Lambda 개요 + 서버리스 애플리케이션 설계 best practice
+  - 읽기/다운로드: [PDF](https://d1.awsstatic.com/whitepapers/serverless-architectures-with-aws-lambda.pdf)
+  - 라이선스: 무료 다운로드 only, AWS 저작권 보유 — 클론 X
+- **레퍼런스 아키텍처 허브** (AWS/Azure/GCP) 🆓 🆕
+  - 주제: 벤더 공식 레퍼런스 아키텍처·다이어그램·whitepaper 진입점
+  - 읽기: [AWS Architecture](https://aws.amazon.com/architecture/) · [Azure Architecture Center](https://learn.microsoft.com/en-us/azure/architecture/) · [Google Cloud Architecture](https://cloud.google.com/architecture)
+  - 라이선스: 무료(온라인), 각 벤더 저작권 보유 — 클론 X
+
+### Architecture — 클라우드 네이티브 / CNCF (다운로드)
+- **Cloud Native Security Whitepaper v2** (CNCF TAG Security) 🆓 🆕
+  - 주제: 클라우드 네이티브 배포 lifecycle 전 구간 보안 best practice
+  - 읽기: [tag-security.cncf.io whitepaper](https://tag-security.cncf.io/community/resources/security-whitepaper/v2/cloud-native-security-whitepaper/)
+  - 다운로드/소스: [PDF](https://github.com/cncf/tag-security/blob/main/community/resources/security-whitepaper/v2/CNCF_cloud-native-security-whitepaper-May2022-v2.pdf) · [GitHub](https://github.com/cncf/tag-security)
+  - 라이선스: CC BY 4.0 — 클론 OK
+- **CNCF Operator / Platform Engineering White Papers** (CNCF TAG App Delivery) 🆓 🆕
+  - 주제: operator 패턴, 내부 개발자 플랫폼(IDP), 플랫폼 엔지니어링 성숙도 모델
+  - 읽기: [tag-app-delivery.cncf.io/whitepapers](https://tag-app-delivery.cncf.io/whitepapers/)
+  - 다운로드/소스: [Operator PDF](https://www.cncf.io/wp-content/uploads/2021/07/CNCF_Operator_WhitePaper.pdf) · [GitHub](https://github.com/cncf/tag-app-delivery)
+  - 라이선스: CC BY 4.0 — 클론 OK
+- **CI/CD with Kubernetes** (The New Stack, CNCF 후원) 🆓 📖
+  - 주제: 쿠버네티스 기반 CI/CD 파이프라인 use case·best practice (118p)
+  - 읽기: [cncf.io free-ebook](https://www.cncf.io/free-ebook-ci-cd-with-kubernetes/)
+  - 라이선스: 무료 다운로드(등록), 저작권 보유 — 클론 X
+- > 분산/클라우드 네이티브 관련 [[#Kubernetes / Cloud Native|§3 Kubernetes / Cloud Native]] 의
+  > **Designing Distributed Systems**(MS, PDF) · **Kubernetes Patterns**(Red Hat) 도 아키텍처 자료.
+
+### Architecture — 엔터프라이즈 / SOA / 온프레미스
+- **OpenStack Architecture Design Guide** (OpenStack contributors) 🆓 📖
+  - 주제: OpenStack 프라이빗 클라우드 설계 — compute/storage/network/control plane + use case
+  - 읽기: [docs.openstack.org/arch-design](https://docs.openstack.org/arch-design/)
+  - 다운로드/소스: [GitHub (문서 소스)](https://github.com/openstack/arch-design)
+  - 라이선스: 문서 CC BY 3.0 / Apache 2.0 — 클론 OK
+- **SOA Source Book** (The Open Group SOA Work Group) 🆓
+  - 주제: 엔터프라이즈 아키텍트용 SOA 레퍼런스 — 정의·거버넌스·TOGAF 연계
+  - 읽기: [opengroup.org/soa/source-book](https://www.opengroup.org/what-we-do-technology-standards/soa/source-book/intro)
+  - 라이선스: 무료 공개(온라인), The Open Group 저작권 보유 — 클론 X
+- **IBM Redbooks** (IBM) 🆓 📖
+  - 주제: IBM 시스템·미들웨어 아키텍처/설치/운영 심층 가이드 (SOA·웹서비스 패턴 등)
+  - 읽기: [redbooks.ibm.com](https://www.redbooks.ibm.com/)
+  - 다운로드/소스: 개별 PDF 무료 (예: [Patterns: SOA and Web Services](https://www.redbooks.ibm.com/redbooks/pdfs/sg246303.pdf))
+  - 라이선스: 무료 다운로드 only, IBM 저작권 보유 — 클론 X
 
 ---
 
@@ -738,7 +888,10 @@ Apache / GNU FDL). **share-alike·non-commercial 조건은 준수.**
   Programming from the Ground Up · Discrete Math (Levin 3e) ·
   Linear Algebra (Hefferon) · A First Course in Linear Algebra ·
   Bash Beginners/Advanced (TLDP) · Readings in DB Systems(비상업)
-- **DevOps/Arch**: AOSA · 500 Lines or Less · DDD Reference
+- **DevOps/Arch**: AOSA · 500 Lines or Less · DDD Reference · C4 Model(CC BY 4.0) ·
+  12-Factor App(CC BY 4.0) · Reactive Manifesto(CC0) · System Design Primer(CC BY 4.0) ·
+  Awesome Scalability(MIT) · CNCF 보안/플랫폼 whitepaper(CC BY 4.0) ·
+  OpenStack Architecture Design Guide(CC BY 3.0)
 - **AI/ML/Sec**: Dive into Deep Learning · OWASP Cheat Sheets · (fastbook 코드만 GPLv3)
 - **한국어**: 생활코딩(CC BY) · React 공식문서 한국어(CC BY 4.0) · MDN 한국어(CC BY-SA) ·
   Rust 한국어판(MIT/Apache) · Pro Git 한국어(CC BY-NC-SA·비상업) ·

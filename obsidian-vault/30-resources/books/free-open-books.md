@@ -3,8 +3,8 @@ title: "Free / Open 개발 서적 — 합법 무료본 인덱스"
 kind: knowledge
 status: current
 created_at: 2026-06-02T11:30:00+09:00
-updated_at: 2026-06-02T11:30:00+09:00
-tags: [resources, books, free, open-access]
+updated_at: 2026-06-04T09:00:00+09:00
+tags: [resources, books, free, open-access, korean]
 home_hub: resources
 ---
 
@@ -570,7 +570,161 @@ home_hub: resources
 
 ---
 
-## 5. 클론 가능 (재배포 허용) 빠른 목록
+## 5. 한국어 무료본 / 자료 (Korean)
+
+> 한국어로 **합법 무료** 공개된 책·강의·정리. 위키독스(wikidocs) 책은 대개
+> "무료 열람 only, 저작권 보유" — 읽기는 무료지만 재배포(클론) 는 X.
+> 일부 한국어 번역판·공식문서·GitHub 정리는 CC/MIT 라 클론 OK (라이선스 표기 참조).
+
+### 파이썬 / 입문
+- **점프 투 파이썬** (박응용) ⭐ 🆓 🇰🇷
+  - 주제: 비전공자·입문자를 위한 파이썬 기초 문법과 프로그래밍 개념
+  - 읽기: [wikidocs.net/book/1](https://wikidocs.net/book/1)
+  - 라이선스: 무료 열람 only, 저작권 보유 (클론 X) — 되새김 문제·면허 시험은 유료
+- **파이썬 코딩 도장** (남재윤) 🆓 🇰🇷 (튜토리얼)
+  - 주제: 따라하기·연습하기·심사하기로 배우는 파이썬, 동영상 포함
+  - 읽기: [dojang.io/course/view.php?id=7](https://dojang.io/course/view.php?id=7)
+  - 라이선스: 무료 열람 only, 저작권 보유 (클론 X)
+
+### 자바 / 백엔드 / 웹 프레임워크
+- **점프 투 자바** (박응용) 🆓 🇰🇷
+  - 주제: 입문자를 위한 자바 기초 문법과 객체지향 개념
+  - 읽기: [wikidocs.net/book/31](https://wikidocs.net/book/31)
+  - 라이선스: 무료 열람 only, 저작권 보유 (클론 X)
+- **점프 투 스프링부트** (박응용) 🆕 🆓 🇰🇷
+  - 주제: 스프링부트로 게시판 SBB 를 만드는 자바 백엔드 입문
+  - 읽기: [wikidocs.net/book/7601](https://wikidocs.net/book/7601)
+  - 다운로드/소스: [GitHub (sbb3)](https://github.com/pahkey/sbb3)
+  - 라이선스: 무료 열람 only, 저작권 보유 (클론 X) — 되새김 문제 유료
+- **점프 투 장고** (박응용) ⭐ 🆓 🇰🇷
+  - 주제: 장고로 게시판 '파이보' 를 만들며 배우는 파이썬 웹 개발
+  - 읽기: [wikidocs.net/book/4223](https://wikidocs.net/book/4223)
+  - 라이선스: 무료 열람 only, 저작권 보유 (클론 X)
+- **점프 투 플라스크** (박응용) 🆓 🇰🇷
+  - 주제: 플라스크로 게시판 '파이보' 를 만드는 경량 웹 개발
+  - 읽기: [wikidocs.net/book/4542](https://wikidocs.net/book/4542)
+  - 라이선스: 무료 열람 only, 저작권 보유 (클론 X)
+- **점프 투 FastAPI** (박응용) 🆕 🆓 🇰🇷
+  - 주제: FastAPI + Svelte 로 게시판을 만드는 모던 파이썬 백엔드
+  - 읽기: [wikidocs.net/book/8531](https://wikidocs.net/book/8531)
+  - 라이선스: 무료 열람 only, 저작권 보유 (클론 X)
+- **Node.js 교과서** (조현영/제로초) 🆓 🇰🇷
+  - 주제: Node.js 기반 백엔드/서버 개발 입문 (웹 8장까지 무료 공개)
+  - 읽기: [zerocho.com/book/1](https://www.zerocho.com/book/1)
+  - 다운로드/소스: [GitHub](https://github.com/ZeroCho/nodejs-book)
+  - 라이선스: 무료 열람 only (일부 챕터), 재배포 금지 (클론 X)
+
+### 웹 / JavaScript
+- **모던 JavaScript 튜토리얼 한국어판** (javascript.info 한국어팀) ⭐ 🆕 🆓 🇰🇷 (튜토리얼)
+  - 주제: 기초부터 심화까지 다루는 현대 JavaScript 종합 튜토리얼
+  - 읽기: [ko.javascript.info](https://ko.javascript.info/)
+  - 다운로드/소스: [GitHub](https://github.com/javascript-tutorial/ko.javascript.info)
+  - 라이선스: CC BY-NC — 재배포 제한 — 클론 X
+- **코딩자율학습 제로초의 자바스크립트 입문** (조현영) 🆓 🇰🇷
+  - 주제: 완전 입문자용 자바스크립트 기초
+  - 읽기: [zerocho.com/book/2](https://www.zerocho.com/book/2)
+  - 라이선스: 무료 열람 only, 저작권 보유 (클론 X)
+- **TCP School** 🆓 🇰🇷 (튜토리얼)
+  - 주제: HTML/CSS/JS/Java/C/PHP/SQL 등 입문 레퍼런스형 무료 강의
+  - 읽기: [tcpschool.com](https://www.tcpschool.com/)
+  - 라이선스: 무료 열람 only, 저작권 보유 (클론 X)
+- **생활코딩** (이고잉) ⭐ 🆓 🇰🇷 (튜토리얼)
+  - 주제: WEB/JavaScript/Java/Python 등 완전 입문자용 코딩 강의
+  - 읽기: [opentutorials.org/course](https://opentutorials.org/course)
+  - 라이선스: CC BY — 클론 OK (출처 표기)
+
+### 한국어 번역판 (영어 무료책)
+- **Pro Git 한국어판** (Scott Chacon, Ben Straub) ⭐ 🆓 🇰🇷 📖
+  - 주제: Git 기초부터 내부 동작·서버 운영까지 다루는 공식 Git 책
+  - 읽기: [git-scm.com/book/ko/v2](https://git-scm.com/book/ko/v2)
+  - 다운로드/소스: [GitHub (progit2-ko)](https://github.com/progit/progit2-ko)
+  - 라이선스: CC BY-NC-SA 3.0 — 클론 OK (비상업·share-alike)
+- **The Rust Programming Language 한국어판** (rust-kr 번역) 🆕 🆓 🇰🇷
+  - 주제: 러스트 공식 'The Book' 2021 에디션 한국어 번역
+  - 읽기: [doc.rust-kr.org](https://doc.rust-kr.org/)
+  - 다운로드/소스: [GitHub](https://github.com/rust-kr/doc.rust-kr.org)
+  - 라이선스: MIT / Apache 2.0 — 클론 OK
+
+### 공식 문서 (한국어)
+- **React 공식 문서 한국어판** (React 팀) ⭐ 🆕 🆓 🇰🇷 (공식문서)
+  - 주제: React 공식 문서 한국어 번역 (Hooks·컴포넌트·API 레퍼런스)
+  - 읽기: [ko.react.dev](https://ko.react.dev/)
+  - 다운로드/소스: [GitHub](https://github.com/reactjs/ko.react.dev)
+  - 라이선스: CC BY 4.0 — 클론 OK (출처 표기)
+- **MDN Web Docs 한국어** (Mozilla & 기여자) ⭐ 🆓 🇰🇷 (공식문서)
+  - 주제: HTML/CSS/JavaScript/Web API 등 웹 표준 공식 레퍼런스
+  - 읽기: [developer.mozilla.org/ko](https://developer.mozilla.org/ko/docs/Web)
+  - 라이선스: 문서 CC BY-SA 2.5+ (클론 OK·share-alike), 코드 예제 CC0
+
+### 딥러닝 / NLP / ML
+- **딥 러닝을 이용한 자연어 처리 입문** (유원준, 안상준) ⭐ 🆓 🇰🇷 📖
+  - 주제: 임베딩(Word2Vec)~RNN/LSTM/CNN~Transformer/BERT 까지 한국어 NLP 입문
+  - 읽기: [wikidocs.net/book/2155](https://wikidocs.net/book/2155)
+  - 라이선스: 무료 열람 only, 저작권 보유 (클론 X)
+- **PyTorch로 시작하는 딥 러닝 입문** (유원준) 🆓 🇰🇷 📖
+  - 주제: 파이토치 기초~신경망·LLM 파인튜닝 입문 (본문 대부분 무료, 심화 일부 유료)
+  - 읽기: [wikidocs.net/book/2788](https://wikidocs.net/book/2788)
+  - 라이선스: 무료 열람 only (심화 유료), 저작권 보유 (클론 X)
+- **토닥토닥 파이썬 — 딥러닝 (TensorFlow v2)** 🆓 🇰🇷
+  - 주제: 텐서플로 2/케라스 설치부터 전이학습·웹서버 배포까지 실습형 딥러닝
+  - 읽기: [wikidocs.net/book/4172](https://wikidocs.net/book/4172)
+  - 라이선스: 무료 열람 only, 저작권 보유 (클론 X)
+- **모두를 위한 딥러닝 시즌 2 (Deep Learning Zero To All)** (Sung Kim 외) ⭐ 🆓 🇰🇷 (강의)
+  - 주제: 기초 ML·DL·CNN·RNN 을 TensorFlow / PyTorch 두 트랙 강의+실습코드
+  - 읽기: [deeplearningzerotoall.github.io/season2](https://deeplearningzerotoall.github.io/season2/)
+  - 다운로드/소스: [TensorFlow](https://github.com/deeplearningzerotoall/TensorFlow) · [PyTorch](https://github.com/deeplearningzerotoall/PyTorch)
+  - 라이선스: 강의/영상 무료. 코드 repo 라이선스 명시 불완전 — 코드 재배포 전 확인
+- **모두를 위한 머신러닝/딥러닝 (시즌 1)** (Sung Kim, HKUST) ⭐ 🆓 🇰🇷 (강의)
+  - 주제: 선형/로지스틱 회귀~신경망~CNN/RNN 입문 영상 강의 (TF 1.x)
+  - 읽기: [hunkim.github.io/ml](https://hunkim.github.io/ml/)
+  - 라이선스: 강의 무료 공개 — 라이선스 불명, 링크만
+
+### 알고리즘 / 코딩테스트
+- **바킹독의 실전 알고리즘** (BaaaaaaaarkingDog) ⭐ 🆓 🇰🇷 (강의)
+  - 주제: C++ 기반 자료구조·BFS/DFS·백트래킹·DP 를 백준 문제와 푸는 실전 강의
+  - 읽기: [blog.encrypted.gg (강좌)](https://blog.encrypted.gg/) · [YouTube](https://www.youtube.com/playlist?list=PLtqbFd2VIQv4O6D6l9HcD732hdrnYb6CY)
+  - 다운로드/소스: [GitHub](https://github.com/encrypted-def/basic-algo-lecture)
+  - 라이선스: 저자 명시 "비상업·출처 표시" 조건 (CC BY-NC 유사) — 학습 열람 OK, 재배포 제한
+- **이것이 취업을 위한 코딩 테스트다 with 파이썬** (나동빈) 🆓 🇰🇷 (GitHub 정리)
+  - 주제: 그리디·구현·DFS/BFS·정렬·이진탐색·DP·그래프 유형별 소스코드 + 무료 유튜브 강의 (책 본문은 유료)
+  - 읽기/소스: [GitHub](https://github.com/ndb796/python-for-coding-test)
+  - 라이선스: repo LICENSE 명시 없음 — 코드 참고용 링크만 (본문 클론 X)
+
+### CS 기초 / 기술 면접 (GitHub 정리)
+- **tech-interview-for-developer** (gyoogle) ⭐ 🆓 🇰🇷 (GitHub 정리)
+  - 주제: OS·네트워크·DB·자료구조·디자인패턴 등 전공지식 & 기술면접 백과사전
+  - 읽기/소스: [GitHub](https://github.com/gyoogle/tech-interview-for-developer) · [gyoogle.dev/blog](https://gyoogle.dev/blog/)
+  - 라이선스: MIT — 클론 OK (출처 표기 권장)
+- **Interview_Question_for_Beginner** (JaeYeopHan) 🆓 🇰🇷 (GitHub 정리)
+  - 주제: CS 기초·자료구조·네트워크·OS·DB·디자인패턴·알고리즘 면접 대비 정리
+  - 읽기/소스: [GitHub](https://github.com/JaeYeopHan/Interview_Question_for_Beginner)
+  - 라이선스: MIT — 클론 OK (출처 표기 권장)
+- **쉬운코드 (ezcd)** 🆓 🇰🇷 (강의)
+  - 주제: 자료구조·OS·DB·네트워크 CS 핵심을 백엔드 실무 관점으로 풀이
+  - 읽기: [youtube.com/@ezcd](https://www.youtube.com/@ezcd)
+  - 라이선스: 강의 무료 공개 — 라이선스 불명, 링크만
+
+### 수학 / MOOC 플랫폼
+- **혁펜하임의 "보이는" 선형대수학** (혁펜하임) 🆓 🇰🇷 (강의)
+  - 주제: 벡터·행렬·고유값·SVD 등 선형대수를 시각적으로 풀어주는 무료 강의 (ML 수학 기초)
+  - 읽기: [YouTube 재생목록](https://www.youtube.com/playlist?list=PL_iJu012NOxdZDxoGsYidMf2_bERIQaP0)
+  - 라이선스: 강의 무료 공개 — 라이선스 불명, 링크만
+- **칸아카데미 한국어 — 확률과 통계** 🆓 🇰🇷 (강의)
+  - 주제: 기술통계·확률분포·추론통계 등 통계 기초 (ML 전 단계 수학)
+  - 읽기: [ko.khanacademy.org statistics-probability](https://ko.khanacademy.org/math/statistics-probability)
+  - 라이선스: 대부분 CC BY-NC-SA — 재배포 제한 — 클론 X
+- **네이버 부스트코스 (boostcourse)** ⭐ 🆓 🇰🇷 (강의)
+  - 주제: 파이썬·AI 수학·ML·웹/모바일·데이터사이언스 무료 강좌 (커넥트재단)
+  - 읽기: [boostcourse.org](https://www.boostcourse.org/)
+  - 라이선스: 플랫폼 무료 수강, 자료 재배포 제한 (클론 X)
+- **K-MOOC (한국형 온라인 공개강좌)** 🆓 🇰🇷 (강의)
+  - 주제: 대학 수준 인공지능·알고리즘·네트워킹 등 CS 강좌 무료 수강 + 이수증
+  - 읽기: [kmooc.kr](https://www.kmooc.kr/)
+  - 라이선스: 플랫폼 무료 수강, 강좌별 저작권 보유 (클론 X)
+
+---
+
+## 6. 클론 가능 (재배포 허용) 빠른 목록
 
 레포로 미러/포크해도 되는 것 (public domain / CC0 / CC BY / CC BY-SA / MIT /
 Apache / GNU FDL). **share-alike·non-commercial 조건은 준수.**
@@ -586,10 +740,13 @@ Apache / GNU FDL). **share-alike·non-commercial 조건은 준수.**
   Bash Beginners/Advanced (TLDP) · Readings in DB Systems(비상업)
 - **DevOps/Arch**: AOSA · 500 Lines or Less · DDD Reference
 - **AI/ML/Sec**: Dive into Deep Learning · OWASP Cheat Sheets · (fastbook 코드만 GPLv3)
+- **한국어**: 생활코딩(CC BY) · React 공식문서 한국어(CC BY 4.0) · MDN 한국어(CC BY-SA) ·
+  Rust 한국어판(MIT/Apache) · Pro Git 한국어(CC BY-NC-SA·비상업) ·
+  tech-interview-for-developer / Interview_Question_for_Beginner(MIT)
 
-> 나머지(O'Reilly 무료 공개·NC/ND·"무료 열람 only")는 **읽기 링크만** 두고 클론 X.
+> 나머지(O'Reilly 무료 공개·NC/ND·위키독스 "무료 열람 only")는 **읽기 링크만** 두고 클론 X.
 
-## 6. 관련
+## 7. 관련
 
 - [[books|↑ Books hub]] — 전체 책 카탈로그 (구매 링크 포함)
 - 카테고리별 책: [[backend/backend]] · [[frontend/frontend]] · [[devops/devops]] ·

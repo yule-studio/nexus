@@ -30,8 +30,9 @@ home_hub: resources
 | Testing / Quality | [[testing/testing]] |
 | 🆓 **Free / Open 무료본** | [[free-open-books]] |
 
-> [[free-open-books]] — 합법 무료 공개본만 모은 cross-cutting 인덱스. 공식 읽기
-> 링크 + (있으면) PDF/GitHub 소스 + **라이선스(클론 가능 여부)**. 불법 사본 X.
+> [[free-open-books]] — 합법 무료 공개본만 모은 cross-cutting 인덱스 (**영어 +
+> 한국어**). 공식 읽기 링크 + (있으면) PDF/GitHub 소스 + **라이선스(클론 가능
+> 여부)**. 한국어는 §5 (위키독스 점프 투 시리즈·번역판·딥러닝 책 등). 불법 사본 X.
 
 ## 2. 표준 노트 구조
 

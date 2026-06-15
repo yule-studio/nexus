@@ -3,7 +3,7 @@ title: "Books — 개발 서적 카탈로그 (hub)"
 kind: knowledge
 status: current
 created_at: 2026-05-26T19:00:00+09:00
-updated_at: 2026-05-26T19:00:00+09:00
+updated_at: 2026-06-02T11:30:00+09:00
 tags: [resources, books, hub]
 home_hub: resources
 ---
@@ -28,6 +28,11 @@ home_hub: resources
 | AI / ML | [[ai-ml/ai-ml]] |
 | Soft Skills / Career | [[soft-skills/soft-skills]] |
 | Testing / Quality | [[testing/testing]] |
+| 🆓 **Free / Open 무료본** | [[free-open-books]] |
+
+> [[free-open-books]] — 합법 무료 공개본만 모은 cross-cutting 인덱스 (**영어 +
+> 한국어**). 공식 읽기 링크 + (있으면) PDF/GitHub 소스 + **라이선스(클론 가능
+> 여부)**. 한국어는 §5 (위키독스 점프 투 시리즈·번역판·딥러닝 책 등). 불법 사본 X.
 
 ## 2. 표준 노트 구조
 

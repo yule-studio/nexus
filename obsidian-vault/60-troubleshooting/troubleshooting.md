@@ -15,6 +15,7 @@
 | devops   | [[devops/devops\|devops/]]       | 빌드 실패 / 배포 롤백 / secret 누락                           |
 | frontend | [[frontend/frontend\|frontend/]] | hydration / re-render / CORS / event leak           |
 | network  | [[network/network\|network/]]    | TLS / CORS / DNS / proxy / sandbox 차단               |
+| web      | [[web/web\|web/]]                | 캐시 스탬피드 / 재시도 폭풍 / ReDoS / CDN 캐시 포이즈닝       |
 
 ## 파일명 컨벤션
 

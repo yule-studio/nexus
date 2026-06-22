@@ -33,7 +33,7 @@ tags:
 | **MediaPackage** | [[mediapackage]] | 라이브 / VOD 패키징 (HLS / DASH / CMAF) |
 | **MediaTailor** | [[mediatailor]] | 동적 광고 삽입 (SSAI) |
 | **IVS** | [[ivs]] | 매니지드 저지연 라이브 (인터랙티브) |
-| **MediaStore** | (hub 안 — deprecate 추세) | 저지연 origin (MediaPackage 통합 추세) |
+| **MediaStore** | [[mediastore/mediastore\|mediastore]] | 저지연 미디어 origin — **2025-11 종료**(신규 가입 닫힘), MediaPackage v2 + S3 로 이전 |
 
 ---
 

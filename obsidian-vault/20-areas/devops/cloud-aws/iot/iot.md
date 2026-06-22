@@ -31,7 +31,9 @@ tags:
 | **IoT Greengrass** | [[greengrass]] | 엣지 컴퓨팅 (디바이스에서 Lambda) |
 | **IoT Device Management** | [[device-management]] | 디바이스 프로비저닝 / OTA / 모니터링 |
 | **IoT SiteWise** | [[sitewise]] | 산업 장비 데이터 (OPC UA / Modbus) |
-| **IoT Analytics / TwinMaker / Events** | (hub 안에서) | 시계열 분석 / 디지털 트윈 / 상태 머신 |
+| **IoT TwinMaker** | [[twinmaker/twinmaker\|twinmaker]] | 물리 시설 / 장비의 디지털 트윈 (3D scene + 실시간 데이터 binding + Grafana) |
+| **IoT Analytics** | [[iot-analytics/iot-analytics\|iot-analytics]] | IoT 데이터 전용 분석 파이프라인 — **2025-12 종료**, Kinesis + Timestream / Athena 로 이전 |
+| **IoT Events** | [[events/events\|events]] | IoT 디바이스 상태 머신 + 임계값 알림 — **2025-12 종료**, Step Functions / Lambda 로 이전 |
 
 ---
 

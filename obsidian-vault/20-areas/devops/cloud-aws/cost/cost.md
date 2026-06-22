@@ -32,7 +32,8 @@ tags:
 | **Cost Explorer** | [[cost-explorer]] | 비용 시계열 분석 + 예측 |
 | **Budgets** | [[budgets]] | 예산 + 알림 (cost / usage / RI) |
 | **Savings Plans** | [[savings-plans]] | 시간당 약정 (1년/3년) → 30-70% 절감 |
-| **CUR / Compute Optimizer** | (★★☆, 별도 예정) | raw 비용 데이터 / rightsizing 추천 |
+| **CUR** | [[cur/cur\|cur]] | 비용 raw 데이터를 S3 에 시간별 적재 — Athena / QuickSight 정밀 분석 / chargeback 의 base 데이터 |
+| **Compute Optimizer** | [[compute-optimizer/compute-optimizer\|compute-optimizer]] | EC2 / EBS / Lambda / RDS 사용 패턴 ML 분석 → rightsizing 추천 (over / under-provisioning 탐지) |
 
 ---
 

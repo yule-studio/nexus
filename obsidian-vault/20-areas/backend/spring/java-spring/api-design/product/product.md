@@ -170,6 +170,18 @@ product/
     └── refund-pitfalls.md
 ```
 
+### 2.1 구성 요소 (component) — 설계 facet
+
+- [[design-decisions/design-decisions|design-decisions]] — 정책 결정 (PG 선택 / 결제 흐름 / 환불)
+- [[domain-model/domain-model|domain-model]] — Aggregate / VO / 도메인 이벤트
+- [[database/database|database]] — ERD + 14 테이블
+- [[enums/enums|enums]] — product / order / payment 상태 enum
+- [[implementation/implementation|implementation]] — 결제 confirm / webhook / 디지털 배송 구현
+- [[security/security|security]] — PCI-DSS / webhook 서명 / 멱등 / 워터마크
+- [[testing/testing|testing]] — unit / integration / PG mock
+- [[operations/operations|operations]] — observability / runbook / 대사
+- [[pitfalls/pitfalls|pitfalls]] — 함정 / 안티패턴
+
 ---
 
 ## 3. Phase 단계 (구현 순서)

@@ -27,6 +27,11 @@ tags:
 | --- | --- | --- |
 | **S3** | [[s3]] | Object storage — 거의 모든 데이터의 home |
 | **EBS** | [[ebs]] | Block storage — EC2 의 디스크 |
+| **EFS** | [[efs/efs\|efs]] | NFS v4 (POSIX) 공유 파일시스템 — multi-AZ, auto-scaling, 다수 클라이언트 동시 접근 |
+| **FSx** | [[fsx/fsx\|fsx]] | 매니지드 파일 시스템 4종 (Windows / Lustre / NetApp ONTAP / OpenZFS) — EFS 로 안 되는 시나리오 커버 |
+| **Backup** | [[backup/backup\|backup]] | EBS / RDS / DynamoDB / EFS / FSx / S3 등 백업 일원화 + 보존 / 복제 / 규정 준수 |
+| **DataSync** | [[datasync/datasync\|datasync]] | 대용량 파일 / 객체 데이터 자동 이전 (온프레 NFS / SMB / HDFS ↔ S3 / EFS / FSx) |
+| **Storage Gateway** | [[storage-gateway/storage-gateway\|storage-gateway]] | 온프레 ↔ AWS 하이브리드 게이트웨이 — S3 / EBS 를 로컬 NFS / SMB / iSCSI 처럼 노출 |
 
 ---
 

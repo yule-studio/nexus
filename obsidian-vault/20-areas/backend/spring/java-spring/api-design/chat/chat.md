@@ -175,6 +175,18 @@ chat/
     └── scale-pitfalls.md
 ```
 
+### 2.1 구성 요소 (component) — 설계 facet
+
+- [[design-decisions/design-decisions|design-decisions]] — 정책 결정 (왜 / 대안 / 트레이드오프)
+- [[domain-model/domain-model|domain-model]] — Aggregate / VO / 도메인 이벤트
+- [[database/database|database]] — ERD + 10 테이블
+- [[enums/enums|enums]] — room / message / member 상태 enum
+- [[implementation/implementation|implementation]] — WebSocket / STOMP / 메시지 / 읽음 구현
+- [[security/security|security]] — WebSocket 인증 / XSS / rate limit
+- [[testing/testing|testing]] — unit / integration / load / e2e
+- [[operations/operations|operations]] — observability / runbook / scaling
+- [[pitfalls/pitfalls|pitfalls]] — 함정 / 안티패턴
+
 ---
 
 ## 3. Phase 단계

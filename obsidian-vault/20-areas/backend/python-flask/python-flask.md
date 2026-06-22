@@ -74,6 +74,10 @@ tags:
 | [[database/jpa-mybatis-coexist]] | ORM + raw SQL 함께 |
 | [[database/flyway]] | Alembic + Flask-Migrate |
 
+### 1.5 [[api-docs/api-docs|api-docs/]] — API 문서화 (OpenAPI / Swagger)
+
+### 1.6 [[pitfalls/pitfalls|pitfalls/]] — 함정 / 안티패턴
+
 ---
 
 ## 2. Flask 핵심 한 줄

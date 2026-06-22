@@ -33,7 +33,9 @@ tags:
 | **Chime** | [[chime]] | 화상회의 / 메신저 |
 | **Connect** | [[connect]] | 매니지드 콜센터 (옴니채널) |
 | **AppStream 2.0** | [[appstream]] | 데스크톱 응용 스트리밍 |
-| **WorkSpaces Web / Thin Client / WorkDocs** | (hub 안) | 격리된 웹 / 씬 클라이언트 / 문서 (WorkDocs 는 종료 예정) |
+| **WorkSpaces Web** | [[workspaces-web/workspaces-web\|workspaces-web]] | 보안 격리된 브라우저 세션 — 디바이스에 데이터가 안 남는 격리 접근 (Cloudflare / Citrix 격리 대안) |
+| **Thin Client** | [[thin-client/thin-client\|thin-client]] | WorkSpaces 전용 하드웨어 씬 클라이언트 ($195) — 회사 지급 표준 디바이스, 부팅 시 바로 WorkSpaces 로그인 |
+| **WorkDocs** | [[workdocs/workdocs\|workdocs]] | 매니지드 문서 공유 / 협업 — **서비스 종료 (2025-04-25)**, Google Drive / Microsoft 365 등으로 이전 |
 
 ---
 

@@ -59,6 +59,10 @@ tags:
 
 ### 1.4 [[database/database|database/]] — async ORM 깊이
 
+### 1.5 [[api-docs/api-docs|api-docs/]] — API 문서화 (OpenAPI / Swagger)
+
+### 1.6 [[pitfalls/pitfalls|pitfalls/]] — 함정 / 안티패턴
+
 ---
 
 ## 2. FastAPI 핵심 한 줄

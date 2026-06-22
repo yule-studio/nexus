@@ -27,6 +27,7 @@ tags:
 | --- | --- | --- |
 | **SQS** | [[sqs]] | Queue (1:1, at-least-once) |
 | **SNS** | [[sns]] | Pub/Sub (1:N fan-out) |
+| **SES** | [[ses/ses\|ses]] | 매니지드 이메일 발송 / 수신 — 가입 인증 / 비밀번호 재설정 / 알림 메일 백엔드 |
 
 ---
 

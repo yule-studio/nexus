@@ -21,6 +21,14 @@ tags:
 
 > Tokio / Axum / SeaORM / async
 
+## sub-area (영역)
+
+- [[api-design/api-design|api-design]] — API 설계 레시피
+- [[api-docs/api-docs|api-docs]] — API 문서화 (OpenAPI / Swagger)
+- [[common/common|common]] — 공통 / 프로젝트 구조
+- [[database/database|database]] — DB 통합 (ORM / 마이그레이션)
+- [[pitfalls/pitfalls|pitfalls]] — 함정 / 안티패턴
+
 ## 표준 누적 파일 (작성 예정)
 
 - `getting-started.md` — 설치 + 첫 프로젝트

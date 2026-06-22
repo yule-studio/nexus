@@ -31,7 +31,8 @@ tags:
 | **Support** | [[support]] | 기술 지원 플랜 (Basic / Developer / Business / Enterprise) |
 | **Marketplace** | [[marketplace]] | 3rd party SW / SaaS / AMI 카탈로그 |
 | **Activate** | [[activate]] | 스타트업 크레딧 프로그램 |
-| **Professional Services / IQ** | (hub 안) | AWS 직접 컨설팅 / 인증 전문가 매칭 |
+| **Professional Services** | [[professional-services/professional-services\|professional-services]] | AWS 직접 컨설팅 — 대형 마이그레이션 / 아키텍처 / ML 도입, 일·프로젝트 단위 계약 |
+| **IQ** | [[iq/iq\|iq]] | AWS 인증 전문가 매칭 마켓플레이스 — 단발성 작업을 AWS 청구서로 결제 (Upwork 의 AWS 버전) |
 
 ---
 

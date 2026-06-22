@@ -38,6 +38,8 @@ tags: [devops, docker, container, hub]
 
 ## 1. 카테고리 인덱스
 
+> 카테고리 hub: [[fundamentals/fundamentals|fundamentals]] (핵심 개념) · [[dockerfile/dockerfile|dockerfile]] (Dockerfile 작성) · [[compose/compose|compose]] (Docker Compose) · [[production/production|production]] (운영 패턴) · [[desktop/desktop|desktop]] (Docker Desktop GUI) · [[orbstack/orbstack|orbstack]] (OrbStack Mac 대안).
+
 ### `fundamentals/` — 핵심 개념
 - [[fundamentals/concepts]] — image / container / layer / volume / network
 - [[fundamentals/mental-models]] ★ — 컨테이너=프로세스 / layer / OCI

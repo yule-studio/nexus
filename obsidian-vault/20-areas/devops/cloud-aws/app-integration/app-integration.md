@@ -30,8 +30,10 @@ tags:
 | --- | --- | --- |
 | **EventBridge** | [[eventbridge]] | 이벤트 버스 + 룰 기반 라우팅 + SaaS 통합 + scheduler |
 | **API Gateway** | [[../network/api-gateway/api-gateway]] | HTTP / REST / WebSocket API 게이트웨이 |
-| **Step Functions** | (★★☆, 별도 예정) | 상태 머신 워크플로우 |
-| **AppSync / MQ / MWAA** | (★☆☆, 별도 예정) | GraphQL / RabbitMQ / Airflow |
+| **Step Functions** | [[step-functions/step-functions\|step-functions]] | 상태 머신 기반 워크플로우 오케스트레이션 — 250+ 서비스를 코드 없이 재시도 / 분기 / 병렬 / 사람 승인 |
+| **AppSync** | [[appsync/appsync\|appsync]] | 매니지드 GraphQL 서버 + WebSocket subscription — DynamoDB / RDS / Lambda / OpenSearch 데이터 소스 통합 |
+| **MQ** | [[mq/mq\|mq]] | 매니지드 RabbitMQ / ActiveMQ (AMQP / JMS) — 기존 메시지 브로커 응용을 그대로 AWS 로 |
+| **MWAA** | [[mwaa/mwaa\|mwaa]] | 매니지드 Apache Airflow — Python DAG 로 데이터 파이프라인 오케스트레이션 |
 
 ---
 

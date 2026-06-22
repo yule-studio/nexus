@@ -30,7 +30,10 @@ tags:
 | --- | --- | --- |
 | **Amplify** | [[amplify]] | 풀스택 (호스팅 + 인증 + API + 스토리지) |
 | **Cognito** | [[../security/cognito/cognito]] | 사용자 인증 (User Pool + Identity Pool) — Security 카테고리 |
-| **AppSync / Pinpoint / Device Farm / Location** | (★☆☆, 별도 예정) | GraphQL / 캠페인 / 디바이스 테스트 / 지도 |
+| **AppSync** | (★☆☆, 별도 예정) | 매니지드 GraphQL API |
+| **Pinpoint** | [[pinpoint/pinpoint\|pinpoint]] | 모바일 푸시 / 이메일 / SMS 마케팅 캠페인 (세그먼트 / 저니) — 발송 자체는 SES |
+| **Device Farm** | [[device-farm/device-farm\|device-farm]] | 실제 iOS / Android 디바이스 테스트 팜 (Appium / Espresso CI) |
+| **Location Service** | [[location-service/location-service\|location-service]] | 지도 / 지오코딩 / 경로 / 지오펜스 — Google Maps / Mapbox 의 AWS 대안 |
 
 ---
 

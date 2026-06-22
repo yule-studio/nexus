@@ -35,7 +35,11 @@ tags:
 | **OpenSearch** | [[opensearch]] | Elasticsearch 호환 검색 |
 | **MSK** | [[msk]] | 매니지드 Kafka |
 | **Redshift** | [[../database/redshift/redshift]] | 데이터 웨어하우스 (DB hub 에서) |
-| **EMR / QuickSight / Lake Formation / DataZone / Flink** | (★☆☆, 별도 예정) | Hadoop / BI / 권한 / 카탈로그 / 스트림 처리 |
+| **EMR** | [[emr/emr\|emr]] | 매니지드 Hadoop / Spark / Hive / Presto 클러스터 — 대규모 분산 빅데이터 처리 (신규는 EMR Serverless 권장) |
+| **QuickSight** | [[quicksight/quicksight\|quicksight]] | 매니지드 BI 대시보드 — Tableau / Power BI / Metabase 의 AWS 대안 (SPICE 인메모리 엔진) |
+| **Lake Formation** | [[lake-formation/lake-formation\|lake-formation]] | S3 + Glue 카탈로그 위 데이터 레이크 권한 / 거버넌스 통합 — row/column-level 보안 + cross-account 공유 |
+| **DataZone** | [[datazone/datazone\|datazone]] | 데이터 카탈로그 + 검색 + 공유 / 거버넌스 포털 — Atlan / Collibra / Alation 의 AWS 대안 |
+| **Flink** | [[flink/flink\|flink]] | 매니지드 Apache Flink — 실시간 stateful 스트림 처리 (옛 Kinesis Data Analytics) |
 
 ---
 

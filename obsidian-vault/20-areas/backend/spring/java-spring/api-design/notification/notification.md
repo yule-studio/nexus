@@ -169,6 +169,18 @@ notification/
     └── rate-pitfalls.md
 ```
 
+### 2.1 구성 요소 (component) — 설계 facet
+
+- [[design-decisions/design-decisions|design-decisions]] — 정책 결정 (채널 선택 / outbox / 재시도)
+- [[domain-model/domain-model|domain-model]] — Aggregate / VO / 도메인 이벤트
+- [[database/database|database]] — ERD + 7 테이블
+- [[enums/enums|enums]] — notification / channel / device 상태 enum
+- [[implementation/implementation|implementation]] — outbox worker / ChannelRouter / 채널 어댑터 구현
+- [[security/security|security]] — token rotation / PII 암호화 / rate limit
+- [[testing/testing|testing]] — unit / integration / channel mock
+- [[operations/operations|operations]] — observability / runbook / DLQ replay
+- [[pitfalls/pitfalls|pitfalls]] — 함정 / 안티패턴
+
 ---
 
 ## 3. Phase 단계

@@ -31,7 +31,30 @@ tags:
 | --- | --- | --- |
 | **Organizations** | [[organizations]] | 여러 AWS account 를 조직 구조로 + SCP |
 | **Systems Manager (SSM)** | [[ssm]] | EC2 운영 (Session Manager / Patch / Parameter Store / Run Command) |
-| **Config / Control Tower / Trusted Advisor / Health / Service Catalog / Well-Architected Tool / RAM** | (★★☆ ~ ★☆☆, 별도 예정) | 설정 추적 / landing zone / 헬스체크 / 자원 공유 |
+
+### 1.1 거버넌스 / 컴플라이언스
+
+| 서비스 | 노트 | 한 줄 |
+| --- | --- | --- |
+| **Config** | [[config/config\|config]] | 자원 설정 변경 이력 + 규정 준수 룰 자동 평가 (CIS / PCI / HIPAA) |
+| **Control Tower** | [[control-tower/control-tower\|control-tower]] | Organizations + Identity Center + Config + CloudTrail 을 landing zone 으로 자동 셋업 |
+| **Service Catalog** | [[service-catalog/service-catalog\|service-catalog]] | 관리자 승인 IaC 템플릿(CloudFormation)을 self-service 카탈로그로 제공 |
+
+### 1.2 운영 / 헬스 / 모범사례
+
+| 서비스 | 노트 | 한 줄 |
+| --- | --- | --- |
+| **Health Dashboard** | [[health/health\|health]] | AWS 서비스 장애 / 점검 / 보안 알림 통합 대시보드 (Health API + EventBridge) |
+| **Trusted Advisor** | [[trusted-advisor/trusted-advisor\|trusted-advisor]] | 비용 / 성능 / 보안 / 한도 / 운영 베스트 프랙티스 자동 체크 (Business+ 플랜) |
+| **Well-Architected Tool** | [[well-architected-tool/well-architected-tool\|well-architected-tool]] | Well-Architected 6 pillar 자가 점검 워크북 + HRI 도출 |
+
+### 1.3 자원 / 라이선스
+
+| 서비스 | 노트 | 한 줄 |
+| --- | --- | --- |
+| **Resource Access Manager (RAM)** | [[ram/ram\|ram]] | 자원(Subnet / TGW / License 등)을 다른 AWS account 와 공유 (복제 X) |
+| **Resource Groups & Tag Editor** | [[resource-groups/resource-groups\|resource-groups]] | 태그 기반 자원 묶기 + 여러 자원 태그 일괄 편집 |
+| **License Manager** | [[license-manager/license-manager\|license-manager]] | Windows / SQL Server / Oracle / SAP 라이선스 추적 + BYOL 한도 강제 |
 
 ---
 

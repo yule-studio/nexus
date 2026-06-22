@@ -23,11 +23,40 @@ tags:
 
 ## 1. 서비스
 
+### 1.1. VM / 기본
 | 서비스 | 노트 | 한 줄 |
 | --- | --- | --- |
-| **EC2** | [[ec2]] | 가상 머신 (VM) — 가장 기본 |
-| **ECS** | [[ecs]] | Container — Fargate / EC2 launch |
-| **Lambda** | [[lambda]] | Serverless 함수 |
+| **EC2** | [[ec2/ec2\|ec2]] | 가상 머신 (VM) — 가장 기본 |
+| **Lightsail** | [[lightsail/lightsail\|lightsail]] | 정액제 단순 VPS — 개인 / 소규모 (DigitalOcean 대응) |
+
+### 1.2. 컨테이너
+| 서비스 | 노트 | 한 줄 |
+| --- | --- | --- |
+| **ECS** | [[ecs/ecs\|ecs]] | Container 오케스트레이션 — Fargate / EC2 launch |
+| **EKS** | [[eks/eks\|eks]] | 매니지드 Kubernetes — 표준 / 이식성 |
+| **ECR** | [[ecr/ecr\|ecr]] | 컨테이너 이미지 레지스트리 (+scan / lifecycle) |
+| **App Mesh** | [[app-mesh/app-mesh\|app-mesh]] | 서비스 메시 (Envoy) — 트래픽 라우팅 / 관측 |
+| **Copilot** | [[copilot/copilot\|copilot]] | ECS / Fargate / App Runner 배포 CLI |
+
+### 1.3. 서버리스 / PaaS
+| 서비스 | 노트 | 한 줄 |
+| --- | --- | --- |
+| **Lambda** | [[lambda/lambda\|lambda]] | Serverless 함수 — event-driven |
+| **App Runner** | [[app-runner/app-runner\|app-runner]] | 컨테이너 / 소스 → 자동 빌드·배포 PaaS (Cloud Run 대응) |
+| **Elastic Beanstalk** | [[elastic-beanstalk/elastic-beanstalk\|elastic-beanstalk]] | 1세대 PaaS — zip 업로드 → EC2+ALB+ASG 자동 |
+
+### 1.4. 배치 / 스케일
+| 서비스 | 노트 | 한 줄 |
+| --- | --- | --- |
+| **Batch** | [[batch/batch\|batch]] | 대량 배치 작업 큐 + 컴퓨팅 자동 확장 (HPC / ML / ETL) |
+| **Auto Scaling** | [[auto-scaling/auto-scaling\|auto-scaling]] | 수요(metric/schedule/예측)에 따라 용량 자동 조정 |
+
+### 1.5. 엣지 / 하이브리드
+| 서비스 | 노트 | 한 줄 |
+| --- | --- | --- |
+| **Local Zones** | [[local-zones/local-zones\|local-zones]] | 대도시 가까운 mini region (저지연 < 10ms) |
+| **Wavelength** | [[wavelength/wavelength\|wavelength]] | 통신사 5G 망 안에 컴퓨팅 (모바일 1-hop) |
+| **Outposts** | [[outposts/outposts\|outposts]] | 온프레미스 데이터센터에 AWS 인프라 설치 |
 
 ---
 

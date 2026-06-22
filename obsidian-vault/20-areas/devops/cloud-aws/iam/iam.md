@@ -170,7 +170,7 @@ metadata:
 
 ## 8. Federation / SSO
 
-### 8.1 AWS IAM Identity Center (옛 AWS SSO)
+### 8.1 [[identity-center/identity-center|IAM Identity Center]] (옛 AWS SSO)
 - 직원 / 사용자 → 여러 AWS account / role
 - Okta / Entra ID / Google 와 통합
 - 시간 제한 자격증명

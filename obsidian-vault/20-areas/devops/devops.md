@@ -96,6 +96,16 @@ flowchart LR
 | [[security-ops/security-ops\|security-ops]] | secrets / SIEM / zero trust / compliance | 운영 보안 |
 | [[platform-engineering/platform-engineering\|platform-engineering]] | IDP / Backstage / golden paths | 개발자 플랫폼 |
 
+### 2.6 Specialization — 심화 영역
+
+| 영역 | 무엇 | 노트 |
+| --- | --- | --- |
+| [[data-engineering/data-engineering\|data-engineering]] | 파이프라인 / ETL / 데이터 플랫폼 | 데이터 엔지니어링 |
+| [[distributed-systems/distributed-systems\|distributed-systems]] | 합의 / 복제 / 일관성 / 분할 | 분산 시스템 |
+| [[finops/finops\|finops]] | 클라우드 비용 가시성 / 최적화 | 비용 운영 |
+| [[mlops/mlops\|mlops]] | 모델 학습 / 배포 / 모니터링 | ML 운영 |
+| [[performance/performance\|performance]] | 부하 / 튜닝 / 프로파일링 | 성능 엔지니어링 |
+
 ---
 
 ## 3. 의사결정 가이드 (한 줄 요약)

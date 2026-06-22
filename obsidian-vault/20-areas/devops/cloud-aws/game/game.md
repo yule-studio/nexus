@@ -26,8 +26,8 @@ tags:
 | 서비스 | 노트 | 한 줄 |
 | --- | --- | --- |
 | **GameLift** | [[gamelift]] | 매니지드 게임 서버 + 매치메이킹 |
-| **GameKit** | (hub 안) | Unreal / Unity 백엔드 SDK |
-| **Open 3D Engine (O3DE)** | (hub 안) | 오픈소스 게임 엔진 (Linux Foundation) |
+| **GameKit** | [[gamekit/gamekit\|gamekit]] | Unreal / Unity 플러그인 — 인증 / 게임 저장 / 리더보드 백엔드를 IaC + SDK 로 |
+| **Open 3D Engine (O3DE)** | [[o3de/o3de\|o3de]] | 오픈소스 게임 엔진 (Linux Foundation, AWS 후원) — 옛 Lumberyard 후신, Unreal / Unity 대안 |
 
 ---
 
